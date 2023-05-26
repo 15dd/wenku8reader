@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_act_setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="设置" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="阅读字体大小"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/slider_act_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:valueFrom="1"
+            android:valueTo="50"
+            android:stepSize="1" />
+
+        <TextView
+            android:id="@+id/text_act_setting_textSizePreview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="字体预览" />
+
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Material3.MaterialDivider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="阅读行距"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/slider_act_setting_lineSpacing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:valueFrom="1"
+            android:valueTo="50"
+            android:stepSize="1" />
+
+        <TextView
+            android:id="@+id/text_act_setting_lineSpacingPreview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="行距预览\n行距预览" />
+
+    </LinearLayout>
+
+</LinearLayout>

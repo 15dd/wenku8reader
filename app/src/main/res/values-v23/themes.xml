@@ -1,0 +1,15 @@
+<resources>
+
+    <style name="Theme.MyApplication" parent="Base.Theme.MyApplication">
+        <!-- Transparent system bars for edge-to-edge. -->
+        <!--        <item name="android:windowTranslucentStatus">true</item>&lt;!&ndash;可以页面拉伸到状态栏顶部&ndash;&gt;-->
+        <!--        <item name="android:windowTranslucentNavigation">true</item>&lt;!&ndash;可以页面拉伸到虚拟按键底部&ndash;&gt;-->
+
+        <!--        <item name="android:navigationBarColor">?attr/colorSurface</item>-->
+        <!--        <item name="android:statusBarColor">?attr/colorSurface</item>-->
+        <!--        <item name="android:windowLightStatusBar">false</item>-->
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!--        <item name="android:windowLightStatusBar">?attr/isLightTheme</item>-->
+    </style>
+</resources>
