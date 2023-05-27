@@ -2,9 +2,11 @@ package com.cyh128.wenku8reader.fragment;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -58,7 +60,11 @@ public class MyinfoFragment extends Fragment {
             about.setOnClickListener(v -> {
                 MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(getActivity());
                 dialogBuilder.setView(R.layout.dialog_about);
-                dialogBuilder.setPositiveButton("前往Github页面", null);
+                dialogBuilder.setPositiveButton("前往Github页面", (dialog, which) -> {
+                    Uri uri = Uri.parse("https://github.com/15dd/wenku8reader");    //设置跳转的网站
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                });
                 dialogBuilder.show();
             });
         }

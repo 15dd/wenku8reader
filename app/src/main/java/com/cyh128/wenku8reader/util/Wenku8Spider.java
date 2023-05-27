@@ -188,7 +188,12 @@ public class Wenku8Spider {
             String author = c.getElementsByTag("td").eq(2).select("a").text();
             String lastChapter = c.getElementsByTag("td").eq(3).select("a").text();
             String aid = bookUrl.substring(bookUrl.indexOf("aid=") + 4, bookUrl.indexOf("&"));
-            String imgUrl = String.format("https://img.wenku8.com/image/%s/%s/%ss.jpg",aid.charAt(0),aid,aid);
+            String imgUrl;
+            if (aid.length() <= 3)  {
+                imgUrl = String.format("https://img.wenku8.com/image/%s/%s/%ss.jpg",0,aid,aid);
+            } else {
+                imgUrl = String.format("https://img.wenku8.com/image/%s/%s/%ss.jpg",aid.charAt(0),aid,aid);
+            }
 
             bookIndex += 1;
 

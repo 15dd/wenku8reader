@@ -19,6 +19,7 @@ import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.adapter.BookCaseAdapter;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +99,7 @@ public class BookCaseFragment extends Fragment {
 
                 bookCaseAdapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
+                toolbar.setTitle("书架(共"+bookCaseAdapter.getItemCount()+"本)");
                 return false;
             }
         });

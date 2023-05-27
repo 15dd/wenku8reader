@@ -120,7 +120,10 @@ public class BookListFragment extends Fragment {
                             .setPositiveButton("明白", null)
                             .show();
                     canLoadmore = true;
-                    bookListAdapter.notifyItemRemoved(bookListAdapter.getItemCount());
+                    if (bookListAdapter != null) {
+                        bookListAdapter.notifyItemRemoved(bookListAdapter.getItemCount());
+                    }
+                    --pageindex;
                 });
                 return;
             }
