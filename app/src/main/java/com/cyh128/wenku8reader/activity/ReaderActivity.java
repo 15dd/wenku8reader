@@ -121,18 +121,6 @@ public class ReaderActivity extends AppCompatActivity {
             }
         });
 
-
-
-        Button button = bottomSheetView.findViewById(R.id.button_bottom_sheet_defaultColor);
-        button.setOnClickListener(v -> {
-            findViewById(R.id.layout_act_reader).setBackground(bottomSheetView.getBackground());//设置为默认背景色
-        });
-        Button button1 = bottomSheetView.findViewById(R.id.button_bottom_sheet_eyecareColor);
-        button1.setOnClickListener(v -> {
-            findViewById(R.id.layout_act_reader).setBackgroundColor(Color.parseColor("#FFF2E2"));
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        });
-
         readFragment = new ReadFragment();
         getSupportFragmentManager()
                 .beginTransaction()

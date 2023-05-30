@@ -143,26 +143,37 @@ public class Wenku8Spider {
     }
 
     public static List<BookListClass> searchNovel(String searchtype, String searchContent, int pageindex) throws IOException { //按作者搜索或按作品名搜索
-        List<BookListClass> list = null;
-        if (searchtype.equals("articlename")) {
+        List<BookListClass> list = new ArrayList<>();
+        String html = null;
+        if (searchtype.equals("articlename")) { //按小说名字搜索
             String url = String.format("https://www.wenku8.net/modules/article/search.php?searchtype=articlename&searchkey=%s&page=%d", URLEncoder.encode(searchContent, "gbk"), pageindex);
             try {
-                list = parseNovelList(loginWenku8.getPageHtml(url));
-            } catch (Exception e) {
-                System.out.println("搜索间隔要大于5秒，请稍后重试");
-                return null;
-            }
+                html = loginWenku8.getPageHtml(url);
+                Document document = Jsoup.parse(html);
+                Element a = document.getElementById("content");
+                Element b = a.select("span[style=width:180px;display:inline-block;]").get(1);
+                String bookUrl = b.selectFirst("a").attr("href");
+                bookUrl = String.format("https://www.wenku8.net/book/%s.htm",bookUrl.substring(bookUrl.indexOf("bid=")+4));
+                Log.d("debug","search bookurl"+bookUrl);
+                list.add(new BookListClass(bookUrl));
 
-        } else {
-            String url = String.format("https://www.wenku8.net/modules/article/search.php?searchtype=author&searchkey=%s&page=%d", URLEncoder.encode(searchContent, "gbk"), pageindex);
-            try {
-                list = parseNovelList(loginWenku8.getPageHtml(url));
+                return list;
             } catch (Exception e) {
-                System.out.println("搜索间隔要大于5秒，请稍后重试");
-                return null;
+                list.addAll(parseNovelList(html));
+                if (list.size() == 0) {
+                    return null;
+                }
+                return list;
             }
+        } else { //按作者搜索
+//            String url = String.format("https://www.wenku8.net/modules/article/search.php?searchtype=author&searchkey=%s&page=%d", URLEncoder.encode(searchContent, "gbk"), pageindex);
+//            try {
+//                list = parseNovelList(loginWenku8.getPageHtml(url));
+//            } catch (Exception e) {
+//                return null;
+//            }
         }
-        return list;
+        return null;
     }
 
 

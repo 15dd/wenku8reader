@@ -57,11 +57,6 @@ public class TagSearchActivity extends AppCompatActivity {
         bottomSheetView = LayoutInflater.from(TagSearchActivity.this).inflate(R.layout.bottom_sheet_act_tag_search, null);
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.setDismissWithAnimation(true);
-        bottomSheetDialog.setOnShowListener(dialog -> { //使bottomSheetDialog在show()时，展示全部内容，并且在下滑退出bottomSheetDialog时跳过Collapsed状态
-            BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View)bottomSheetView.getParent());
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            bottomSheetBehavior.setSkipCollapsed(true);
-        });
 
         FirstAdapter adapter = new FirstAdapter(this);//显示提示用户选择tag的fragment
         viewPager2.setAdapter(adapter);
@@ -69,6 +64,11 @@ public class TagSearchActivity extends AppCompatActivity {
         chipClickListener();
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.btn_showTag) {
+                //以下三行代码是为了每次在show()的时候，自动全部展开
+                BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View)bottomSheetView.getParent());
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                bottomSheetBehavior.setSkipCollapsed(true);//收起时跳过折叠状态
+
                 bottomSheetDialog.show();
                 return true;
             }

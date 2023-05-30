@@ -146,7 +146,7 @@ public class BookListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setLoadState(int loadState) {
         this.loadState = loadState;
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {

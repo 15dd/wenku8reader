@@ -7,7 +7,7 @@
   <div align="center">
     一个 <b>第三方</b> 轻小说文库 <b>阅读器</b>
     <br />
-    <a href=""><b>视频展示</b></a>
+    <a href="https://www.bilibili.com/video/BV1ns4y1B7J2/"><b>视频展示</b></a>
     <br />
   </div>
 

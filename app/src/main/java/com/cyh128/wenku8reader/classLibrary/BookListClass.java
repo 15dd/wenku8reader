@@ -18,6 +18,10 @@ public class BookListClass {
         this.bookUrl = bookUrl;
         this.totalPage = totalPage;
     }
+    public BookListClass(String bookUrl) {
+        this.bookUrl = bookUrl;
+        totalPage = 1;
+    }
 
     public void getInfo() {
         System.out.println(imgUrl + title + author + other + tags + bookUrl + totalPage);

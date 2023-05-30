@@ -147,7 +147,8 @@ public class BookListFragment extends Fragment {
             public boolean handleMessage(Message msg) {
                 if (msg.what == RESULT_OK) {
                     bookListAdapter.setLoadState(bookListAdapter.LOADING_COMPLETE);
-                    bookListAdapter.notifyDataSetChanged();
+                    //bookListAdapter.notifyDataSetChanged();
+                    bookListAdapter.notifyItemChanged(bookListAdapter.getItemCount(),bookListAdapter.getItemCount()+20);
                     return true;
                 }
                 return false;
@@ -161,7 +162,7 @@ public class BookListFragment extends Fragment {
                     bookListAdapter = new BookListAdapter(getContext(), novelList);
                     list.setAdapter(bookListAdapter);
                     list.setLayoutManager(layoutManager);
-                    bookListAdapter.setLoadState(bookListAdapter.FIRST_PAGE);
+                    bookListAdapter.setLoadState(bookListAdapter.LOADING_COMPLETE);
                     bookListAdapter.notifyDataSetChanged();
 
                     swipeRefreshLayout.setRefreshing(false);

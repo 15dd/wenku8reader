@@ -2,6 +2,7 @@ package com.cyh128.wenku8reader.fragment;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cyh128.wenku8reader.R;
+import com.cyh128.wenku8reader.activity.ContentsActivity;
 import com.cyh128.wenku8reader.adapter.BookListAdapter;
 import com.cyh128.wenku8reader.classLibrary.BookListClass;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
@@ -165,7 +167,15 @@ public class SearchFragment extends Fragment {
         public void run() {
             Looper.prepare();
             try {
-                novelList.addAll(Wenku8Spider.searchNovel("articlename", searchText, ++pageindex));
+                List<BookListClass> listClassList = Wenku8Spider.searchNovel("articlename", searchText, ++pageindex);
+                if (listClassList != null && listClassList.size() == 1){
+                    Intent intent = new Intent(getActivity(), ContentsActivity.class);
+                    intent.putExtra("bookUrl",listClassList.get(0).bookUrl);
+                    startActivity(intent);
+                    return;
+                } else if (listClassList != null) {
+                    novelList.addAll(listClassList);
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
