@@ -26,7 +26,7 @@ import java.util.List;
 public class BookListFragment extends Fragment {
     private RecyclerView list;
     public int pageindex = 0;//上拉加载数据用，每上拉一次，索引值加1
-    public int maxindex = 1;
+    public int maxindex = 1;//总页数
     private List<BookListClass> novelList = new ArrayList<>();
     private View view;
     private LinearLayoutManager layoutManager;
@@ -92,13 +92,14 @@ public class BookListFragment extends Fragment {
         bookListAdapter.setLoadState(bookListAdapter.LOADING);
         if (pageindex < maxindex) {
             new addBook().start();
+            return;
         } else {
             bookListAdapter.setLoadState(bookListAdapter.LOADING_END);
         }
+        bookListAdapter.notifyItemChanged(bookListAdapter.getItemCount() - 1);
     }
 
     private BookListAdapter bookListAdapter;
-
     private class addBook extends Thread {
 
         @Override
@@ -155,8 +156,13 @@ public class BookListFragment extends Fragment {
                 bookListAdapter = new BookListAdapter(getContext(), novelList);
                 list.setAdapter(bookListAdapter);
                 list.setLayoutManager(layoutManager);
-                bookListAdapter.setLoadState(bookListAdapter.LOADING_COMPLETE);
-                bookListAdapter.notifyDataSetChanged();
+                if (maxindex == 1) {
+                    bookListAdapter.setLoadState(bookListAdapter.LOADING_END);
+                    bookListAdapter.notifyDataSetChanged();
+                } else {
+                    bookListAdapter.setLoadState(bookListAdapter.LOADING_COMPLETE);
+                    bookListAdapter.notifyDataSetChanged();
+                }
 
                 swipeRefreshLayout.setRefreshing(false);
                 return true;

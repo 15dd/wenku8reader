@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.activity.ContentsActivity;
+import com.cyh128.wenku8reader.activity.SearchActivity;
 import com.cyh128.wenku8reader.adapter.BookListAdapter;
 import com.cyh128.wenku8reader.classLibrary.BookListClass;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
@@ -83,18 +84,19 @@ public class SearchFragment extends Fragment {
         if (pageindex < maxindex && isFiveSecondDone) {
             waitFiveSecond();
             new addBook().start();
+            return;
         } else if (pageindex < maxindex && !isFiveSecondDone) {
             bookListAdapter.setLoadState(bookListAdapter.WAIT_FIVE_SECOND);
-            bookListAdapter.notifyItemChanged(bookListAdapter.getItemCount() - 1);
             canLoadmore = true;
         } else {
             bookListAdapter.setLoadState(bookListAdapter.LOADING_END);
-            bookListAdapter.notifyItemChanged(bookListAdapter.getItemCount() - 1);
         }
+        bookListAdapter.notifyItemChanged(bookListAdapter.getItemCount() - 1);
     }
 
     private void waitFiveSecond() {
         isFiveSecondDone = false;
+        SearchActivity.searchFlag = false; //下滑操作也会触发搜索小说的5秒等待机制，所以需要将搜索框的搜索也加入限制，即下滑操作或者搜索小说的五秒没过，不允许操作
         new CountDownTimer(5500, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -103,6 +105,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onFinish() {
                 isFiveSecondDone = true;
+                SearchActivity.searchFlag = true;
                 if (bookListAdapter != null) {
                     if (bookListAdapter.loadState != bookListAdapter.LOADING_END) {
                         bookListAdapter.notifyItemRemoved(bookListAdapter.getItemCount());
@@ -113,7 +116,6 @@ public class SearchFragment extends Fragment {
     }
 
     private BookListAdapter bookListAdapter;
-
     private class addBook extends Thread {
 
         @Override
@@ -175,11 +177,16 @@ public class SearchFragment extends Fragment {
         private final Handler firstLaunchHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-
                 bookListAdapter = new BookListAdapter(getContext(), novelList);
                 list.setAdapter(bookListAdapter);
                 list.setLayoutManager(layoutManager);
-                bookListAdapter.setLoadState(bookListAdapter.FIRST_PAGE);
+                if (maxindex == 1) {
+                    bookListAdapter.setLoadState(bookListAdapter.LOADING_END);
+                    bookListAdapter.notifyDataSetChanged();
+                } else {
+                    bookListAdapter.setLoadState(bookListAdapter.LOADING_COMPLETE);
+                    bookListAdapter.notifyDataSetChanged();
+                }
 
                 return false;
             }
@@ -188,13 +195,11 @@ public class SearchFragment extends Fragment {
         private final Handler noContentHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-
                 bookListAdapter = new BookListAdapter(getContext(), novelList);
                 list.setAdapter(bookListAdapter);
                 list.setLayoutManager(layoutManager);
                 bookListAdapter.setLoadState(bookListAdapter.NONE);
                 bookListAdapter.notifyDataSetChanged();
-
                 return false;
             }
         });

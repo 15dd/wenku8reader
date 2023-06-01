@@ -19,7 +19,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class SearchActivity extends AppCompatActivity {
     private TextInputEditText editText;
-    private boolean searchFlag = true;
+    public static boolean searchFlag = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
