@@ -145,7 +145,7 @@ public class Wenku8Spider {
     public static List<BookListClass> searchNovel(String searchtype, String searchContent, int pageindex) throws IOException { //按作者搜索或按作品名搜索
         List<BookListClass> list = new ArrayList<>();
         String html = null;
-        if (searchtype.equals("articlename")) { //按小说名字搜索
+        if (searchtype.equals("articlename")) {
             String url = String.format("https://www.wenku8.net/modules/article/search.php?searchtype=articlename&searchkey=%s&page=%d", URLEncoder.encode(searchContent, "gbk"), pageindex);
             try {
                 html = loginWenku8.getPageHtml(url);
@@ -160,18 +160,15 @@ public class Wenku8Spider {
                 return list;
             } catch (Exception e) {
                 list.addAll(parseNovelList(html));
-                if (list.size() == 0) {
-                    return null;
-                }
                 return list;
             }
-        } else { //按作者搜索
-//            String url = String.format("https://www.wenku8.net/modules/article/search.php?searchtype=author&searchkey=%s&page=%d", URLEncoder.encode(searchContent, "gbk"), pageindex);
-//            try {
-//                list = parseNovelList(loginWenku8.getPageHtml(url));
-//            } catch (Exception e) {
-//                return null;
-//            }
+        } else { //此语句体暂时没什么作用
+            String url = String.format("https://www.wenku8.net/modules/article/search.php?searchtype=author&searchkey=%s&page=%d", URLEncoder.encode(searchContent, "gbk"), pageindex);
+            try {
+                list = parseNovelList(loginWenku8.getPageHtml(url));
+            } catch (Exception e) {
+                return null;
+            }
         }
         return null;
     }
@@ -286,6 +283,9 @@ public class Wenku8Spider {
 
             if (pic.startsWith("http://")) { //http容易(glide)加载失败，将其改为https
                 pic = pic.replace("http://", "https://");
+            }
+            if (pic.equals("/images/noimg.jpg")) {
+                pic = "https://www.wenku8.net/modules/article/images/nocover.jpg";
             }
 
             BookListClass nlc = new BookListClass(pic, bookTitle, Author, other, tags, bookUrl, totalPage);

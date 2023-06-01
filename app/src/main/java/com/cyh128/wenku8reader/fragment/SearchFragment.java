@@ -1,14 +1,11 @@
 package com.cyh128.wenku8reader.fragment;
 
-import static android.app.Activity.RESULT_OK;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +21,6 @@ import com.cyh128.wenku8reader.classLibrary.BookListClass;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,27 +31,24 @@ public class SearchFragment extends Fragment {
     private List<BookListClass> novelList = new ArrayList<>();
     private View view;
     private LinearLayoutManager layoutManager;
-    private String searchText;
-    private boolean searchFlag = true;
     private boolean canLoadmore = true;
-    private BookListAdapter bookListAdapter;
+    private boolean isFiveSecondDone = true;
+    private String searchText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_booklist, container, false);
+        view = inflater.inflate(R.layout.fragment_search, container, false);
         searchText = getArguments().getString("searchText");
-        list = view.findViewById(R.id.booklist);
-        layoutManager = new LinearLayoutManager(getContext());
-        bookListAdapter = new BookListAdapter(getContext(), novelList);
-
-        new first().start(); //第一次添加
-        waitFiveSecond(); //等待5秒
+        list = view.findViewById(R.id.fragment_search_booklist);
+        layoutManager = new LinearLayoutManager(view.getContext());
         loadMoreListener();
+        waitFiveSecond();
+        new addBook().start();
 
         return view;
     }
 
-    public void loadMoreListener() {
+    private void loadMoreListener() {
         list.addOnScrollListener(new RecyclerView.OnScrollListener() {
             //https://blog.csdn.net/xiayiye5/article/details/121302424
             private boolean isSLidingUpward = false;
@@ -69,6 +62,7 @@ public class SearchFragment extends Fragment {
                     int itemCount = layoutManager.getItemCount();
                     if (lastItemPosition == (itemCount - 1) && isSLidingUpward) {
                         if (canLoadmore) {
+                            canLoadmore = false;//防止在加载过程中多次加载
                             loadingMore();
                         }
                     }
@@ -80,68 +74,91 @@ public class SearchFragment extends Fragment {
                 super.onScrolled(recyclerView, dx, dy);
                 isSLidingUpward = dy > 0;
             }
+
         });
     }
 
     private void loadingMore() {
-        if (pageindex < maxindex && searchFlag) { //当可以继续搜索(过了5秒)，并且可以继续加载下一页时
-            canLoadmore = false;
-            bookListAdapter.setLoadState(bookListAdapter.LOADING);
-            new addBook().start();
+        bookListAdapter.setLoadState(bookListAdapter.LOADING);
+        if (pageindex < maxindex && isFiveSecondDone) {
             waitFiveSecond();
-        } else if (pageindex < maxindex && !searchFlag) { //当无法搜索(没过5秒)，但可以继续加载下一页时
+            new addBook().start();
+        } else if (pageindex < maxindex && !isFiveSecondDone) {
             bookListAdapter.setLoadState(bookListAdapter.WAIT_FIVE_SECOND);
-        } else { //当加载不了下一页时(已经到了最后一页)时
+            bookListAdapter.notifyItemChanged(bookListAdapter.getItemCount() - 1);
+            canLoadmore = true;
+        } else {
             bookListAdapter.setLoadState(bookListAdapter.LOADING_END);
+            bookListAdapter.notifyItemChanged(bookListAdapter.getItemCount() - 1);
         }
     }
 
     private void waitFiveSecond() {
-        searchFlag = false;
-        new CountDownTimer(5000, 1000) { //开始5秒倒计时
+        isFiveSecondDone = false;
+        new CountDownTimer(5500, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                Log.w("debug", millisUntilFinished + "ms");
-                Log.w("debug", String.valueOf(searchFlag));
             }
 
             @Override
             public void onFinish() {
-                Log.w("debug", "CountDownTimer Finish");
-                //bookListAdapter.notifyItemRemoved(bookListAdapter.getItemCount());
-                searchFlag = true;//5秒到，设置为可以搜索
-                bookListAdapter.notifyItemRemoved(bookListAdapter.getItemCount());//隐藏提示
+                isFiveSecondDone = true;
+                if (bookListAdapter != null) {
+                    if (bookListAdapter.loadState != bookListAdapter.LOADING_END) {
+                        bookListAdapter.notifyItemRemoved(bookListAdapter.getItemCount());
+                    }
+                }
             }
         }.start();
     }
+
+    private BookListAdapter bookListAdapter;
 
     private class addBook extends Thread {
 
         @Override
         public void run() {
             Looper.prepare();
-
             try {
-                novelList.addAll(Wenku8Spider.searchNovel("articlename", searchText, ++pageindex));
+                List<BookListClass> listClassList = Wenku8Spider.searchNovel("articlename", searchText, ++pageindex);
+                if (listClassList.size() == 0) {
+                    Message msg = new Message();
+                    noContentHandler.sendMessage(msg);
+                    return;
+                } else if (listClassList.size() == 1) {
+                    String url = listClassList.get(0).bookUrl;
+                    Intent intent = new Intent(getActivity(), ContentsActivity.class);
+                    intent.putExtra("bookUrl", url);
+                    startActivity(intent);
+                    return;
+                }
+                novelList.addAll(listClassList);
             } catch (Exception e) {
-                new MaterialAlertDialogBuilder(view.getContext())
-                        .setTitle("网络超时")
-                        .setMessage("连接超时，可能是服务器出错了、也可能是网络卡慢或者您正在连接VPN或代理服务器，请稍后再试")
-                        .setIcon(R.drawable.timeout)
-                        .setCancelable(false)
-                        .setPositiveButton("明白", (dialog, which) -> getActivity().finish())
-                        .show();
+                getActivity().runOnUiThread(() -> {
+                    new MaterialAlertDialogBuilder(view.getContext())
+                            .setTitle("网络超时")
+                            .setMessage("连接超时，可能是服务器出错了、也可能是网络卡慢或者您正在连接VPN或代理服务器，请稍后再试")
+                            .setIcon(R.drawable.timeout)
+                            .setCancelable(false)
+                            .setPositiveButton("明白", null)
+                            .show();
+                    canLoadmore = true;
+                    if (bookListAdapter != null) {
+                        bookListAdapter.notifyItemRemoved(bookListAdapter.getItemCount());
+                    }
+                    --pageindex;
+                });
                 return;
             }
 
-            if (novelList.size() == 0) {
-                bookListAdapter.setLoadState(bookListAdapter.LOADING_END);
-                bookListAdapter.notifyDataSetChanged();
-                return;
-            }
             Message msg = new Message();
-            msg.what = RESULT_OK;
-            addBookHandler.sendMessage(msg);
+            if (bookListAdapter == null) {//第一次添加
+                maxindex = novelList.get(0).totalPage;//设置总页数
+
+                firstLaunchHandler.sendMessage(msg);
+            } else {
+                addBookHandler.sendMessage(msg);
+            }
 
             canLoadmore = true;
         }
@@ -149,65 +166,35 @@ public class SearchFragment extends Fragment {
         private final Handler addBookHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-                if (msg.what == RESULT_OK) {
-                    bookListAdapter.setLoadState(bookListAdapter.LOADING_COMPLETE);
-                    return true;
-                } else if ((int) (novelList.size() / 20) == maxindex - 1) { //判断是否最后一页
-                    bookListAdapter.setLoadState(bookListAdapter.LOADING_END);
-                    return false;
-                }
-                return false;
+                bookListAdapter.setLoadState(bookListAdapter.LOADING_COMPLETE);
+                bookListAdapter.notifyItemChanged(bookListAdapter.getItemCount(), bookListAdapter.getItemCount() + 20);
+                return true;
             }
         });
-    }
-
-    private class first extends Thread {
-
-        @Override
-        public void run() {
-            Looper.prepare();
-            try {
-                List<BookListClass> listClassList = Wenku8Spider.searchNovel("articlename", searchText, ++pageindex);
-                if (listClassList != null && listClassList.size() == 1){
-                    Intent intent = new Intent(getActivity(), ContentsActivity.class);
-                    intent.putExtra("bookUrl",listClassList.get(0).bookUrl);
-                    startActivity(intent);
-                    return;
-                } else if (listClassList != null) {
-                    novelList.addAll(listClassList);
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            Message msg = new Message();
-            msg.what = RESULT_OK;
-            firstLaunchHandler.sendMessage(msg);
-
-        }
 
         private final Handler firstLaunchHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-                if (msg.what == RESULT_OK) {
-                    list.setAdapter(bookListAdapter);
-                    list.setLayoutManager(layoutManager);
 
-                    if (novelList.size() == 0) {
-                        bookListAdapter.setLoadState(bookListAdapter.NONE);
-                        return false;
-                    }
-                    maxindex = novelList.get(0).totalPage;//判断novelList有item时(size()>0)，设置总页数
-                    Log.d("debug", String.valueOf(maxindex));
+                bookListAdapter = new BookListAdapter(getContext(), novelList);
+                list.setAdapter(bookListAdapter);
+                list.setLayoutManager(layoutManager);
+                bookListAdapter.setLoadState(bookListAdapter.FIRST_PAGE);
 
-                    if ((int) (novelList.size() / 20) == maxindex - 1) { //判断是否最后一页
-                        bookListAdapter.setLoadState(bookListAdapter.LOADING_END);
-                        return false;
-                    }
+                return false;
+            }
+        });
 
-                    bookListAdapter.setLoadState(bookListAdapter.FIRST_PAGE);
-                    return true;
-                }
+        private final Handler noContentHandler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+
+                bookListAdapter = new BookListAdapter(getContext(), novelList);
+                list.setAdapter(bookListAdapter);
+                list.setLayoutManager(layoutManager);
+                bookListAdapter.setLoadState(bookListAdapter.NONE);
+                bookListAdapter.notifyDataSetChanged();
+
                 return false;
             }
         });

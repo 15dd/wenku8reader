@@ -9,7 +9,7 @@
 
     <ImageView
         android:id="@+id/bookcase_cover"
-        android:layout_width="135dp"
+        android:layout_width="140dp"
         android:layout_height="200dp"
         android:layout_gravity="left|top"
         android:layout_marginLeft="5dp"

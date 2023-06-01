@@ -1,7 +1,5 @@
 package com.cyh128.wenku8reader.fragment;
 
-import static android.app.Activity.RESULT_OK;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,9 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.cyh128.wenku8reader.classLibrary.BookListClass;
 import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.adapter.BookListAdapter;
+import com.cyh128.wenku8reader.classLibrary.BookListClass;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -129,7 +127,6 @@ public class BookListFragment extends Fragment {
             }
 
             Message msg = new Message();
-            msg.what = RESULT_OK;
             if (bookListAdapter == null) {//第一次添加
                 maxindex = novelList.get(0).totalPage;//设置总页数
                 Log.d("debug", String.valueOf(maxindex));
@@ -145,30 +142,24 @@ public class BookListFragment extends Fragment {
         private final Handler addBookHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-                if (msg.what == RESULT_OK) {
-                    bookListAdapter.setLoadState(bookListAdapter.LOADING_COMPLETE);
-                    //bookListAdapter.notifyDataSetChanged();
-                    bookListAdapter.notifyItemChanged(bookListAdapter.getItemCount(),bookListAdapter.getItemCount()+20);
-                    return true;
-                }
-                return false;
+                bookListAdapter.setLoadState(bookListAdapter.LOADING_COMPLETE);
+                //bookListAdapter.notifyDataSetChanged();
+                bookListAdapter.notifyItemChanged(bookListAdapter.getItemCount(), bookListAdapter.getItemCount() + 20);
+                return true;
             }
         });
 
         private final Handler firstLaunchHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-                if (msg.what == RESULT_OK) {
-                    bookListAdapter = new BookListAdapter(getContext(), novelList);
-                    list.setAdapter(bookListAdapter);
-                    list.setLayoutManager(layoutManager);
-                    bookListAdapter.setLoadState(bookListAdapter.LOADING_COMPLETE);
-                    bookListAdapter.notifyDataSetChanged();
+                bookListAdapter = new BookListAdapter(getContext(), novelList);
+                list.setAdapter(bookListAdapter);
+                list.setLayoutManager(layoutManager);
+                bookListAdapter.setLoadState(bookListAdapter.LOADING_COMPLETE);
+                bookListAdapter.notifyDataSetChanged();
 
-                    swipeRefreshLayout.setRefreshing(false);
-                    return true;
-                }
-                return false;
+                swipeRefreshLayout.setRefreshing(false);
+                return true;
             }
         });
     }

@@ -55,7 +55,7 @@ public class SearchActivity extends AppCompatActivity {
                         .commit();
                 searchFlag = false;
 
-                new CountDownTimer(5000, 1000) {
+                new CountDownTimer(5500, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
                     }

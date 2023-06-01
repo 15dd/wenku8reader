@@ -11,7 +11,8 @@
         android:id="@+id/progress_loadmore_tip"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:indeterminate="true" />
+        android:indeterminate="true"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/text_loadmore_tip"
@@ -19,6 +20,6 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="16sp"
-        android:text="hello" />
+        android:visibility="gone"/>
 
 </LinearLayout>

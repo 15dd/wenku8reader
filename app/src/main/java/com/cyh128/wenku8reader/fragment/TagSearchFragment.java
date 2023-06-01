@@ -16,11 +16,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.cyh128.wenku8reader.util.loginWenku8;
 import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.adapter.BookListAdapter;
 import com.cyh128.wenku8reader.classLibrary.BookListClass;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
+import com.cyh128.wenku8reader.util.loginWenku8;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.net.URLEncoder;
@@ -36,7 +36,7 @@ public class TagSearchFragment extends Fragment {
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private boolean canLoadmore = true;
-    private String sort,tag;
+    private String sort, tag;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -110,8 +110,7 @@ public class TagSearchFragment extends Fragment {
         public void run() {
             Looper.prepare();
             try {
-                ++pageindex;
-                String url = String.format("https://www.wenku8.net/modules/article/tags.php?t=%s&page=%d&v=%s", URLEncoder.encode(tag,"gbk"),pageindex,sort);
+                String url = String.format("https://www.wenku8.net/modules/article/tags.php?t=%s&page=%d&v=%s", URLEncoder.encode(tag, "gbk"), ++pageindex, sort);
                 novelList.addAll(Wenku8Spider.parseNovelList(loginWenku8.getPageHtml(url)));
             } catch (Exception e) {
                 getActivity().runOnUiThread(() -> {
@@ -123,12 +122,16 @@ public class TagSearchFragment extends Fragment {
                             .setCancelable(false)
                             .setPositiveButton("明白", null)
                             .show();
+                    canLoadmore = true;
+                    if (bookListAdapter != null) {
+                        bookListAdapter.notifyItemRemoved(bookListAdapter.getItemCount());
+                    }
+                    --pageindex;
                 });
                 return;
             }
 
             Message msg = new Message();
-            msg.what = RESULT_OK;
             if (bookListAdapter == null) {//第一次添加
                 maxindex = novelList.get(0).totalPage;//设置总页数
                 Log.d("debug", String.valueOf(maxindex));
@@ -144,29 +147,23 @@ public class TagSearchFragment extends Fragment {
         private final Handler addBookHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-                if (msg.what == RESULT_OK) {
-                    bookListAdapter.setLoadState(bookListAdapter.LOADING_COMPLETE);
-                    bookListAdapter.notifyDataSetChanged();
-                    return true;
-                }
-                return false;
+                bookListAdapter.setLoadState(bookListAdapter.LOADING_COMPLETE);
+                bookListAdapter.notifyItemChanged(bookListAdapter.getItemCount(), bookListAdapter.getItemCount() + 20);
+                return true;
             }
         });
 
         private final Handler firstLaunchHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-                if (msg.what == RESULT_OK) {
-                    bookListAdapter = new BookListAdapter(getContext(), novelList);
-                    list.setAdapter(bookListAdapter);
-                    list.setLayoutManager(layoutManager);
-                    bookListAdapter.setLoadState(bookListAdapter.FIRST_PAGE);
-                    bookListAdapter.notifyDataSetChanged();
+                bookListAdapter = new BookListAdapter(getContext(), novelList);
+                list.setAdapter(bookListAdapter);
+                list.setLayoutManager(layoutManager);
+                bookListAdapter.setLoadState(bookListAdapter.LOADING_COMPLETE);
+                bookListAdapter.notifyDataSetChanged();
 
-                    swipeRefreshLayout.setRefreshing(false);
-                    return true;
-                }
-                return false;
+                swipeRefreshLayout.setRefreshing(false);
+                return true;
             }
         });
     }
