@@ -70,7 +70,11 @@ public class BookListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             itemViewHolder.title.setText(novel.title);
             itemViewHolder.author.setText(novel.author);
             itemViewHolder.other.setText(novel.other);
-            itemViewHolder.tags.setText("标签:" + novel.tags);
+            if (novel.tags.trim().length() != 0) {
+                itemViewHolder.tags.setText("标签:" + novel.tags);
+            } else {
+                itemViewHolder.tags.setText("标签:(暂无标签)");
+            }
             Glide.with(context).load(novel.imgUrl).apply(options).placeholder(R.drawable.image_loading_cover).into(itemViewHolder.imageUrl);
             itemViewHolder.number.setText(String.valueOf(position + 1));
 
@@ -81,9 +85,7 @@ public class BookListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             .setCancelable(false)//禁止点击其他区域
                             .setTitle("警告")
                             .setMessage("无法获取该小说的详细信息,可能已下架")
-                            .setPositiveButton("明白", (dialogInterface, i) -> {
-                                //TODO
-                            })
+                            .setPositiveButton("明白", null)
                             .show();
                     return;
                 }

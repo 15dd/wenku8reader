@@ -4,6 +4,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -13,6 +14,7 @@ import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.fragment.BookCaseFragment;
 import com.cyh128.wenku8reader.fragment.HomeFragment;
 import com.cyh128.wenku8reader.fragment.MyinfoFragment;
+import com.cyh128.wenku8reader.util.CheckUpdate;
 import com.cyh128.wenku8reader.util.NavbarStatusbarInit;
 import com.cyh128.wenku8reader.util.NetWorkReceiver;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -43,6 +45,16 @@ public class AppActivity extends AppCompatActivity {
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(netWorkReceiver, filter);
         //=========================================================================================
+
+        //检查更新==================================================================================
+        new Thread(() -> {
+            try {
+                CheckUpdate.checkUpdate(this,CheckUpdate.WITHOUT_TIP);
+            } catch (Exception e) {
+                Log.e("debug","checkUpdate failed");
+            }
+        }).start();
+        //========================================================================================
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationListener();

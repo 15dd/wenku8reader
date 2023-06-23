@@ -29,6 +29,7 @@ import com.cyh128.wenku8reader.fragment.ReadFragment;
 import com.cyh128.wenku8reader.util.NavbarStatusbarInit;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -43,7 +44,7 @@ public class ReaderActivity extends AppCompatActivity {
     private String text;
     private BottomAppBar bottomAppBar;
     private BottomSheetDialog bottomSheetDialog;
-    private androidx.appcompat.widget.Toolbar toolbar;
+    private MaterialToolbar toolbar;
     private AppBarLayout appBarLayout;
     public static List<ContentsVcssClass> vcss = new ArrayList<>();
     public static List<List<ContentsCcssClass>> ccss = new ArrayList<>();
@@ -168,8 +169,8 @@ public class ReaderActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                appBarLayout.setVisibility(View.GONE);
-                bottomAppBar.setVisibility(View.GONE);
+                getSupportActionBar().hide();
+                bottomAppBar.setVisibility(View.INVISIBLE);
             }
         }.start();
 
@@ -335,11 +336,11 @@ public class ReaderActivity extends AppCompatActivity {
         @Override
         public boolean onSingleTapUp(@NonNull MotionEvent e) {
             if (appBarLayout.isShown() && bottomAppBar.isShown()) {
-                appBarLayout.setVisibility(View.GONE);
-                bottomAppBar.setVisibility(View.GONE);
+                getSupportActionBar().hide();
+                bottomAppBar.setVisibility(View.INVISIBLE);
                 return true;
             }
-            appBarLayout.setVisibility(View.VISIBLE);
+            getSupportActionBar().show();
             bottomAppBar.setVisibility(View.VISIBLE);
 
             return true;

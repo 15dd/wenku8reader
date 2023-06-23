@@ -15,6 +15,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.cyh128.wenku8reader.activity.SearchActivity;
 import com.cyh128.wenku8reader.activity.TagSearchActivity;
 import com.cyh128.wenku8reader.R;
+import com.cyh128.wenku8reader.activity.TagSelectActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -40,20 +41,13 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
                 return true;
             } else if (item.getItemId() == R.id.btn_tagSearch) {
-                Intent intent = new Intent(getActivity(), TagSearchActivity.class);
+                Intent intent = new Intent(getActivity(), TagSelectActivity.class);
                 startActivity(intent);
                 return true;
             }
             return false;
         });
 
-//        toplist = new BookListFragment("toplist");
-//        allvote = new BookListFragment("allvote");
-//        dayvisit = new BookListFragment("dayvisit");
-//        dayvote = new BookListFragment("dayvote");
-//        lastupdate = new BookListFragment("lastupdate");
-//        postdate = new BookListFragment("postdate");
-//        articlelist= new BookListFragment("articlelist");
         viewPageInit();
         return view;
     }

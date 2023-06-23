@@ -12,10 +12,10 @@ android {
 
     defaultConfig {
         applicationId "com.cyh128.wenku8reader"
-        minSdk 24
+        minSdk 29
         targetSdk 33
-        versionCode 230601
-        versionName "1.0.2"
+        versionCode 230623
+        versionName "1.0.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -50,6 +50,7 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'com.github.bumptech.glide:glide:4.15.1'
     implementation 'androidx.sqlite:sqlite:2.3.1'
+    implementation 'com.alibaba:fastjson:2.0.28'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

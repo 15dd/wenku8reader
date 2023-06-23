@@ -13,7 +13,6 @@
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:roundIcon="@drawable/logo"
-        android:largeHeap="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
 
@@ -67,6 +66,10 @@
 
         <activity
             android:name="com.cyh128.wenku8reader.activity.TagSearchActivity"
+            android:theme="@style/Theme.MyApplication" />
+
+        <activity
+            android:name="com.cyh128.wenku8reader.activity.TagSelectActivity"
             android:theme="@style/Theme.MyApplication" />
 
     </application>

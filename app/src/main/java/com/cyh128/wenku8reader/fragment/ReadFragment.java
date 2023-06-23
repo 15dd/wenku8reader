@@ -50,12 +50,11 @@ public class ReadFragment extends Fragment {
     }
 
     public void setContent() throws IOException {
-        Message msg = new Message();
-        msg.what = RESULT_OK;
         List<List<String>> allContent = Wenku8Spider.Content(ReaderActivity.bookUrl, ReaderActivity.ccss.get(ReaderActivity.vcssPosition).get(ReaderActivity.ccssPosition).url);
         this.text = allContent.get(0).get(0);
         this.imgUrl = allContent.get(1);
-
+        
+        Message msg = new Message();
         handler.sendMessage(msg);
     }
 
