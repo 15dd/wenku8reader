@@ -2,14 +2,11 @@ package com.cyh128.wenku8reader.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cyh128.wenku8reader.R;
-import com.cyh128.wenku8reader.util.NavbarStatusbarInit;
 import com.google.android.material.appbar.MaterialToolbar;
 
 public class TagSelectActivity extends AppCompatActivity {
@@ -18,7 +15,6 @@ public class TagSelectActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        NavbarStatusbarInit.allTransparent(this);
         setContentView(R.layout.activity_tag_select);
         MaterialToolbar toolbar = findViewById(R.id.toolbar_act_tag_select);
         setSupportActionBar(toolbar);

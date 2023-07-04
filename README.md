@@ -94,6 +94,7 @@ wenku8reader
 - com.github.chrisbanes:PhotoView
 - com.github.bumptech.glide:glide
 - com.alibaba:fastjson
+- com.github.youlookwhat:ByRecyclerView
 
 # 作者的话
 本人只是个职高生，能力实在有限，所以如果有比较影响体验的bug的话请见谅。<br>

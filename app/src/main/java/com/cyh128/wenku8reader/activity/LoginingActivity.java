@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.cyh128.wenku8reader.util.VarTemp;
 import com.cyh128.wenku8reader.util.loginWenku8;
 import com.cyh128.wenku8reader.R;
-import com.cyh128.wenku8reader.util.NavbarStatusbarInit;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class LoginingActivity extends AppCompatActivity {
@@ -22,7 +21,6 @@ public class LoginingActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logining);
-        NavbarStatusbarInit.allTransparent(this);
         Login login = new Login();
         login.start();
     }

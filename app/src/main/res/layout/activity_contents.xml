@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -27,7 +27,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <com.cyh128.wenku8reader.util.MyNestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/myscrollview_act_contents"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,6 +38,7 @@
             android:id="@+id/linearLayout_act_contents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -111,25 +112,25 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="left"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.Material3.Button.Icon"
                     android:id="@+id/button_act_contents_addToBookcase"
+                    style="@style/Widget.Material3.Button.Icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:icon="@drawable/add"
-                    android:text="加入书架" />
+                    android:text="加入书架"
+                    app:icon="@drawable/add" />
 
                 <Button
-                    android:layout_marginLeft="10dp"
                     android:id="@+id/button_act_contents_comment"
                     style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:tooltipText="评论区"
                     app:icon="@drawable/comment" />
 
@@ -138,22 +139,21 @@
                     style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:tooltipText="评论区"
+                    android:tooltipText="在浏览器中打开"
                     app:icon="@drawable/web" />
 
             </LinearLayout>
 
             <com.cyh128.wenku8reader.util.UnScrollExpandableListView
-                android:fitsSystemWindows="true"
                 android:id="@+id/expandableListView_act_contents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
                 android:nestedScrollingEnabled="false" />
 
         </LinearLayout>
 
-    </com.cyh128.wenku8reader.util.MyNestedScrollView>
-
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab_act_contents"

@@ -1,172 +1,136 @@
 package com.cyh128.wenku8reader.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.adapter.BookListAdapter;
 import com.cyh128.wenku8reader.classLibrary.BookListClass;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import me.jingbin.library.ByRecyclerView;
+
 public class BookListFragment extends Fragment {
-    private RecyclerView list;
-    public int pageindex = 0;//上拉加载数据用，每上拉一次，索引值加1
-    public int maxindex = 1;//总页数
+    private ByRecyclerView list;
+    private int pageindex = 0;//上拉加载数据用，每上拉一次，索引值加1
+    private int maxindex = 1;
     private List<BookListClass> novelList = new ArrayList<>();
-    private View view;
-    private LinearLayoutManager layoutManager;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private boolean canLoadmore = true;
+    private View view,emptyView;
     private String bookType;
+    private BookListAdapter bookListAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         view = inflater.inflate(R.layout.fragment_booklist, container, false);
         bookType = getArguments().getString("type");
         list = view.findViewById(R.id.booklist);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout_frag_booklist);
-        swipeRefreshLayout.setRefreshing(true);
-        layoutManager = new LinearLayoutManager(view.getContext());
-        loadMoreListener();
-        swipeRefreshListenter();
-        new addBook().start();
+        emptyView = inflater.inflate(R.layout.empty_view, container, false);
+
+        list.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
+        bookListAdapter = new BookListAdapter(view.getContext(), novelList);
+        list.setAdapter(bookListAdapter);
+        new Thread(() -> {
+            List<BookListClass> bookListClasses = getData();
+            setPageData(true, bookListClasses);
+            maxindex = bookListClasses.get(0).totalPage;//设置总页数
+        }).start();
+
+        list.setOnRefreshListener(new ByRecyclerView.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                pageindex = 0;
+                novelList.clear();
+                bookListAdapter.notifyDataSetChanged();
+                new Thread(() -> {
+                    setPageData(true, getData());
+                }).start();
+
+                list.setRefreshing(false);
+            }
+        });
+        list.setOnLoadMoreListener(new ByRecyclerView.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if (pageindex == maxindex) {
+                    getActivity().runOnUiThread(() -> {
+                        list.loadMoreEnd();
+                    });
+                    return;
+                }
+                new Thread(() -> {
+                    List<BookListClass> bookListClasses = getData();
+                    if (bookListClasses == null) {
+                        getActivity().runOnUiThread(() -> {
+                            list.loadMoreFail();
+                        });
+                        return;
+                    }
+                    setPageData(true, bookListClasses);
+                    getActivity().runOnUiThread(() -> {
+                        list.loadMoreComplete();
+                    });
+                }).start();
+            }
+        });
 
         return view;
     }
 
-    private void swipeRefreshListenter() {
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            pageindex = 0;
-            novelList = new ArrayList<>();
-            bookListAdapter = null;
-            new addBook().start();
-        });
-    }
-
-    private void loadMoreListener() {
-        list.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            //https://blog.csdn.net/xiayiye5/article/details/121302424
-            private boolean isSLidingUpward = false;
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    int lastItemPosition = layoutManager.findLastCompletelyVisibleItemPosition();
-                    int itemCount = layoutManager.getItemCount();
-                    if (lastItemPosition == (itemCount - 1) && isSLidingUpward) {
-                        if (canLoadmore) {
-                            canLoadmore = false;//防止在加载过程中多次加载
-                            loadingMore();
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                isSLidingUpward = dy > 0;
-            }
-
-        });
-    }
-
-    private void loadingMore() {
-        bookListAdapter.setLoadState(bookListAdapter.LOADING);
-        if (pageindex < maxindex) {
-            new addBook().start();
+    private void setPageData(boolean isFirstPage, List<BookListClass> data) {
+        if (getActivity() == null) { //防止切换浅色或深色模式时崩溃
             return;
-        } else {
-            bookListAdapter.setLoadState(bookListAdapter.LOADING_END);
         }
-        bookListAdapter.notifyItemChanged(bookListAdapter.getItemCount() - 1);
+        if (list == null) {
+            return;
+        }
+        if (isFirstPage) {
+            // 第一页
+            if (data != null && data.size() > 0) {
+                // 有数据
+                list.setStateViewEnabled(false);
+                list.setLoadMoreEnabled(true);
+                novelList.addAll(data);
+                getActivity().runOnUiThread(() -> {
+                    bookListAdapter.notifyItemChanged(bookListAdapter.getItemCount(), bookListAdapter.getItemCount() + 20);
+                });
+            } else {
+                // 没数据，设置空布局
+                getActivity().runOnUiThread(()->{
+                    list.setStateView(emptyView);
+                    list.setLoadMoreEnabled(false);
+                    bookListAdapter.notifyDataSetChanged();
+                });
+            }
+        } else {
+            // 第二页
+            if (data != null && data.size() > 0) {
+                // 有数据，显示更多数据
+                novelList.addAll(data);
+                getActivity().runOnUiThread(() -> {
+                    bookListAdapter.notifyItemChanged(bookListAdapter.getItemCount(), bookListAdapter.getItemCount() + 20);
+                });
+                list.loadMoreComplete();
+            }
+        }
     }
 
-    private BookListAdapter bookListAdapter;
-    private class addBook extends Thread {
-
-        @Override
-        public void run() {
-            Looper.prepare();
-            try {
-                novelList.addAll(Wenku8Spider.getNovelByType(bookType, ++pageindex));
-            } catch (Exception e) {
-                Log.e("debug", "booklistFragment error");
-                getActivity().runOnUiThread(() -> {
-                    swipeRefreshLayout.setRefreshing(false);
-                    new MaterialAlertDialogBuilder(view.getContext())
-                            .setTitle("网络超时")
-                            .setMessage("连接超时，可能是服务器出错了、也可能是网络卡慢或者您正在连接VPN或代理服务器，请稍后再试")
-                            .setIcon(R.drawable.timeout)
-                            .setCancelable(false)
-                            .setPositiveButton("明白", null)
-                            .show();
-                    canLoadmore = true;
-                    if (bookListAdapter != null) {
-                        bookListAdapter.notifyItemRemoved(bookListAdapter.getItemCount());
-                    }
-                    --pageindex;
-                });
-                return;
-            }
-
-            Message msg = new Message();
-            if (bookListAdapter == null) {//第一次添加
-                maxindex = novelList.get(0).totalPage;//设置总页数
-                Log.d("debug", String.valueOf(maxindex));
-
-                firstLaunchHandler.sendMessage(msg);
-            } else {
-                addBookHandler.sendMessage(msg);
-            }
-
-            canLoadmore = true;
+    private List<BookListClass> getData() {
+        try {
+            return Wenku8Spider.getNovelByType(bookType, ++pageindex);
+        } catch (Exception e) {
+            pageindex--;
+            e.printStackTrace();
+            return null;
         }
-
-        private final Handler addBookHandler = new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                bookListAdapter.setLoadState(bookListAdapter.LOADING_COMPLETE);
-                //bookListAdapter.notifyDataSetChanged();
-                bookListAdapter.notifyItemChanged(bookListAdapter.getItemCount(), bookListAdapter.getItemCount() + 20);
-                return true;
-            }
-        });
-
-        private final Handler firstLaunchHandler = new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                bookListAdapter = new BookListAdapter(getContext(), novelList);
-                list.setAdapter(bookListAdapter);
-                list.setLayoutManager(layoutManager);
-                if (maxindex == 1) {
-                    bookListAdapter.setLoadState(bookListAdapter.LOADING_END);
-                    bookListAdapter.notifyDataSetChanged();
-                } else {
-                    bookListAdapter.setLoadState(bookListAdapter.LOADING_COMPLETE);
-                    bookListAdapter.notifyDataSetChanged();
-                }
-
-                swipeRefreshLayout.setRefreshing(false);
-                return true;
-            }
-        });
     }
 }

@@ -42,6 +42,7 @@ public class ReadFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         view = inflater.inflate(R.layout.fragment_read, container, false);
         textView = view.findViewById(R.id.text_frag_read);
         recyclerView = view.findViewById(R.id.recyclerView_frag_read);
@@ -53,7 +54,13 @@ public class ReadFragment extends Fragment {
         List<List<String>> allContent = Wenku8Spider.Content(ReaderActivity.bookUrl, ReaderActivity.ccss.get(ReaderActivity.vcssPosition).get(ReaderActivity.ccssPosition).url);
         this.text = allContent.get(0).get(0);
         this.imgUrl = allContent.get(1);
-        
+
+        if (this.text.contains("<img")) { //去除<img>html标签，防止出现绿色小方块
+            this.text=this.text.replaceAll("<a href[^>]*>", "");
+            this.text=this.text.replaceAll("</a>", "");
+            this.text=this.text.replaceAll("<img[^>]*>", "");
+        }
+
         Message msg = new Message();
         handler.sendMessage(msg);
     }

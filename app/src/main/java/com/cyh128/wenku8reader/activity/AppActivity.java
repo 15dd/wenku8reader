@@ -3,8 +3,10 @@ package com.cyh128.wenku8reader.activity;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Window;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -15,8 +17,8 @@ import com.cyh128.wenku8reader.fragment.BookCaseFragment;
 import com.cyh128.wenku8reader.fragment.HomeFragment;
 import com.cyh128.wenku8reader.fragment.MyinfoFragment;
 import com.cyh128.wenku8reader.util.CheckUpdate;
-import com.cyh128.wenku8reader.util.NavbarStatusbarInit;
 import com.cyh128.wenku8reader.util.NetWorkReceiver;
+import com.cyh128.wenku8reader.util.VarTemp;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -34,8 +36,13 @@ public class AppActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_app);
-        NavbarStatusbarInit.allTransparent(this);
-        //findViewById(R.id.appFragment).setPadding(0,NavbarStatusbarInit.getStatusbarHeight(this),0,0);
+        bottomNavigationView = findViewById(R.id.bottom_nav);
+        bottomNavigationListener();
+
+        Window window = getWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.setDecorFitsSystemWindows(false);//底部小白条沉浸（全面屏手势）https://juejin.cn/post/6904545697552007181
+        }
 
         //注册网络状态监听广播,判断网络是否连接==========================================================
         netWorkReceiver = new NetWorkReceiver(AppActivity.this);
@@ -47,17 +54,16 @@ public class AppActivity extends AppCompatActivity {
         //=========================================================================================
 
         //检查更新==================================================================================
-        new Thread(() -> {
-            try {
-                CheckUpdate.checkUpdate(this,CheckUpdate.WITHOUT_TIP);
-            } catch (Exception e) {
-                Log.e("debug","checkUpdate failed");
-            }
-        }).start();
+        if (VarTemp.checkUpdate) {
+            new Thread(() -> {
+                try {
+                    CheckUpdate.checkUpdate(this, CheckUpdate.WITHOUT_TIP);
+                } catch (Exception e) {
+                    Log.e("debug", "checkUpdate failed");
+                }
+            }).start();
+        }
         //========================================================================================
-
-        bottomNavigationView = findViewById(R.id.bottom_nav);
-        bottomNavigationListener();
 
         initFragment();
     }

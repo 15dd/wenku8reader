@@ -53,4 +53,10 @@ public class MyNestedScrollView extends NestedScrollView {
     public boolean canScrollVertically(int direction) {
         return false;
     }
+
+    @Override //https://blog.csdn.net/u011682673/article/details/109307894
+    protected void measureChildWithMargins(View child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
+        child.measure(parentWidthMeasureSpec, parentHeightMeasureSpec);
+    }
+
 }

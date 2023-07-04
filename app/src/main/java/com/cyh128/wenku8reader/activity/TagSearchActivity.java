@@ -1,8 +1,6 @@
 package com.cyh128.wenku8reader.activity;
 
-import android.app.Dialog;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -15,8 +13,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.cyh128.wenku8reader.fragment.TagSearchFragment;
 import com.cyh128.wenku8reader.R;
-import com.cyh128.wenku8reader.util.NavbarStatusbarInit;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -29,7 +25,6 @@ public class TagSearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        NavbarStatusbarInit.allTransparent(this);
         setContentView(R.layout.activity_tag_search);
         viewPager2 = findViewById(R.id.fragment_act_tag_search);
         tabLayout = findViewById(R.id.tabLayout_act_tag_search);

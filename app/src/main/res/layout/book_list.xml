@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/bookcover"
         android:layout_width="140dp"
-        android:layout_height="200dp"
+        android:layout_height="205dp"
         android:layout_marginLeft="5dp"
         android:layout_gravity="left|top"
         android:scaleType="centerCrop" />

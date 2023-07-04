@@ -22,7 +22,7 @@ public class ReaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private Context context;
     private List<String> imgUrl;
     private RequestOptions options = new RequestOptions()
-            .placeholder(R.drawable.image_loading_small)
+            .placeholder(R.drawable.image_loading)
             .skipMemoryCache(true)// 内存不缓存
             .diskCacheStrategy(DiskCacheStrategy.NONE);// 磁盘缓存所有图
 

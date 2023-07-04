@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:menu="@menu/app_appbar_top_menu"
-            app:title="首页" />
+            app:title="首页"/>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout_home"

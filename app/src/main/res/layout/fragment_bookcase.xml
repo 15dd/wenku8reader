@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -15,27 +15,21 @@
             android:id="@+id/toolbar_bookcase"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:menu="@menu/contents_appbar_top_menu"
+            app:menu="@menu/bookcase_appbar_top_menu"
             app:title="书架" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
+    <com.cyh128.wenku8reader.util.MyNestedScrollView
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout_frag_bookcase"
+        <me.jingbin.library.ByRecyclerView
+            android:id="@+id/frag_bookcase_booklist"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/frag_bookcase_booklist"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+    </com.cyh128.wenku8reader.util.MyNestedScrollView>
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

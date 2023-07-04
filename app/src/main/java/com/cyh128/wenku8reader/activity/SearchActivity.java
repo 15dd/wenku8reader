@@ -10,10 +10,8 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.cyh128.wenku8reader.fragment.SearchFragment;
 import com.cyh128.wenku8reader.R;
-import com.cyh128.wenku8reader.util.NavbarStatusbarInit;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.cyh128.wenku8reader.fragment.SearchFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -25,7 +23,6 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        NavbarStatusbarInit.allTransparent(SearchActivity.this);
         editText = findViewById(R.id.editText_act_search);
 
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar_act_search);
@@ -41,7 +38,10 @@ public class SearchActivity extends AppCompatActivity {
         editText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 if (!searchFlag) {
-                    Snackbar.make(editText, "两次搜索间隔必须大于5秒", BaseTransientBottomBar.LENGTH_SHORT).show();
+                    Snackbar.make(editText, "两次搜索间隔必须大于5秒", Snackbar.LENGTH_SHORT).show();
+                    return true;
+                } else if (String.valueOf(editText.getText()).trim().length() == 0) {
+                    Snackbar.make(editText, "内容不能为空", Snackbar.LENGTH_SHORT).show();
                     return true;
                 }
                 SearchFragment searchFragment = new SearchFragment();

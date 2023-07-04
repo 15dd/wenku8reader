@@ -3,7 +3,7 @@ package com.cyh128.wenku8reader.activity;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -13,7 +13,7 @@ import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
+import android.view.Window;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,9 +26,7 @@ import com.cyh128.wenku8reader.classLibrary.ContentsVcssClass;
 import com.cyh128.wenku8reader.util.VarTemp;
 import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.fragment.ReadFragment;
-import com.cyh128.wenku8reader.util.NavbarStatusbarInit;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -45,7 +43,6 @@ public class ReaderActivity extends AppCompatActivity {
     private BottomAppBar bottomAppBar;
     private BottomSheetDialog bottomSheetDialog;
     private MaterialToolbar toolbar;
-    private AppBarLayout appBarLayout;
     public static List<ContentsVcssClass> vcss = new ArrayList<>();
     public static List<List<ContentsCcssClass>> ccss = new ArrayList<>();
     public static String bookUrl = null;
@@ -68,14 +65,18 @@ public class ReaderActivity extends AppCompatActivity {
         bottomAppBar = findViewById(R.id.bottomAppBar_act_reader);
         nestedScrollView = findViewById(R.id.scrollView_act_reader);
         progressText = findViewById(R.id.text_act_reader_progress);
-        appBarLayout = findViewById(R.id.appbarlayout_act_reader);
-        NavbarStatusbarInit.allTransparent(this);
 
-        dialog = new Dialog(ReaderActivity.this);
-        View contentView = LayoutInflater.from(ReaderActivity.this).inflate(R.layout.alert_progress_dialog, null);
-        dialog.setContentView(contentView);
-        dialog.setCancelable(false);
-        dialog.show();
+        Window window = getWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.setDecorFitsSystemWindows(false);//底部小白条沉浸（全面屏手势）https://juejin.cn/post/6904545697552007181
+        }
+
+        dialog = new Dialog(this);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.alert_progress_dialog, null);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setView(contentView);
+        builder.setCancelable(false);
+        dialog = builder.show();
 
         vcss = ContentsActivity.vcss;
         ccss = ContentsActivity.ccss;
@@ -134,6 +135,7 @@ public class ReaderActivity extends AppCompatActivity {
                 this.text = allContent.get(0).get(0);
 
             } catch (Exception e) {
+                e.printStackTrace();
                 runOnUiThread(() -> new MaterialAlertDialogBuilder(ReaderActivity.this)
                         .setTitle("网络超时")
                         .setMessage("连接超时，可能是服务器出错了或者您正在连接VPN或代理服务器，请稍后再试")
@@ -187,6 +189,10 @@ public class ReaderActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() { //销毁时，保存设置的字体大小,保存阅读进度
         super.onDestroy();
+        if (dialog != null) {//防止windowLeaked
+            dialog.dismiss();
+        }
+
         new Thread(() -> {
             if (VarTemp.readerFontSize != fontSizeSlider.getValue() || VarTemp.readerLineSpacing != lineSpacingSlider.getValue()) {//判断是否有改动
                 VarTemp.readerFontSize = fontSizeSlider.getValue();
@@ -196,6 +202,8 @@ public class ReaderActivity extends AppCompatActivity {
                 values.put("_id", 1);
                 values.put("fontSize", fontSizeSlider.getValue());
                 values.put("lineSpacing",lineSpacingSlider.getValue());
+                values.put("checkUpdate", VarTemp.checkUpdate);
+                values.put("bookcaseViewType",VarTemp.bookcaseViewType);
                 VarTemp.db.replace("setting", null, values);
             }
 
@@ -230,6 +238,7 @@ public class ReaderActivity extends AppCompatActivity {
                         dialog.dismiss();
                         runOnUiThread(() -> nestedScrollView.post(() -> nestedScrollView.scrollTo(0, 0)));
                     } catch (Exception e) {
+                        e.printStackTrace();
                         runOnUiThread(() -> new MaterialAlertDialogBuilder(ReaderActivity.this)
                                 .setTitle("网络超时")
                                 .setMessage("连接超时，可能是服务器出错了、也可能是网络卡慢或者您正在连接VPN或代理服务器，请稍后再试")
@@ -258,6 +267,7 @@ public class ReaderActivity extends AppCompatActivity {
                         dialog.dismiss();
                         runOnUiThread(() -> nestedScrollView.post(() -> nestedScrollView.scrollTo(0, 0)));
                     } catch (Exception e) {
+                        e.printStackTrace();
                         runOnUiThread(() -> new MaterialAlertDialogBuilder(ReaderActivity.this)
                                 .setTitle("网络超时")
                                 .setMessage("连接超时，可能是服务器出错了、也可能是网络卡慢或者您正在连接VPN或代理服务器，请稍后再试")
@@ -285,6 +295,7 @@ public class ReaderActivity extends AppCompatActivity {
                     Message msg2 = new Message();
                     scrollToTarget.sendMessage(msg2);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     runOnUiThread(() -> new MaterialAlertDialogBuilder(ReaderActivity.this)
                             .setTitle("网络超时")
                             .setMessage("连接超时，可能是服务器出错了、也可能是网络卡慢或者您正在连接VPN或代理服务器，请稍后再试")
@@ -335,7 +346,7 @@ public class ReaderActivity extends AppCompatActivity {
 
         @Override
         public boolean onSingleTapUp(@NonNull MotionEvent e) {
-            if (appBarLayout.isShown() && bottomAppBar.isShown()) {
+            if (toolbar.isShown() && bottomAppBar.isShown()) {
                 getSupportActionBar().hide();
                 bottomAppBar.setVisibility(View.INVISIBLE);
                 return true;

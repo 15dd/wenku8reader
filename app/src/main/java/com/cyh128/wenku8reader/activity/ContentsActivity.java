@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 
 import com.bumptech.glide.Glide;
 import com.cyh128.wenku8reader.classLibrary.BookcaseClass;
@@ -32,8 +33,6 @@ import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.adapter.ContentsListAdapter;
 import com.cyh128.wenku8reader.fragment.BookCaseFragment;
 import com.cyh128.wenku8reader.util.AdjustableTextView;
-import com.cyh128.wenku8reader.util.MyNestedScrollView;
-import com.cyh128.wenku8reader.util.NavbarStatusbarInit;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -59,7 +58,7 @@ public class ContentsActivity extends AppCompatActivity {
     private ImageView imageView;
     private ExpandableListView expandableListView;
     private ContentsListAdapter contentsListAdapter;
-    private MyNestedScrollView myNestedScrollView;
+    private NestedScrollView myNestedScrollView;
     private View mainLayout;
     private LinearProgressIndicator linearProgressIndicator;
     private MaterialButton addToBookcase;
@@ -76,7 +75,6 @@ public class ContentsActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contents);
-        NavbarStatusbarInit.allTransparent(this);
 
         Resources resources = getResources();
         removeDraw = resources.getDrawable(R.drawable.remove, null);
