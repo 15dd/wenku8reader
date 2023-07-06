@@ -72,6 +72,10 @@
             android:name="com.cyh128.wenku8reader.activity.TagSelectActivity"
             android:theme="@style/Theme.MyApplication" />
 
+        <activity
+            android:name="com.cyh128.wenku8reader.activity.CrashActivity"
+            android:theme="@style/Theme.MyApplication" />
+
     </application>
 
 </manifest>

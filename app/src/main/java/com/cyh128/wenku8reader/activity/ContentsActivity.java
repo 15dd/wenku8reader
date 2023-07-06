@@ -25,14 +25,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 
 import com.bumptech.glide.Glide;
+import com.ctetin.expandabletextviewlibrary.ExpandableTextView;
+import com.cyh128.wenku8reader.R;
+import com.cyh128.wenku8reader.adapter.ContentsListAdapter;
 import com.cyh128.wenku8reader.classLibrary.BookcaseClass;
 import com.cyh128.wenku8reader.classLibrary.ContentsCcssClass;
 import com.cyh128.wenku8reader.classLibrary.ContentsVcssClass;
-import com.cyh128.wenku8reader.util.VarTemp;
-import com.cyh128.wenku8reader.R;
-import com.cyh128.wenku8reader.adapter.ContentsListAdapter;
 import com.cyh128.wenku8reader.fragment.BookCaseFragment;
-import com.cyh128.wenku8reader.util.AdjustableTextView;
+import com.cyh128.wenku8reader.util.UnScrollExpandableListView;
+import com.cyh128.wenku8reader.util.VarTemp;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -54,9 +55,9 @@ public class ContentsActivity extends AppCompatActivity {
     public static int ccssPosition = 0;
     public static int vcssPosition = 0;
     private TextView title, author, status, update;
-    private AdjustableTextView intorduce;
+    private ExpandableTextView introduce;
     private ImageView imageView;
-    private ExpandableListView expandableListView;
+    private UnScrollExpandableListView expandableListView;
     private ContentsListAdapter contentsListAdapter;
     private NestedScrollView myNestedScrollView;
     private View mainLayout;
@@ -360,11 +361,8 @@ public class ContentsActivity extends AppCompatActivity {
                     Glide.with(ContentsActivity.this).load(novelDetail.get(4)).into(imageView);
                 }
 
-                //https://blog.csdn.net/z912662880/article/details/104373357 点击展开textview
-                introduceTemp = findViewById(R.id.text_act_contents_introduce);
-                introduceTemp.setText(Html.fromHtml(novelDetail.get(5), FROM_HTML_MODE_COMPACT));
-                intorduce = new AdjustableTextView(findViewById(R.id.text_act_contents_introduce), 3, ContentsActivity.this);
-                intorduce.hiddenText();
+                introduce = findViewById(R.id.text_act_contents_introduce);
+                introduce.setContent(String.valueOf(Html.fromHtml(novelDetail.get(5), FROM_HTML_MODE_COMPACT)));
 
                 vcss = (List<ContentsVcssClass>) contentsList.get(0);//卷list
                 ccss = (List<List<ContentsCcssClass>>) contentsList.get(1);//章节list

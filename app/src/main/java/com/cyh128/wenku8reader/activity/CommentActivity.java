@@ -32,6 +32,7 @@ public class CommentActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
+
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
         list = findViewById(R.id.recyclerView_act_comment);

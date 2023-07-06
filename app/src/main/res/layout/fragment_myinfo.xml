@@ -79,6 +79,11 @@
 
     </androidx.cardview.widget.CardView>
 
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.MaterialDivider" />
+
 
     <!--    <View-->
     <!--        android:layout_width="match_parent"-->
@@ -92,4 +97,5 @@
         android:layout_margin="30dp"
         android:text="退出登录"
         app:cornerRadius="6dp" />
+
 </LinearLayout>

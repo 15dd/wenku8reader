@@ -2,6 +2,7 @@ package com.cyh128.wenku8reader.activity;
 
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,7 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReaderActivity extends AppCompatActivity {
-    private String text;
     private BottomAppBar bottomAppBar;
     private BottomSheetDialog bottomSheetDialog;
     private MaterialToolbar toolbar;
@@ -97,6 +97,24 @@ public class ReaderActivity extends AppCompatActivity {
         View bottomSheetView = LayoutInflater.from(ReaderActivity.this).inflate(R.layout.bottom_sheet_act_reader, null, false);
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.setDismissWithAnimation(true);
+        bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override //保存字体的设置
+            public void onDismiss(DialogInterface dialog) {
+                if (VarTemp.readerFontSize != fontSizeSlider.getValue() || VarTemp.readerLineSpacing != lineSpacingSlider.getValue()) {//判断是否有改动
+                    VarTemp.readerFontSize = fontSizeSlider.getValue();
+                    VarTemp.readerLineSpacing = lineSpacingSlider.getValue();
+
+                    ContentValues values = new ContentValues();
+                    values.put("_id", 1);
+                    values.put("fontSize", fontSizeSlider.getValue());
+                    values.put("lineSpacing",lineSpacingSlider.getValue());
+                    values.put("checkUpdate", VarTemp.checkUpdate);
+                    values.put("bookcaseViewType",VarTemp.bookcaseViewType);
+                    VarTemp.db.replace("setting", null, values);
+                }
+            }
+        });
+
 
         fontSizeSlider = bottomSheetView.findViewById(R.id.slider_bottom_sheet_act_reader);
         fontSizeSlider.setValue(VarTemp.readerFontSize);//设置为之前字体大小的值
@@ -129,25 +147,8 @@ public class ReaderActivity extends AppCompatActivity {
                 .replace(R.id.fragment_act_reader, readFragment)
                 .commit();
 
-        new Thread(() -> {
-            try {
-                List<List<String>> allContent = Wenku8Spider.Content(bookUrl, ccss.get(vcssPosition).get(ccssPosition).url);
-                this.text = allContent.get(0).get(0);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                runOnUiThread(() -> new MaterialAlertDialogBuilder(ReaderActivity.this)
-                        .setTitle("网络超时")
-                        .setMessage("连接超时，可能是服务器出错了或者您正在连接VPN或代理服务器，请稍后再试")
-                        .setIcon(R.drawable.timeout)
-                        .setCancelable(false)
-                        .setPositiveButton("明白", (dialog, which) -> finish())
-                        .show());
-                return;
-            }
-            Message msg = new Message();
-            handler.sendMessage(msg);
-        }).start();
+        Message msg = new Message();
+        handler.sendMessage(msg);
 
         setBottomAppBarListener();//设置底栏菜单按钮监听
 
@@ -187,26 +188,14 @@ public class ReaderActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() { //销毁时，保存设置的字体大小,保存阅读进度
+    protected void onDestroy() {
         super.onDestroy();
         if (dialog != null) {//防止windowLeaked
             dialog.dismiss();
         }
 
         new Thread(() -> {
-            if (VarTemp.readerFontSize != fontSizeSlider.getValue() || VarTemp.readerLineSpacing != lineSpacingSlider.getValue()) {//判断是否有改动
-                VarTemp.readerFontSize = fontSizeSlider.getValue();
-                VarTemp.readerLineSpacing = lineSpacingSlider.getValue();
-
-                ContentValues values = new ContentValues();
-                values.put("_id", 1);
-                values.put("fontSize", fontSizeSlider.getValue());
-                values.put("lineSpacing",lineSpacingSlider.getValue());
-                values.put("checkUpdate", VarTemp.checkUpdate);
-                values.put("bookcaseViewType",VarTemp.bookcaseViewType);
-                VarTemp.db.replace("setting", null, values);
-            }
-
+            //保存阅读历史
             ContentValues values = new ContentValues();
             values.put("bookUrl", bookUrl);
             values.put("indexUrl", ccss.get(vcssPosition).get(ccssPosition).url);

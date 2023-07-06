@@ -34,10 +34,7 @@ public class AppActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_app);
-        bottomNavigationView = findViewById(R.id.bottom_nav);
-        bottomNavigationListener();
 
         Window window = getWindow();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -64,6 +61,9 @@ public class AppActivity extends AppCompatActivity {
             }).start();
         }
         //========================================================================================
+
+        bottomNavigationView = findViewById(R.id.bottom_nav);
+        bottomNavigationListener();
 
         initFragment();
     }

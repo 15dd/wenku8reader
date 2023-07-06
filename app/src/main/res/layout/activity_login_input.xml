@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -53,39 +54,48 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp">
 
         <com.google.android.material.checkbox.MaterialCheckBox
+            app:layout_constraintLeft_toLeftOf="parent"
             android:id="@+id/rememberMe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="保存登录信息" />
+            android:text="记住我"
+            tools:ignore="MissingConstraints" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-        <Button
-            android:id="@+id/button_act_login_input_sign_up"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="注册"
-            android:textSize="16sp"
-            style="@style/Widget.Material3.Button.TextButton"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/confirm_login"
+        <LinearLayout
+            app:layout_constraintRight_toRightOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:text="登录"
+            android:orientation="horizontal"
             android:layout_gravity="right"
-            android:textSize="16sp" />
-    </LinearLayout>
+            tools:ignore="MissingConstraints">
+
+            <Button
+                android:id="@+id/button_act_login_input_sign_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="20dp"
+                android:text="注册"
+                android:textSize="14sp"
+                style="@style/Widget.Material3.Button.TextButton"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/confirm_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="20dp"
+                android:layout_marginRight="5dp"
+                android:text="登录"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </LinearLayout>

@@ -30,8 +30,10 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/myscrollview_act_contents"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -42,25 +44,35 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/image_act_contents"
-                    android:layout_width="105dp"
-                    android:layout_height="150dp"
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
-                    android:scaleType="centerCrop" />
+                    app:cardElevation="0dp"
+                    app:cardCornerRadius="4dp">
+
+                    <ImageView
+                        android:id="@+id/image_act_contents"
+                        android:layout_width="105dp"
+                        android:layout_height="150dp"
+                        android:scaleType="centerCrop" />
+
+                </androidx.cardview.widget.CardView>
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
                     android:gravity="center|left"
                     android:orientation="vertical">
 
@@ -69,7 +81,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="title"
-                        android:textSize="18sp"
+                        android:textSize="17sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -77,28 +89,27 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="author"
-                        android:textSize="16sp" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/text_act_contents_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="status"
-                        android:textSize="16sp" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/text_act_contents_update"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="update"
-                        android:textSize="16sp" />
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
-
-            <TextView
+            <com.ctetin.expandabletextviewlibrary.ExpandableTextView
                 android:id="@+id/text_act_contents_introduce"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -107,7 +118,10 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="5dp"
                 android:text="introduce"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:ep_max_line="3"
+                app:ep_need_contract="true"
+                app:ep_need_animation="true"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -148,8 +162,8 @@
                 android:id="@+id/expandableListView_act_contents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fitsSystemWindows="true"
-                android:nestedScrollingEnabled="false" />
+                android:divider="@android:color/transparent"
+                android:childDivider="@android:color/transparent"/>
 
         </LinearLayout>
 
@@ -162,7 +176,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
-        android:text="从上次位置继续阅读"
+        android:text="继续"
         app:icon="@drawable/start" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

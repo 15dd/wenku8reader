@@ -17,16 +17,23 @@
             android:layout_height="wrap_content"
             app:title="搜索"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editText_act_search"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="搜索"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:hint="搜索"
-            android:imeOptions="actionSearch"
-            android:inputType="text"
-            android:singleLine="true"/>
+            android:layout_marginBottom="10dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editText_act_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:singleLine="true"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
