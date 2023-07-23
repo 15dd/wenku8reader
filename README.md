@@ -33,14 +33,14 @@
 [前往release页面下载安装](https://github.com/15dd/wenku8reader/releases)
 
 ## 软件截图
-- 浅色模式
-<br>
+浅色模式
 <div align="left">
   <img src="./README/1.jpg" width="18%"></img> <img src="./README/2.jpg" width="18%"></img> <img src="./README/3.jpg" width="18%"></img> <img src="./README/4.jpg" width="18%"></img> <img src="./README/5.jpg" width="18%"></img> 
 </div>
-- 深色模式
+
 <br>
 
+深色模式
 <div align="left">
   <img src="./README/n1.jpg" width="18%"></img> <img src="./README/n2.jpg" width="18%"></img> <img src="./README/n3.jpg" width="18%"></img> <img src="./README/n4.jpg" width="18%"></img> <img src="./README/n5.jpg" width="18%"></img> 
 </div>
