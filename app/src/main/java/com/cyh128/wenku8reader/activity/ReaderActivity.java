@@ -22,12 +22,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 
-import com.cyh128.wenku8reader.classLibrary.ContentsCcssClass;
-import com.cyh128.wenku8reader.classLibrary.ContentsVcssClass;
+import com.cyh128.wenku8reader.bean.ContentsCcssBean;
+import com.cyh128.wenku8reader.bean.ContentsVcssBean;
 import com.cyh128.wenku8reader.util.VarTemp;
 import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.fragment.ReadFragment;
-import com.cyh128.wenku8reader.util.Wenku8Spider;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -43,8 +42,8 @@ public class ReaderActivity extends AppCompatActivity {
     private BottomAppBar bottomAppBar;
     private BottomSheetDialog bottomSheetDialog;
     private MaterialToolbar toolbar;
-    public static List<ContentsVcssClass> vcss = new ArrayList<>();
-    public static List<List<ContentsCcssClass>> ccss = new ArrayList<>();
+    public static List<ContentsVcssBean> vcss = new ArrayList<>();
+    public static List<List<ContentsCcssBean>> ccss = new ArrayList<>();
     public static String bookUrl = null;
     public static int ccssPosition = 0;
     public static int vcssPosition = 0;
@@ -322,7 +321,7 @@ public class ReaderActivity extends AppCompatActivity {
         }
     });
 
-    private class MyGestureListener implements GestureDetector.OnGestureListener {
+    private class MyGestureListener implements GestureDetector.OnGestureListener{
         @Override
         public boolean onDown(@NonNull MotionEvent e) {
             return false;

@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/><!-- 读取网络状态 -->
+    <uses-permission android:name="android.permission.INTERNET"/><!-- 网络权限 -->
 
     <application
         android:name="com.cyh128.wenku8reader.App"
@@ -11,14 +11,16 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/logo"
-        android:label="@string/app_name"
+        android:label="轻小说文库"
         android:roundIcon="@drawable/logo"
+        android:screenOrientation="portrait"
         android:theme="@style/Theme.MyApplication"
+        android:networkSecurityConfig="@xml/network"
         tools:targetApi="31">
 
         <activity
             android:name="com.cyh128.wenku8reader.activity.LoginingActivity"
-            android:label="@string/app_name"
+            android:label="轻小说文库"
             android:theme="@style/Theme.MyApplication"
             android:exported="true">
             <intent-filter>
@@ -74,6 +76,10 @@
 
         <activity
             android:name="com.cyh128.wenku8reader.activity.CrashActivity"
+            android:theme="@style/Theme.MyApplication" />
+
+        <activity
+            android:name="com.cyh128.wenku8reader.activity.UserInfoActivity"
             android:theme="@style/Theme.MyApplication" />
 
     </application>

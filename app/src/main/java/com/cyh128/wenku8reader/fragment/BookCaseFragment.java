@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +11,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.adapter.BookCaseAdapter;
-import com.cyh128.wenku8reader.classLibrary.BookcaseClass;
+import com.cyh128.wenku8reader.bean.BookcaseBean;
 import com.cyh128.wenku8reader.util.VarTemp;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -29,7 +28,7 @@ import me.jingbin.library.ByRecyclerView;
 
 public class BookCaseFragment extends Fragment {
     private ByRecyclerView list;
-    public static List<BookcaseClass> bookcaseList = new ArrayList<>();
+    public static List<BookcaseBean> bookcaseList = new ArrayList<>();
     private View view;
     private BookCaseAdapter bookCaseAdapter;
     private androidx.appcompat.widget.Toolbar toolbar;
@@ -80,10 +79,9 @@ public class BookCaseFragment extends Fragment {
         //https://www.jianshu.com/p/f773ffb3d7e4
         if (isChange) {
             //瀑布流设置
-            StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-            layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+            GridLayoutManager layoutManager = new GridLayoutManager(getContext(),3);
             list.setLayoutManager(layoutManager);
-            bookCaseAdapter = new BookCaseAdapter(view.getContext(), bookcaseList, bookCaseAdapter.GRID);
+            bookCaseAdapter = new BookCaseAdapter(view.getContext(), bookcaseList, BookCaseAdapter.GRID);
             list.setAdapter(bookCaseAdapter);
             bookCaseAdapter.notifyDataSetChanged();
         } else {
@@ -105,7 +103,7 @@ public class BookCaseFragment extends Fragment {
                 /*
                 https://blog.csdn.net/momoliaoliao/article/details/49559953
                 特别注意：想更新列表中的数据必须向下面这么写，不能直接novelList = Wenku8Spider.getBookcase()
-                否则无效，导致显示不出页面。如果是一次性数据的话，就不需要了
+                否则无效，导致显示不出页面。如果是一次性数据的话，就不需要这么做了
                  */
                 bookcaseList.clear();
                 bookcaseList.addAll(Wenku8Spider.getBookcase());

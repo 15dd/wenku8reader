@@ -5,10 +5,10 @@ import static org.jsoup.Jsoup.parse;
 
 import android.util.Log;
 
-import com.cyh128.wenku8reader.classLibrary.BookListClass;
-import com.cyh128.wenku8reader.classLibrary.BookcaseClass;
-import com.cyh128.wenku8reader.classLibrary.ContentsCcssClass;
-import com.cyh128.wenku8reader.classLibrary.ContentsVcssClass;
+import com.cyh128.wenku8reader.bean.BookListBean;
+import com.cyh128.wenku8reader.bean.BookcaseBean;
+import com.cyh128.wenku8reader.bean.ContentsCcssBean;
+import com.cyh128.wenku8reader.bean.ContentsVcssBean;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Wenku8Spider {
-    public static List<BookListClass> getNovelByType(String type, int pageindex) throws IOException {
+    public static List<BookListBean> getNovelByType(String type, int pageindex) throws IOException {
         String url = "";
         switch (type) {
             case "toplist":
@@ -54,19 +54,19 @@ public class Wenku8Spider {
                 break;
         }
 
-        return parseNovelList(loginWenku8.getPageHtml(url));
+        return parseNovelList(LoginWenku8.getPageHtml(url));
     }
 
     public static List<Object> getContents(String url) throws IOException { //获取小说目录
         List<Object> contentsList = new ArrayList<>();
-        List<ContentsVcssClass> vcssClassList = new ArrayList<>();
-        List<List<ContentsCcssClass>> ccssClassList = new ArrayList<>();
+        List<ContentsVcssBean> vcssClassList = new ArrayList<>();
+        List<List<ContentsCcssBean>> ccssClassList = new ArrayList<>();
 
-        Document document = parse(loginWenku8.getPageHtml(url));
+        Document document = parse(LoginWenku8.getPageHtml(url));
         Element t1 = document.getElementById("content");
         Elements t2 = t1.getElementsByAttributeValue("style", "width:100px;height:35px;margin:0px;padding:0px;");
         String ContentsUrl = t2.eq(0).select("a").attr("href");
-        Document document2 = parse(loginWenku8.getPageHtml(ContentsUrl));
+        Document document2 = parse(LoginWenku8.getPageHtml(ContentsUrl));
         Elements c1 = document2.getElementsByTag("td");
 
         /*
@@ -78,7 +78,7 @@ public class Wenku8Spider {
         至于为什么卷名列表是 List<ContentsCcssClass> ，而章节名列表是 List<List<ContentsCcssClass>>，这是为了方便对应卷名和章节名数据
         比如我想获取第一卷的卷名和它的第一个章节名就可以这么做 -> 卷名：List<卷名类>.get(1).name, 章节名：List<List<章节类>>.get(1).get(1).name
          */
-        List<ContentsCcssClass> ccss = new ArrayList<>();
+        List<ContentsCcssBean> ccss = new ArrayList<>();
         boolean isFirst = true;
         for (Element a : c1) {
             String volumeTitle;
@@ -87,13 +87,14 @@ public class Wenku8Spider {
 
             try {//测试<td>是不是卷名(vcss)
                 volumeTitle = a.selectFirst("td[class=vcss]").text();
-                vcssClassList.add(new ContentsVcssClass(volumeTitle)); //如果是卷名就将其添加进vcssClassList
+                vcssClassList.add(new ContentsVcssBean(volumeTitle)); //如果是卷名就将其添加进vcssClassList
                 if (!isFirst) { //防止在获取第一个卷名时，就添加章节名导致的null
                     ccssClassList.add(ccss); //当爬到卷名时，将上一个卷名所属的章节名list添加进ccssClassList
                     ccss = new ArrayList<>(); //替换为一个新的list，进行下一次添加
                 }
                 isFirst = false; //设置不是第一次爬卷名了
-            } catch (NullPointerException e) { //如果该<td>的内容不是卷名(vcss)，而是章节名(ccss)，就会报空指针异常，那么该<td>就是章节名
+            } catch (
+                    NullPointerException e) { //如果该<td>的内容不是卷名(vcss)，而是章节名(ccss)，就会报空指针异常，那么该<td>就是章节名
                 Elements a1 = a.getElementsByClass("ccss");
                 for (Element a2 : a1) {
                     chapterTitle = a2.select("a").text();
@@ -101,7 +102,7 @@ public class Wenku8Spider {
                     if (chapterTitle.trim().length() == 0) {//防止爬取到空数据
                         continue;
                     }
-                    ccss.add(new ContentsCcssClass(chapterTitle, chapterHtml));//将单个章节名添加进它所属的卷名的章节名list
+                    ccss.add(new ContentsCcssBean(chapterTitle, chapterHtml));//将单个章节名添加进它所属的卷名的章节名list
                 }
             }
         }
@@ -117,7 +118,7 @@ public class Wenku8Spider {
     public static List<String> getNovelDetail(String url) throws IOException {
         List<String> container = new ArrayList<>();
 
-        Document document = parse(loginWenku8.getPageHtml(url));
+        Document document = parse(LoginWenku8.getPageHtml(url));
         Element t1 = document.getElementById("content");
         Elements t2 = t1.getElementsByTag("table").eq(0);
         String title = t2.select("span").eq(0).select("b").eq(0).text();
@@ -127,6 +128,14 @@ public class Wenku8Spider {
         String imgUrl = t1.select("img").eq(0).attr("src");
         String introduce = t1.select("table").eq(2).select("td").eq(1).select("span").eq(5).html();
         String comment = t1.select("table").eq(5).select("a").attr("href");
+        String tag = t1.select("table").eq(2).select("td").get(1).select("span").get(0).text();
+        String popular = t1.select("table").eq(2).select("td").get(1).select("span").get(1).text();
+        String anime;
+        try {
+           anime = t1.select("table").eq(2).select("td").get(0).select("span").get(0).text();
+        } catch (Exception e) {
+            anime = "本作未动画化";
+        }
 
         if (imgUrl.startsWith("http://")) { //http容易(glide)加载失败，将其改为https
             imgUrl = imgUrl.replace("http://", "https://");
@@ -139,48 +148,45 @@ public class Wenku8Spider {
         container.add(imgUrl);
         container.add(introduce);
         container.add(comment);
+        container.add(tag);
+        container.add(popular);
+        container.add(anime);
         return container;
     }
 
-    public static List<BookListClass> searchNovel(String searchtype, String searchContent, int pageindex) throws IOException { //按作者搜索或按作品名搜索
-        List<BookListClass> list = new ArrayList<>();
+    public static List<BookListBean> searchNovel(String searchtype, String searchContent, int pageindex) throws IOException { //按作者搜索或按作品名搜索
+        List<BookListBean> list = new ArrayList<>();
         String html = null;
+        String url;
         if (searchtype.equals("articlename")) {
-            String url = String.format("https://www.wenku8.net/modules/article/search.php?searchtype=articlename&searchkey=%s&page=%d", URLEncoder.encode(searchContent, "gbk"), pageindex);
-            try {
-                html = loginWenku8.getPageHtml(url);
-                Document document = Jsoup.parse(html);
-                Element a = document.getElementById("content");
-                Element b = a.select("span[style=width:180px;display:inline-block;]").get(1);
-                String bookUrl = b.selectFirst("a").attr("href");
-                bookUrl = String.format("https://www.wenku8.net/book/%s.htm",bookUrl.substring(bookUrl.indexOf("bid=")+4));
-                Log.d("debug","search bookurl"+bookUrl);
-                list.add(new BookListClass(bookUrl));
-
-                return list;
-            } catch (Exception e) {
-                list.addAll(parseNovelList(html));
-                return list;
-            }
-        } else { //此语句体暂时没什么作用
-            String url = String.format("https://www.wenku8.net/modules/article/search.php?searchtype=author&searchkey=%s&page=%d", URLEncoder.encode(searchContent, "gbk"), pageindex);
-            try {
-                list = parseNovelList(loginWenku8.getPageHtml(url));
-            } catch (Exception e) {
-                return null;
-            }
+            url = String.format("https://www.wenku8.net/modules/article/search.php?searchtype=articlename&searchkey=%s&page=%d", URLEncoder.encode(searchContent, "gbk"), pageindex);
+        } else {
+            url = String.format("https://www.wenku8.net/modules/article/search.php?searchtype=author&searchkey=%s&page=%d", URLEncoder.encode(searchContent, "gbk"), pageindex);
         }
-        return null;
+
+        try {
+            html = LoginWenku8.getPageHtml(url);
+            Document document = Jsoup.parse(html);
+            Element a = document.getElementById("content");
+            Element b = a.select("span[style=width:180px;display:inline-block;]").get(1);
+            String bookUrl = b.selectFirst("a").attr("href");
+            bookUrl = String.format("https://www.wenku8.net/book/%s.htm", bookUrl.substring(bookUrl.indexOf("bid=") + 4));
+            Log.d("debug", "search bookurl" + bookUrl);
+            list.add(new BookListBean(bookUrl));
+
+            return list;
+        } catch (Exception e) {
+            list.addAll(parseNovelList(html));
+            return list;
+        }
     }
 
-
-    public static int totalBookcase = 0;
-
-    public static List<BookcaseClass> getBookcase() throws IOException {
-        List<BookcaseClass> temp = new ArrayList<>();
+    public static List<BookcaseBean> getBookcase() throws IOException {
+        List<BookcaseBean> temp = new ArrayList<>();
         int bookIndex = 0;
+        int totalBookcase = 0;
         String url = "https://www.wenku8.net/modules/article/bookcase.php";
-        Document document = parse(loginWenku8.getPageHtml(url));
+        Document document = parse(LoginWenku8.getPageHtml(url));
         Element a = document.getElementById("content");
         Elements b = a.getElementsByTag("tr");
         for (Element c : b) {
@@ -197,15 +203,15 @@ public class Wenku8Spider {
             String lastChapter = c.getElementsByTag("td").eq(3).select("a").text();
             String aid = bookUrl.substring(bookUrl.indexOf("aid=") + 4, bookUrl.indexOf("&"));
             String imgUrl;
-            if (aid.length() <= 3)  {
-                imgUrl = String.format("https://img.wenku8.com/image/%s/%s/%ss.jpg",0,aid,aid);
+            if (aid.length() <= 3) {
+                imgUrl = String.format("https://img.wenku8.com/image/%s/%s/%ss.jpg", 0, aid, aid);
             } else {
-                imgUrl = String.format("https://img.wenku8.com/image/%s/%s/%ss.jpg",aid.charAt(0),aid,aid);
+                imgUrl = String.format("https://img.wenku8.com/image/%s/%s/%ss.jpg", aid.charAt(0), aid, aid);
             }
 
             bookIndex += 1;
 
-            BookcaseClass bcc = new BookcaseClass(bid, aid, bookUrl, title, author, lastChapter,imgUrl);
+            BookcaseBean bcc = new BookcaseBean(bid, aid, bookUrl, title, author, lastChapter, imgUrl);
             bcc.getInfo();
             temp.add(bcc);
         }
@@ -213,19 +219,15 @@ public class Wenku8Spider {
         System.out.println("当前：" + totalBookcase);
         return temp;
     }
+
     public static void removeBook(int bid) throws IOException {
         String url = String.format("https://www.wenku8.net/modules/article/bookcase.php?delid=%d", bid);
-        loginWenku8.getPageHtml(url);
+        LoginWenku8.getPageHtml(url);
     }
 
     public static boolean addBook(int aid) throws IOException {
-        if (totalBookcase >= 300) {
-            System.out.println("添加失败，最多收藏300本");
-            return false;
-        }
-
         String addUrl = String.format("https://www.wenku8.net/modules/article/addbookcase.php?bid=%d", Integer.valueOf(aid));
-        String html = loginWenku8.getPageHtml(addUrl);
+        String html = LoginWenku8.getPageHtml(addUrl);
         if (html.contains("出现错误！")) {
             return false;
         }
@@ -238,11 +240,11 @@ public class Wenku8Spider {
         List<String> html = new ArrayList<>();
         List<String> imgUrl = new ArrayList<>();
 
-        Document document = parse(loginWenku8.getPageHtml(url));
+        Document document = parse(LoginWenku8.getPageHtml(url));
         Element a = document.getElementById("content");
         String contentUrl = a.selectFirst("div[style=text-align:center]").getElementsByTag("a").eq(0).attr("href");
         contentUrl = contentUrl.replace("index.htm", index);
-        Document document1 = parse(loginWenku8.getPageHtml(contentUrl));
+        Document document1 = parse(LoginWenku8.getPageHtml(contentUrl));
         Element b = document1.getElementById("content");//获取文字，如果有的话
         html.add(b.html());
 
@@ -260,9 +262,9 @@ public class Wenku8Spider {
         return allContent;
     }
 
-    public static List<BookListClass> parseNovelList(String resHtml) {
+    public static List<BookListBean> parseNovelList(String resHtml) {
         //该函数可以用于解析小说列表
-        List<BookListClass> NLC = new ArrayList<>();
+        List<BookListBean> NLC = new ArrayList<>();
 
         Document document = parse(resHtml);
         Elements lastPageT1 = document.getElementsByClass("last");//获取总页数
@@ -274,21 +276,18 @@ public class Wenku8Spider {
         Element bookT1 = document.getElementById("content");
         Elements bookT2 = bookT1.getElementsByAttributeValue("style", "width:373px;height:136px;float:left;margin:5px 0px 5px 5px;");
         for (Element temp : bookT2) {
-            String pic = temp.getElementsByTag("img").attr("src");
+            String pic = temp.getElementsByTag("img").attr("src").replace("http://", "https://"); //http容易(glide)加载失败，将其改为https
             String bookTitle = temp.getElementsByTag("a").attr("title");
             String Author = temp.getElementsByTag("p").eq(0).text();
             String other = temp.getElementsByTag("p").eq(1).text();
             String tags = temp.getElementsByTag("span").eq(1).text();
-            String bookUrl = temp.getElementsByTag("p").eq(4).select("a").eq(0).attr("href");
+            String bookUrl = temp.getElementsByTag("div").eq(0).select("a").eq(0).attr("href");
 
-            if (pic.startsWith("http://")) { //http容易(glide)加载失败，将其改为https
-                pic = pic.replace("http://", "https://");
-            }
             if (pic.equals("/images/noimg.jpg")) {
                 pic = "https://www.wenku8.net/modules/article/images/nocover.jpg";
             }
 
-            BookListClass nlc = new BookListClass(pic, bookTitle, Author, other, tags, bookUrl, totalPage);
+            BookListBean nlc = new BookListBean(pic, bookTitle, Author, other, tags, bookUrl, totalPage);
             NLC.add(nlc);
             nlc.getInfo();
         }
@@ -298,7 +297,7 @@ public class Wenku8Spider {
     public static List<List<String>> getComment(String url, int index) throws IOException {
         List<List<String>> allComment = new ArrayList<>();
         url += "&page=" + index;
-        Document document = Jsoup.parse(loginWenku8.getPageHtml(url));
+        Document document = Jsoup.parse(LoginWenku8.getPageHtml(url));
         Element a = document.getElementById("content");
         Element b = a.select("table").get(2);
         Elements c = b.getElementsByTag("tr");
@@ -314,7 +313,7 @@ public class Wenku8Spider {
             String viewData = d.select("td").get(1).text();
             String user = d.select("td").get(2).select("a").text();
             String date = d.select("td").get(3).text();
-            System.out.println(detail + comment + viewData + user + date);
+
             Comment.add(lastPage);
             Comment.add(detail);
             Comment.add(viewData);
@@ -329,7 +328,7 @@ public class Wenku8Spider {
     public static List<List<String>> getCommentInComment(String url, int index) throws IOException {
         List<List<String>> allComment = new ArrayList<>();
         url += "&page=" + index;
-        Document document = Jsoup.parse(loginWenku8.getPageHtml(url));
+        Document document = Jsoup.parse(LoginWenku8.getPageHtml(url));
         Element a = document.getElementById("content");
         Elements b = a.getElementsByTag("table");
         Element d = b.select("table[cellpadding=3]").get(1);
@@ -348,7 +347,7 @@ public class Wenku8Spider {
             String date = c.select("td").get(1).select("div").get(1).text();
             date = date.substring(0, date.indexOf("|") - 1);
             String comment = c.select("td").get(1).select("div").get(2).text();
-            System.out.println(user + date + comment);
+
             Comment.add(user);
             Comment.add(date);
             Comment.add(comment);
@@ -356,5 +355,43 @@ public class Wenku8Spider {
             allComment.add(Comment);
         }
         return allComment;
+    }
+
+    public static List<String> getUserInfo() throws IOException {
+        List<String> userInfo = new ArrayList<>();
+        Document document = Jsoup.parse(LoginWenku8.getPageHtml("https://www.wenku8.net/userdetail.php"));
+        Element a = document.getElementById("content");
+        Element b = a.selectFirst("tbody");
+        String avatar = b.select("tr").get(0).select("td").get(2).selectFirst("img").attr("src");
+        String userID = b.select("tr").get(0).select("td").get(1).text();
+        String userName = b.select("tr").get(2).select("td").get(1).text();
+        String userLevel = b.select("tr").get(4).select("td").get(1).text();
+        String email = b.select("tr").get(7).selectFirst("a").text();
+        String signUpDate = b.select("tr").get(12).select("td").get(1).text();
+        String contribution = b.select("tr").get(13).select("td").get(1).text();
+        String experience = b.select("tr").get(14).select("td").get(1).text();
+        String score = b.select("tr").get(15).select("td").get(1).text();
+        String maxBookcase = b.select("tr").get(18).select("td").get(1).text();
+        String maxRecommend = b.select("tr").get(19).select("td").get(1).text();
+
+        userInfo.add(avatar);
+        userInfo.add(userID);
+        userInfo.add(userName);
+        userInfo.add(userLevel);
+        userInfo.add(email);
+        userInfo.add(signUpDate);
+        userInfo.add(contribution);
+        userInfo.add(experience);
+        userInfo.add(score);
+        userInfo.add(maxBookcase);
+        userInfo.add(maxRecommend);
+
+        return userInfo;
+    }
+
+    public static String bookVote(int aid) throws IOException {
+        String url = "https://www.wenku8.net/modules/article/uservote.php?id=" + aid;
+        Document document = Jsoup.parse(LoginWenku8.getPageHtml(url));
+        return document.getElementsByClass("blockcontent").get(0).select("div[style=padding:10px]").get(0).text();
     }
 }

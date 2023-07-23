@@ -92,7 +92,8 @@
                 android:minWidth="20dp"
                 android:layout_marginRight="5dp"
                 android:text="登录"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:cornerRadius="8dp"/>
 
         </LinearLayout>
 

@@ -16,23 +16,22 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.ctetin.expandabletextviewlibrary.ExpandableTextView;
 import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.adapter.ContentsListAdapter;
-import com.cyh128.wenku8reader.classLibrary.BookcaseClass;
-import com.cyh128.wenku8reader.classLibrary.ContentsCcssClass;
-import com.cyh128.wenku8reader.classLibrary.ContentsVcssClass;
+import com.cyh128.wenku8reader.bean.BookcaseBean;
+import com.cyh128.wenku8reader.bean.ContentsCcssBean;
+import com.cyh128.wenku8reader.bean.ContentsVcssBean;
 import com.cyh128.wenku8reader.fragment.BookCaseFragment;
-import com.cyh128.wenku8reader.util.UnScrollExpandableListView;
 import com.cyh128.wenku8reader.util.VarTemp;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
 import com.google.android.material.button.MaterialButton;
@@ -45,26 +44,29 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import chen.you.expandable.ExpandableRecyclerView;
+
 public class ContentsActivity extends AppCompatActivity {
 
     private List<Object> contentsList = new ArrayList<>();
     private List<String> novelDetail = new ArrayList<>();
-    public static List<ContentsVcssClass> vcss = new ArrayList<>();
-    public static List<List<ContentsCcssClass>> ccss = new ArrayList<>();
+    public static List<ContentsVcssBean> vcss = new ArrayList<>();
+    public static List<List<ContentsCcssBean>> ccss = new ArrayList<>();
     public static String bookUrl = null;
     public static int ccssPosition = 0;
     public static int vcssPosition = 0;
-    private TextView title, author, status, update;
+    private TextView title, author, status, update , popular , tag , anime , warning;
     private ExpandableTextView introduce;
     private ImageView imageView;
-    private UnScrollExpandableListView expandableListView;
+    private ExpandableRecyclerView expandableRecyclerView;
     private ContentsListAdapter contentsListAdapter;
     private NestedScrollView myNestedScrollView;
-    private View mainLayout;
+    private View mainLayout, warningCardView;
     private LinearProgressIndicator linearProgressIndicator;
     private MaterialButton addToBookcase;
     private Button commentButton;
     private Button webButton;
+    private Button recommendButton;
     private boolean inBookcase;
     private int bid;
     private int aid;
@@ -72,10 +74,14 @@ public class ContentsActivity extends AppCompatActivity {
     private Drawable removeDraw, addDraw;
     private boolean isAddOrRemoveDone = true;//防止在添加或移出书架的操作在未完成的情况下再次点击按钮
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contents);
+
+        Intent intent = getIntent();
+        bookUrl = intent.getStringExtra("bookUrl");
 
         Resources resources = getResources();
         removeDraw = resources.getDrawable(R.drawable.remove, null);
@@ -89,18 +95,23 @@ public class ContentsActivity extends AppCompatActivity {
         addToBookcase = findViewById(R.id.button_act_contents_addToBookcase);
         commentButton = findViewById(R.id.button_act_contents_comment);
         webButton = findViewById(R.id.button_act_contents_web);
+        recommendButton = findViewById(R.id.button_act_contents_recommend);
         myNestedScrollView = findViewById(R.id.myscrollview_act_contents);
+        introduce = findViewById(R.id.text_act_contents_introduce);
 
-        Intent intent = getIntent();
-        bookUrl = intent.getStringExtra("bookUrl");
+        warningCardView = findViewById(R.id.cardView_act_contents_warning);
+        warningCardView.setVisibility(View.GONE);
 
         title = findViewById(R.id.text_act_contents_title);
         author = findViewById(R.id.text_act_contents_author);
         status = findViewById(R.id.text_act_contents_status);
         update = findViewById(R.id.text_act_contents_update);
-        //intorduce = (AdjustableTextView)findViewById(R.id.text_act_contents_introduce);
         imageView = findViewById(R.id.image_act_contents);
-        expandableListView = findViewById(R.id.expandableListView_act_contents);
+        expandableRecyclerView = findViewById(R.id.recyclerView_act_contents);
+        tag = findViewById(R.id.text_act_contents_tag);
+        popular = findViewById(R.id.text_act_contents_popular);
+        anime = findViewById(R.id.text_act_contents_anime);
+        warning = findViewById(R.id.text_act_contents_warning);
 
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar_act_contents);
         setSupportActionBar(toolbar);
@@ -114,14 +125,6 @@ public class ContentsActivity extends AppCompatActivity {
             Uri uri = Uri.parse(bookUrl);    //设置跳转的网站
             Intent intent1 = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent1);
-        });
-
-        expandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
-            Intent toContent = new Intent(ContentsActivity.this, ReaderActivity.class);
-            vcssPosition = groupPosition;
-            ccssPosition = childPosition;
-            startActivity(toContent);
-            return true;
         });
 
         addToBookcase.setOnClickListener(v -> { //加入书架或移出书架
@@ -141,7 +144,7 @@ public class ContentsActivity extends AppCompatActivity {
                             runOnUiThread(() -> {
                                 new MaterialAlertDialogBuilder(ContentsActivity.this)
                                         .setTitle("添加失败")
-                                        .setMessage("可能的原因有:\n1 -> 您已经超过了300本的收藏限制，无法添加\n2 -> 该书已经在书架内，请退出页面刷新书架然后重试")
+                                        .setMessage("可能的原因有:\n1 -> 您已经超过了最大收藏限制，无法添加\n2 -> 该书已经在书架内，请退出页面刷新书架然后重试")
                                         .setIcon(R.drawable.warning)
                                         .setCancelable(false)
                                         .setPositiveButton("明白", null)
@@ -226,7 +229,7 @@ public class ContentsActivity extends AppCompatActivity {
                 } catch (
                         NumberFormatException e) {//https://www.wenku8.net/book/xxxx.htm 如果url没有bid,只有aid,那么就根据它的aid在书架中找到它对应的bid。删除必须用bid
                     BookCaseFragment.bookcaseList = Wenku8Spider.getBookcase();
-                    for (BookcaseClass bcc : BookCaseFragment.bookcaseList) {
+                    for (BookcaseBean bcc : BookCaseFragment.bookcaseList) {
                         if (Integer.parseInt(bcc.aid) == this.aid) {
                             this.bid = Integer.parseInt(bcc.bid);
                             break;
@@ -236,12 +239,12 @@ public class ContentsActivity extends AppCompatActivity {
                 //end===================================================================================================================
 
                 isInBookcase();//判断这本书是否已在书架中
-                commentButtonListener();//评论区按钮监听
+                otherButtonListener();//评论区按钮监听
 
                 Message msg = new Message();
-                msg.what = RESULT_OK;
                 setNovelInfo.sendMessage(msg);
             } catch (Exception e) {
+                e.printStackTrace();
                 runOnUiThread(() -> new MaterialAlertDialogBuilder(ContentsActivity.this)
                         .setTitle("网络超时")
                         .setMessage("连接超时，可能是服务器出错了、也可能是网络卡慢或者您正在连接VPN或代理服务器，请稍后再试")
@@ -257,43 +260,75 @@ public class ContentsActivity extends AppCompatActivity {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if (scrollY - oldScrollY > 0) {
-                    fab.shrink();
+                    if (fab.isExtended()) {
+                        fab.shrink();
+                    }
                 } else if (scrollY == myNestedScrollView.getBottom()) {
-                    fab.shrink();
+                    if (fab.isExtended()) {
+                        fab.shrink();
+                    }
                 } else if (scrollY == myNestedScrollView.getTop()) {
-                    fab.extend();
+                    if (!fab.isExtended()) {
+                        fab.extend();
+                    }
                 } else {
-                    fab.extend();
+                    if (!fab.isExtended()) {
+                        fab.extend();
+                    }
                 }
             }
         });
     }
 
     private void getBid() throws IOException {
-        //https://www.wenku8.net/book/xxxx.htm 如果url没有bid,只有aid,那么就根据它的aid在书架中找到它对应的bid。删除必须用bid
+        //https://www.wenku8.net/book/xxxx.htm 如果url没有bid,只有aid,那么就根据它的aid在书架中找到它对应的bid。因为删除必须用bid
         BookCaseFragment.bookcaseList = Wenku8Spider.getBookcase();
-        for (BookcaseClass bcc : BookCaseFragment.bookcaseList) {
+        for (BookcaseBean bcc : BookCaseFragment.bookcaseList) {
             if (Integer.parseInt(bcc.aid) == this.aid) {
                 this.bid = Integer.parseInt(bcc.bid);
                 break;
             }
         }
-        Log.d("debug", "当前bookUrl:"+bookUrl + " bid:" + bid);
+        Log.d("debug", "当前bookUrl:" + bookUrl + " bid:" + bid);
     }
 
-    private void commentButtonListener() {
+    private void otherButtonListener() {
         commentButton.setOnClickListener(v -> {
             Intent intent = new Intent(ContentsActivity.this, CommentActivity.class);
             intent.putExtra("url", novelDetail.get(6));
             startActivity(intent);
         });
+        recommendButton.setOnClickListener(v -> {
+            new Thread(()->{
+                try {
+                    String result = Wenku8Spider.bookVote(aid);
+                    runOnUiThread(() -> new MaterialAlertDialogBuilder(ContentsActivity.this)
+                            .setMessage(result)
+                            .setCancelable(false)
+                            .setPositiveButton("明白", null)
+                            .show());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    runOnUiThread(() -> new MaterialAlertDialogBuilder(ContentsActivity.this)
+                            .setTitle("网络超时")
+                            .setMessage("连接超时，可能是服务器出错了、也可能是网络卡慢或者您正在连接VPN或代理服务器，请稍后再试")
+                            .setIcon(R.drawable.timeout)
+                            .setCancelable(false)
+                            .setPositiveButton("明白", null)
+                            .show());
+                }
+            }).start();
+        });
     }
+
+
 
     private void isInBookcase() { //判断是否已在书架中，根据这本书的aid是否跟书架中的任意一本的aid相同，如果相同，那么这本书就已经在书架了
         if (BookCaseFragment.bookcaseList.size() == 0) {//如果书架为空时，这种情况一般发生在用户没有点击书架页或者没有收藏的情况下
             try {
                 BookCaseFragment.bookcaseList = Wenku8Spider.getBookcase();
             } catch (Exception e) {
+                e.printStackTrace();
                 runOnUiThread(() -> new MaterialAlertDialogBuilder(ContentsActivity.this)
                         .setTitle("网络超时")
                         .setMessage("连接超时，可能是服务器出错了、也可能是网络卡慢或者您正在连接VPN或代理服务器，请稍后再试")
@@ -310,7 +345,7 @@ public class ContentsActivity extends AppCompatActivity {
                 return;
             }
         }
-        for (BookcaseClass bcc : BookCaseFragment.bookcaseList) {
+        for (BookcaseBean bcc : BookCaseFragment.bookcaseList) {
             if (Integer.parseInt(bcc.aid) == this.aid) {
                 inBookcase = true;
                 return;
@@ -348,40 +383,52 @@ public class ContentsActivity extends AppCompatActivity {
         }
     }
 
-    private TextView introduceTemp;
     private final Handler setNovelInfo = new Handler(Looper.myLooper()) {
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what == RESULT_OK) {
-                title.setText(novelDetail.get(0));
-                author.setText(novelDetail.get(1));
-                status.setText(novelDetail.get(2));
-                update.setText(novelDetail.get(3));
-                if (!ContentsActivity.this.isFinishing()) {//https://blog.csdn.net/wjj1996825/article/details/80280109 防止在未加载完成的情况下返回导致的奔溃问题
-                    Glide.with(ContentsActivity.this).load(novelDetail.get(4)).into(imageView);
-                }
-
-                introduce = findViewById(R.id.text_act_contents_introduce);
-                introduce.setContent(String.valueOf(Html.fromHtml(novelDetail.get(5), FROM_HTML_MODE_COMPACT)));
-
-                vcss = (List<ContentsVcssClass>) contentsList.get(0);//卷list
-                ccss = (List<List<ContentsCcssClass>>) contentsList.get(1);//章节list
-
-                contentsListAdapter = new ContentsListAdapter(ContentsActivity.this, vcss, ccss);
-                expandableListView.setAdapter(contentsListAdapter);
-
-                //加载完成，显示界面======================================================================
-                if (inBookcase) { //如果这本书在书架，那么将加入书架的按钮样式变为移出书架的按钮样式
-                    addToBookcase.setIcon(removeDraw);
-                    addToBookcase.setText("移出书架");
-                    TypedValue typedValue = new TypedValue(); //获取 [?attr/] 的颜色
-                    getTheme().resolveAttribute(com.google.android.material.R.attr.colorError, typedValue, true);
-                    addToBookcase.setBackgroundColor(typedValue.data);
-                }
-                mainLayout.setVisibility(View.VISIBLE);
-                fab.show();
-                linearProgressIndicator.hide();
+            title.setText(novelDetail.get(0));
+            author.setText(novelDetail.get(1));
+            status.setText(novelDetail.get(2));
+            update.setText(novelDetail.get(3));
+            tag.setText(novelDetail.get(7));
+            if (novelDetail.get(8).contains("本书公告")) { //判断当前小说是否无版权
+                popular.setVisibility(View.GONE);
+                warningCardView.setVisibility(View.VISIBLE);
+                warning.setText(novelDetail.get(8));
+                introduce.setVisibility(View.GONE);
+            } else {
+                popular.setText(novelDetail.get(8));
             }
+
+            anime.setText("动画化情况：" + novelDetail.get(9));
+            if (!ContentsActivity.this.isFinishing()) {//https://blog.csdn.net/wjj1996825/article/details/80280109 防止在未加载完成的情况下返回导致的奔溃问题
+                Glide.with(ContentsActivity.this)
+                        .load(novelDetail.get(4))
+                        .centerCrop()
+                        .into(imageView);
+            }
+
+            introduce.setContent(String.valueOf(Html.fromHtml(novelDetail.get(5), FROM_HTML_MODE_COMPACT)));
+
+            vcss = (List<ContentsVcssBean>) contentsList.get(0);//卷list
+            ccss = (List<List<ContentsCcssBean>>) contentsList.get(1);//章节list
+
+            contentsListAdapter = new ContentsListAdapter(ContentsActivity.this, vcss, ccss);
+            expandableRecyclerView.setAdapter(contentsListAdapter);
+            expandableRecyclerView.setLayoutManager(new LinearLayoutManager(ContentsActivity.this));
+
+
+            //加载完成，显示界面======================================================================
+            if (inBookcase) { //如果这本书在书架，那么将加入书架的按钮样式变为移出书架的按钮样式
+                addToBookcase.setIcon(removeDraw);
+                addToBookcase.setText("移出书架");
+                TypedValue typedValue = new TypedValue(); //获取 [?attr/] 的颜色
+                getTheme().resolveAttribute(com.google.android.material.R.attr.colorError, typedValue, true);
+                addToBookcase.setBackgroundColor(typedValue.data);
+            }
+            mainLayout.setVisibility(View.VISIBLE);
+            fab.show();
+            linearProgressIndicator.hide();
         }
     };
 }

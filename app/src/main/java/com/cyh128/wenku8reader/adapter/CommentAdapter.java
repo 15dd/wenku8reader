@@ -1,11 +1,14 @@
 package com.cyh128.wenku8reader.adapter;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,6 +54,13 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             Intent intent = new Intent(context, CommentInCommentActivity.class);
             intent.putExtra("url", Comment.get(i).get(1));
             context.startActivity(intent);
+        });
+        itemViewHolder.itemView.setOnLongClickListener(v -> {
+            ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clipData = ClipData.newPlainText(null, Comment.get(i).get(5));
+            clipboard.setPrimaryClip(clipData);
+            Toast.makeText(context,"已复制评论",Toast.LENGTH_SHORT).show();
+            return true;
         });
     }
 

@@ -13,9 +13,9 @@ import android.widget.CheckBox;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.cyh128.wenku8reader.util.VarTemp;
-import com.cyh128.wenku8reader.util.loginWenku8;
 import com.cyh128.wenku8reader.R;
+import com.cyh128.wenku8reader.util.VarTemp;
+import com.cyh128.wenku8reader.util.LoginWenku8;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.CircularProgressIndicatorSpec;
@@ -131,7 +131,7 @@ public class LoginInputActivity extends AppCompatActivity {
         @Override
         public void run() {
             try {
-                boolean flag = loginWenku8.login(str_username, str_password);
+                boolean flag = LoginWenku8.login(str_username, str_password);
                 if (flag) {
                     Intent toMainAppUI = new Intent(LoginInputActivity.this, AppActivity.class);
                     startActivity(toMainAppUI);

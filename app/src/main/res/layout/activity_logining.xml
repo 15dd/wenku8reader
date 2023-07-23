@@ -17,11 +17,9 @@
 
         <ProgressBar
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="40dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="80dp"
             android:layout_marginRight="80dp"
-
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:indeterminate="true" />
 

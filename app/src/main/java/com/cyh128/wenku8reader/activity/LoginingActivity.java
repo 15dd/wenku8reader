@@ -1,7 +1,6 @@
 package com.cyh128.wenku8reader.activity;
 
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.util.VarTemp;
-import com.cyh128.wenku8reader.util.loginWenku8;
+import com.cyh128.wenku8reader.util.LoginWenku8;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
@@ -25,6 +24,7 @@ public class LoginingActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logining);
+
         if (initDataBase()) {
             Login login = new Login();
             login.start();
@@ -61,7 +61,7 @@ public class LoginingActivity extends AppCompatActivity {
                     LoginingActivity.this.finish();
                     return;
                 }
-                boolean flag = loginWenku8.login(username, password);
+                boolean flag = LoginWenku8.login(username, password);
                 if (flag) {
                     Intent toMainAppUI = new Intent(LoginingActivity.this, AppActivity.class);
                     startActivity(toMainAppUI);
@@ -72,13 +72,17 @@ public class LoginingActivity extends AppCompatActivity {
                     LoginingActivity.this.finish();
                 }
             } catch (Exception e) { //当登录错误时
+                e.printStackTrace();
                 runOnUiThread(() -> {
                     new MaterialAlertDialogBuilder(LoginingActivity.this)
                             .setCancelable(false)//禁止点击其他区域
                             .setTitle("网络错误")
                             .setMessage("可能是以下原因造成的:\n\n1 -> 请检查是否正在连接VPN或代理服务器\n2 -> 未连接上网络\n3 -> 服务器(wenku8.net)出错，(此网站有时会登不上去)\n\n请稍后再试")
-                            .setPositiveButton("退出软件", (dialogInterface, i) -> {
-                                android.os.Process.killProcess(android.os.Process.myPid());//杀死整个进程
+                            .setPositiveButton("重启软件", (dialogInterface, i) -> {
+                                final Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
                             })
                             .setIcon(R.drawable.warning)
                             .show();

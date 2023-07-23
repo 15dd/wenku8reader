@@ -1,14 +1,20 @@
 package com.cyh128.wenku8reader.adapter;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.cyh128.wenku8reader.R;
 
 import java.util.List;
@@ -37,6 +43,14 @@ public class CommentInCommentAdapter extends RecyclerView.Adapter<RecyclerView.V
         itemViewHolder.date.setText(Comment.get(position).get(1));
         itemViewHolder.comment.setText(Comment.get(position).get(2));
         itemViewHolder.floor.setText(position + 1 + "楼");
+
+        itemViewHolder.itemView.setOnLongClickListener(v -> {
+            ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clipData = ClipData.newPlainText(null, Comment.get(position).get(2));
+            clipboard.setPrimaryClip(clipData);
+            Toast.makeText(context,"已复制评论",Toast.LENGTH_SHORT).show();
+            return true;
+        });
     }
 
     @Override
@@ -46,6 +60,7 @@ public class CommentInCommentAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView user, date, comment, floor;
+        ImageView avatar;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);

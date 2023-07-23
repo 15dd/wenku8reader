@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.adapter.BookListAdapter;
-import com.cyh128.wenku8reader.classLibrary.BookListClass;
+import com.cyh128.wenku8reader.bean.BookListBean;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
-import com.cyh128.wenku8reader.util.loginWenku8;
+import com.cyh128.wenku8reader.util.LoginWenku8;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class TagSearchFragment extends Fragment {
     private ByRecyclerView list;
     private int pageindex = 0;//上拉加载数据用，每上拉一次，索引值加1
     private int maxindex = 1;
-    private List<BookListClass> novelList = new ArrayList<>();
+    private List<BookListBean> novelList = new ArrayList<>();
     private View view, emptyView;
     private String sort, tag;
     private BookListAdapter bookListAdapter;
@@ -42,9 +42,9 @@ public class TagSearchFragment extends Fragment {
         bookListAdapter = new BookListAdapter(view.getContext(), novelList);
         list.setAdapter(bookListAdapter);
         new Thread(() -> {
-            List<BookListClass> bookListClasses = getData();
-            setPageData(true, bookListClasses);
-            maxindex = bookListClasses.get(0).totalPage;//设置总页数
+            List<BookListBean> bookListBeans = getData();
+            setPageData(true, bookListBeans);
+            maxindex = bookListBeans.get(0).totalPage;//设置总页数
         }).start();
 
         list.setOnRefreshListener(new ByRecyclerView.OnRefreshListener() {
@@ -68,14 +68,14 @@ public class TagSearchFragment extends Fragment {
                     return;
                 }
                 new Thread(() -> {
-                    List<BookListClass> bookListClasses = getData();
-                    if (bookListClasses == null) {
+                    List<BookListBean> bookListBeans = getData();
+                    if (bookListBeans == null) {
                         getActivity().runOnUiThread(() -> {
                             list.loadMoreFail();
                         });
                         return;
                     }
-                    setPageData(true, bookListClasses);
+                    setPageData(true, bookListBeans);
                     getActivity().runOnUiThread(() -> {
                         list.loadMoreComplete();
                     });
@@ -86,7 +86,7 @@ public class TagSearchFragment extends Fragment {
         return view;
     }
 
-    private void setPageData(boolean isFirstPage, List<BookListClass> data) {
+    private void setPageData(boolean isFirstPage, List<BookListBean> data) {
         if (list == null) {
             return;
         }
@@ -121,10 +121,10 @@ public class TagSearchFragment extends Fragment {
         }
     }
 
-    private List<BookListClass> getData() {
+    private List<BookListBean> getData() {
         try {
             String url = String.format("https://www.wenku8.net/modules/article/tags.php?t=%s&page=%d&v=%s", URLEncoder.encode(tag, "gbk"), ++pageindex, sort);
-            return Wenku8Spider.parseNovelList(loginWenku8.getPageHtml(url));
+            return Wenku8Spider.parseNovelList(LoginWenku8.getPageHtml(url));
         } catch (Exception e) {
             pageindex--;
             e.printStackTrace();

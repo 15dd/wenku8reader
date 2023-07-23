@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:fitsSystemWindows="true">
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/logo"
@@ -18,6 +18,25 @@
         android:layout_height="wrap_content"
         style="@style/Widget.MaterialComponents.MaterialDivider" />
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_frag_myinfo_userinfo"
+        android:foreground="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        style="@style/Widget.MaterialComponents.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <TextView
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="用户信息"
+            android:textSize="20sp"
+            android:gravity="center" />
+
+    </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView_frag_myinfo_setting"
@@ -83,19 +102,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Widget.MaterialComponents.MaterialDivider" />
-
-
-    <!--    <View-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:layout_weight="1"/>-->
-
-    <Button
-        android:id="@+id/button_logout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:text="退出登录"
-        app:cornerRadius="6dp" />
 
 </LinearLayout>

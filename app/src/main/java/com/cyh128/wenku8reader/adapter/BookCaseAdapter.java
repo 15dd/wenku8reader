@@ -16,7 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.cyh128.wenku8reader.activity.ContentsActivity;
-import com.cyh128.wenku8reader.classLibrary.BookcaseClass;
+import com.cyh128.wenku8reader.bean.BookcaseBean;
 import com.cyh128.wenku8reader.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -27,7 +27,7 @@ public class BookCaseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     //https://blog.csdn.net/huweiliyi/article/details/105779329
 
     private Context context;
-    private List<BookcaseClass> bookcase;
+    private List<BookcaseBean> bookcase;
     private int mode;
     public final static int LINEAR = 1;
     public final static int GRID = 2;
@@ -36,7 +36,7 @@ public class BookCaseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.ALL);
 
-    public BookCaseAdapter(Context context, List<BookcaseClass> bookcase, int mode) {
+    public BookCaseAdapter(Context context, List<BookcaseBean> bookcase, int mode) {
         this.context = context;
         this.bookcase = bookcase;
         this.mode = mode;
@@ -47,10 +47,10 @@ public class BookCaseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //https://blog.csdn.net/kaolagirl/article/details/115769719 layout组件居中问题
         if (mode == LINEAR) {
-            View view = LayoutInflater.from(context).inflate(R.layout.bookcase_list, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_bookcase_list, parent, false);
             return new ItemViewHolder(view);
         } else if (mode == GRID) {
-            View view = LayoutInflater.from(context).inflate(R.layout.bookcase_list_grid, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_bookcase_list_grid, parent, false);
             return new GridItemViewHolder(view);
         }
         Log.e("debug","null");
@@ -61,12 +61,17 @@ public class BookCaseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            BookcaseClass novel = bookcase.get(position);
+            BookcaseBean novel = bookcase.get(position);
             itemViewHolder.number.setText(String.valueOf(position + 1));
             itemViewHolder.title.setText(novel.title);
             itemViewHolder.author.setText("作者:" + novel.author);
             itemViewHolder.lastchapter.setText("最新章节:" + novel.lastchapter);
-            Glide.with(context).load(novel.imgUrl).apply(options).placeholder(R.drawable.image_loading).into(itemViewHolder.cover);
+            Glide.with(context)
+                    .load(novel.imgUrl)
+                    .apply(options)
+                    .placeholder(R.drawable.image_loading)
+                    .centerCrop()
+                    .into(itemViewHolder.cover);
 
             itemViewHolder.itemView.setOnClickListener(v -> {
                 Log.d("debug", "url:" + novel.bookUrl);
@@ -86,9 +91,14 @@ public class BookCaseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             });
         } else if (holder instanceof GridItemViewHolder) {
             GridItemViewHolder gridItemViewHolder = (GridItemViewHolder) holder;
-            BookcaseClass novel = bookcase.get(position);
+            BookcaseBean novel = bookcase.get(position);
             gridItemViewHolder.title.setText(novel.title);
-            Glide.with(context).load(novel.imgUrl).apply(options).placeholder(R.drawable.image_loading).into(gridItemViewHolder.cover);
+            Glide.with(context)
+                    .load(novel.imgUrl)
+                    .apply(options)
+                    .placeholder(R.drawable.image_loading)
+                    .centerCrop()
+                    .into(gridItemViewHolder.cover);
 
             gridItemViewHolder.itemView.setOnClickListener(v -> {
                 Log.d("debug", "url:" + novel.bookUrl);

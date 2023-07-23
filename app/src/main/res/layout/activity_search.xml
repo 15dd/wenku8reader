@@ -33,7 +33,31 @@
                 android:inputType="text"
                 android:singleLine="true"/>
 
+            <RadioGroup
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/radiobutton_act_search_noveltitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="按小说标题搜索"/>
+                <RadioButton
+                    android:id="@+id/radiobutton_act_search_authorname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="按作者名称搜索"/>
+
+            </RadioGroup>
+
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.MaterialDivider" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

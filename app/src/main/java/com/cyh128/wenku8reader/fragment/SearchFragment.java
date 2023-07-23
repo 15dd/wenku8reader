@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,7 +16,7 @@ import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.activity.ContentsActivity;
 import com.cyh128.wenku8reader.activity.SearchActivity;
 import com.cyh128.wenku8reader.adapter.BookListAdapter;
-import com.cyh128.wenku8reader.classLibrary.BookListClass;
+import com.cyh128.wenku8reader.bean.BookListBean;
 import com.cyh128.wenku8reader.util.VarTemp;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
 import com.google.android.material.snackbar.Snackbar;
@@ -29,10 +30,11 @@ public class SearchFragment extends Fragment {
     private ByRecyclerView list;
     public int pageindex = 0;//上拉加载数据用，每上拉一次，索引值加1
     public int maxindex = 1;
-    private List<BookListClass> novelList = new ArrayList<>();
+    private List<BookListBean> novelList = new ArrayList<>();
     private View view, emptyView;
     private String searchText;
     private BookListAdapter bookListAdapter;
+    private RadioButton novelTitle,authorName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,6 +43,8 @@ public class SearchFragment extends Fragment {
         emptyView = inflater.inflate(R.layout.empty_view, container, false);
         searchText = getArguments().getString("searchText");
         list = view.findViewById(R.id.booklist);
+        novelTitle = getActivity().findViewById(R.id.radiobutton_act_search_noveltitle);
+        authorName = getActivity().findViewById(R.id.radiobutton_act_search_authorname);
 
         list.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
@@ -53,72 +57,68 @@ public class SearchFragment extends Fragment {
                 return;
             }
 
-            List<BookListClass> bookListClasses = getData();
-            if (bookListClasses.size() == 1) {
-                String url = bookListClasses.get(0).bookUrl;
+            List<BookListBean> bookListBeans = getData();
+            if (bookListBeans.size() == 1) {
+                String url = bookListBeans.get(0).bookUrl;
                 Intent intent = new Intent(getActivity(), ContentsActivity.class);
                 intent.putExtra("bookUrl", url);
                 startActivity(intent);
                 return;
             }
-            setPageData(true, bookListClasses);
-            if (bookListClasses.size() != 0) {
-                maxindex = bookListClasses.get(0).totalPage;//设置总页数
+            if (bookListBeans.size() != 0) {
+                maxindex = bookListBeans.get(0).totalPage;//设置总页数
             }
+            setPageData(true, bookListBeans);
         }).start();
 
-        list.setOnRefreshListener(new ByRecyclerView.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (!VarTemp.isFiveSecondDone) {
-                    Snackbar.make(view, "因网站限制，请等待5秒之后再重新尝试", Snackbar.LENGTH_SHORT).show();
-                    list.setRefreshing(false);
-                    return;
-                }
-                pageindex = 0;
-                novelList.clear();
-                bookListAdapter.notifyDataSetChanged();
-                new Thread(() -> {
-                    setPageData(true, getData());
-                }).start();
-
+        list.setOnRefreshListener(() -> {
+            if (!VarTemp.isFiveSecondDone) {
+                Snackbar.make(view, "因网站限制，请等待5秒之后再重新尝试", Snackbar.LENGTH_SHORT)
+                        .setAction("好的", v -> {return;})
+                        .show();
                 list.setRefreshing(false);
+                return;
             }
+            pageindex = 0;
+            novelList.clear();
+            bookListAdapter.notifyDataSetChanged();
+            new Thread(() -> {
+                setPageData(true, getData());
+            }).start();
+
+            list.setRefreshing(false);
         });
-        list.setOnLoadMoreListener(new ByRecyclerView.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                if (!VarTemp.isFiveSecondDone) {
-                    Snackbar.make(view, "因网站限制，请等待5秒之后再重新尝试", Snackbar.LENGTH_SHORT)
-                            .setAction("好的", v -> {return;})
-                            .show();
-                    list.loadMoreFail();
-                    return;
-                }
-                if (pageindex == maxindex) {
-                    list.loadMoreEnd();
-                    return;
-                }
-                new Thread(() -> {
-                    List<BookListClass> bookListClasses = getData();
-                    if (bookListClasses == null) {
-                        getActivity().runOnUiThread(() -> {
-                            list.loadMoreFail();
-                        });
-                        return;
-                    }
-                    setPageData(true, bookListClasses);
-                    getActivity().runOnUiThread(() -> {
-                        list.loadMoreComplete();
-                    });
-                }).start();
+        list.setOnLoadMoreListener(() -> {
+            if (pageindex == maxindex) {
+                list.loadMoreEnd();
+                return;
             }
+            if (!VarTemp.isFiveSecondDone) {
+                Snackbar.make(view, "因网站限制，请等待5秒之后再重新尝试", Snackbar.LENGTH_SHORT)
+                        .setAction("好的", v -> {return;})
+                        .show();
+                list.loadMoreFail();
+                return;
+            }
+            new Thread(() -> {
+                List<BookListBean> bookListBeans = getData();
+                if (bookListBeans == null) {
+                    getActivity().runOnUiThread(() -> {
+                        list.loadMoreFail();
+                    });
+                    return;
+                }
+                setPageData(true, bookListBeans);
+                getActivity().runOnUiThread(() -> {
+                    list.loadMoreComplete();
+                });
+            }).start();
         });
 
         return view;
     }
 
-    private void setPageData(boolean isFirstPage, List<BookListClass> data) {
+    private void setPageData(boolean isFirstPage, List<BookListBean> data) {
         if (list == null) {
             return;
         }
@@ -153,14 +153,19 @@ public class SearchFragment extends Fragment {
         }
     }
 
-    private List<BookListClass> getData() {
+    private List<BookListBean> getData() {
         try {
             new Thread(() -> {
                 Looper.prepare();
                 waitFiveSecond();
                 Looper.loop();
             }).start();
-            return Wenku8Spider.searchNovel("articlename", searchText, ++pageindex);
+            if (novelTitle.isChecked()) {
+                System.out.println("checked");
+            }
+            String mode = novelTitle.isChecked() ? "articlename" : "author" ;
+
+            return Wenku8Spider.searchNovel(mode, searchText, ++pageindex);
         } catch (Exception e) {
             pageindex--;
             e.printStackTrace();

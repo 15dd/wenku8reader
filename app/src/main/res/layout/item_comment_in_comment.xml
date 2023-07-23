@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:padding="10dp"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/text_item_comment_in_comment_user"
-            android:text="发表人"
-            android:textStyle="bold"
-            android:textSize="16sp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="发表人"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
 
         <TextView
             android:id="@+id/text_item_comment_in_comment_comment"
-            android:text="主题"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lineSpacingMultiplier="1.2"/>
+            android:lineSpacingMultiplier="1.2"
+            android:text="主题" />
 
     </LinearLayout>
 
@@ -47,10 +47,10 @@
 
         <TextView
             android:id="@+id/text_item_comment_in_comment_floor"
-            android:background="@drawable/textview_radius_background"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
+            android:background="@drawable/textview_radius_background"
             android:text="1#"
             android:textStyle="bold" />
 
@@ -58,8 +58,8 @@
 
     <com.google.android.material.divider.MaterialDivider
         style="@style/Widget.Material3.MaterialDivider"
-        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp" />
 
 </LinearLayout>

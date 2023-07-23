@@ -22,7 +22,6 @@ public class ReaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private Context context;
     private List<String> imgUrl;
     private RequestOptions options = new RequestOptions()
-            .placeholder(R.drawable.image_loading)
             .skipMemoryCache(true)// 内存不缓存
             .diskCacheStrategy(DiskCacheStrategy.NONE);// 磁盘缓存所有图
 
@@ -42,7 +41,12 @@ public class ReaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         int imagePosition = position;
         ImageViewHolder imageViewHolder = (ImageViewHolder) holder;
-        Glide.with(context).load(imgUrl.get(imagePosition)).override(1000, 1000).apply(options).into(imageViewHolder.imageView);
+        Glide.with(context)
+                .load(imgUrl.get(imagePosition))
+                .placeholder(R.drawable.image_loading)
+                .override(1000)
+                .apply(options)
+                .into(imageViewHolder.imageView);
         imageViewHolder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, PhotoViewActivity.class);
             intent.putExtra("url", imgUrl.get(imagePosition));

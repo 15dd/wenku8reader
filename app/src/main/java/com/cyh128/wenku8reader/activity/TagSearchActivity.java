@@ -1,5 +1,8 @@
 package com.cyh128.wenku8reader.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 
@@ -13,6 +16,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.cyh128.wenku8reader.fragment.TagSearchFragment;
 import com.cyh128.wenku8reader.R;
+import com.cyh128.wenku8reader.util.CheckNetwork;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -21,11 +25,16 @@ public class TagSearchActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private String tag;
     private androidx.appcompat.widget.Toolbar toolbar;
+    private BroadcastReceiver receivers = new CheckNetwork();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag_search);
+
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        this.registerReceiver(receivers,filter);
+
         viewPager2 = findViewById(R.id.fragment_act_tag_search);
         tabLayout = findViewById(R.id.tabLayout_act_tag_search);
         toolbar = findViewById(R.id.toolbar_act_tag_search);
@@ -40,6 +49,12 @@ public class TagSearchActivity extends AppCompatActivity {
         });
 
         viewPageInit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receivers);
     }
 
     private void viewPageInit() {

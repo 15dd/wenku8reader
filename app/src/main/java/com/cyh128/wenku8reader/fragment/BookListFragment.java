@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.adapter.BookListAdapter;
-import com.cyh128.wenku8reader.classLibrary.BookListClass;
+import com.cyh128.wenku8reader.bean.BookListBean;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class BookListFragment extends Fragment {
     private ByRecyclerView list;
     private int pageindex = 0;//上拉加载数据用，每上拉一次，索引值加1
     private int maxindex = 1;
-    private List<BookListClass> novelList = new ArrayList<>();
+    private List<BookListBean> novelList = new ArrayList<>();
     private View view,emptyView;
     private String bookType;
     private BookListAdapter bookListAdapter;
@@ -40,9 +40,9 @@ public class BookListFragment extends Fragment {
         bookListAdapter = new BookListAdapter(view.getContext(), novelList);
         list.setAdapter(bookListAdapter);
         new Thread(() -> {
-            List<BookListClass> bookListClasses = getData();
-            setPageData(true, bookListClasses);
-            maxindex = bookListClasses.get(0).totalPage;//设置总页数
+            List<BookListBean> bookListBeans = getData();
+            setPageData(true, bookListBeans);
+            maxindex = bookListBeans.get(0).totalPage;//设置总页数
         }).start();
 
         list.setOnRefreshListener(new ByRecyclerView.OnRefreshListener() {
@@ -68,14 +68,14 @@ public class BookListFragment extends Fragment {
                     return;
                 }
                 new Thread(() -> {
-                    List<BookListClass> bookListClasses = getData();
-                    if (bookListClasses == null) {
+                    List<BookListBean> bookListBeans = getData();
+                    if (bookListBeans == null) {
                         getActivity().runOnUiThread(() -> {
                             list.loadMoreFail();
                         });
                         return;
                     }
-                    setPageData(true, bookListClasses);
+                    setPageData(true, bookListBeans);
                     getActivity().runOnUiThread(() -> {
                         list.loadMoreComplete();
                     });
@@ -86,7 +86,7 @@ public class BookListFragment extends Fragment {
         return view;
     }
 
-    private void setPageData(boolean isFirstPage, List<BookListClass> data) {
+    private void setPageData(boolean isFirstPage, List<BookListBean> data) {
         if (getActivity() == null) { //防止切换浅色或深色模式时崩溃
             return;
         }
@@ -124,7 +124,7 @@ public class BookListFragment extends Fragment {
         }
     }
 
-    private List<BookListClass> getData() {
+    private List<BookListBean> getData() {
         try {
             return Wenku8Spider.getNovelByType(bookType, ++pageindex);
         } catch (Exception e) {

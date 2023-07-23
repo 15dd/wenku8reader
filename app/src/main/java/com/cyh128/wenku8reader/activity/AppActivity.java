@@ -1,8 +1,8 @@
 package com.cyh128.wenku8reader.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,8 +16,8 @@ import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.fragment.BookCaseFragment;
 import com.cyh128.wenku8reader.fragment.HomeFragment;
 import com.cyh128.wenku8reader.fragment.MyinfoFragment;
+import com.cyh128.wenku8reader.util.CheckNetwork;
 import com.cyh128.wenku8reader.util.CheckUpdate;
-import com.cyh128.wenku8reader.util.NetWorkReceiver;
 import com.cyh128.wenku8reader.util.VarTemp;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -29,27 +29,21 @@ public class AppActivity extends AppCompatActivity {
     private BookCaseFragment bookcaseFragment;
     private HomeFragment homeFragment;
     private MyinfoFragment myinfoFragment;
-    private NetWorkReceiver netWorkReceiver;
+    private BroadcastReceiver receivers = new CheckNetwork();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app);
 
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        this.registerReceiver(receivers,filter);
+
         Window window = getWindow();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.setDecorFitsSystemWindows(false);//底部小白条沉浸（全面屏手势）https://juejin.cn/post/6904545697552007181
         }
-
-        //注册网络状态监听广播,判断网络是否连接==========================================================
-        netWorkReceiver = new NetWorkReceiver(AppActivity.this);
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-        filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(netWorkReceiver, filter);
-        //=========================================================================================
-
+        
         //检查更新==================================================================================
         if (VarTemp.checkUpdate) {
             new Thread(() -> {
@@ -71,9 +65,7 @@ public class AppActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (netWorkReceiver != null) {
-            unregisterReceiver(netWorkReceiver);
-        }
+        unregisterReceiver(receivers);
     }
 
     public void initFragment() {
