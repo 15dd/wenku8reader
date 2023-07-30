@@ -34,6 +34,7 @@ import com.cyh128.wenku8reader.bean.ContentsVcssBean;
 import com.cyh128.wenku8reader.fragment.BookCaseFragment;
 import com.cyh128.wenku8reader.util.VarTemp;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -113,7 +114,7 @@ public class ContentsActivity extends AppCompatActivity {
         anime = findViewById(R.id.text_act_contents_anime);
         warning = findViewById(R.id.text_act_contents_warning);
 
-        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar_act_contents);
+        MaterialToolbar toolbar = findViewById(R.id.toolbar_act_contents);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {

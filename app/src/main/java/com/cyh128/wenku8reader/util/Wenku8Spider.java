@@ -251,9 +251,9 @@ public class Wenku8Spider {
         Elements c = b.getElementsByTag("img");
         for (Element d : c) {//获取图片，如果有的话
             String src = d.attr("src");
-            if (src.startsWith("http://")) { //http容易(glide)加载失败，将其改为https
-                src = src.replace("http://", "https://");
-            }
+//            if (src.startsWith("http://")) { //http容易(glide)加载失败，将其改为https
+//                src = src.replace("http://", "https://");
+//            }
             imgUrl.add(src);
         }
         allContent.add(html);

@@ -44,7 +44,7 @@ public class TagSearchFragment extends Fragment {
         new Thread(() -> {
             List<BookListBean> bookListBeans = getData();
             setPageData(true, bookListBeans);
-            maxindex = bookListBeans.get(0).totalPage;//设置总页数
+            if (bookListBeans != null && bookListBeans.size() != 0) maxindex = bookListBeans.get(0).totalPage;//设置总页数
         }).start();
 
         list.setOnRefreshListener(new ByRecyclerView.OnRefreshListener() {

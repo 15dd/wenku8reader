@@ -8,7 +8,7 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/previous"
-        android:icon="@drawable/navigate_before"
+        android:icon="@drawable/navigate_previous"
         android:title="上一章"
         app:showAsAction="always" />
     <item

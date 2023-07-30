@@ -82,6 +82,10 @@
             android:name="com.cyh128.wenku8reader.activity.UserInfoActivity"
             android:theme="@style/Theme.MyApplication" />
 
+        <activity
+            android:name="com.cyh128.wenku8reader.activity.ReadActivity"
+            android:theme="@style/Theme.MyApplication" />
+
     </application>
 
 </manifest>
