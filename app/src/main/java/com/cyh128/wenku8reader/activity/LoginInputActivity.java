@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cyh128.wenku8reader.R;
-import com.cyh128.wenku8reader.util.VarTemp;
+import com.cyh128.wenku8reader.util.GlobalConfig;
 import com.cyh128.wenku8reader.util.LoginWenku8;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -138,11 +138,11 @@ public class LoginInputActivity extends AppCompatActivity {
                     LoginInputActivity.this.finish();
                     if (isRemember) {
                         //当设置了保存用户名和密码时，将其放入数据库中
-                        VarTemp.db.execSQL("CREATE TABLE IF NOT EXISTS user_info(_id INTEGER PRIMARY KEY autoincrement,username TEXT,password TEXT)");
+                        GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS user_info(_id INTEGER PRIMARY KEY autoincrement,username TEXT,password TEXT)");
                         ContentValues values = new ContentValues();
                         values.put("username", str_username);
                         values.put("password", str_password);
-                        VarTemp.db.insert("user_info", null, values);
+                        GlobalConfig.db.insert("user_info", null, values);
                     }
                 } else {
                     runOnUiThread(() -> {

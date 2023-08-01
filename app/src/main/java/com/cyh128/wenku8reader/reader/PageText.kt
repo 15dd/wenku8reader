@@ -20,7 +20,7 @@ class PageText : View {
     }
 //    var mBgColor = Color.WHITE
     var mTextArray: java.util.ArrayList<String>? = null
-//    var mTextColor: Int = Color.BLACK
+    var mTextColor: Int = Color.BLACK
     var mTxtFontType: Typeface = Typeface.DEFAULT
     var mBottomTextSize = 35f
     var mTextSize = 55f
@@ -48,7 +48,7 @@ class PageText : View {
     )
 
     override fun onDraw(canvas: Canvas) {
-//        mPaint.color = mTextColor                             //字体颜色
+        mPaint.color = mTextColor                             //字体颜色
         mPaint.typeface = mTxtFontType
         mPaint.textSize = mBottomTextSize
 //        canvas.drawColor(mBgColor)

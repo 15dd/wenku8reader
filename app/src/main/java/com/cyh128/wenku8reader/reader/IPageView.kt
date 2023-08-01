@@ -5,7 +5,7 @@ import android.graphics.Typeface
 interface IPageView {
     var pageNum: Int                    //页数
 //    var backgroundcolor: Int            //背景色
-//    var textColor : Int                 //字体颜色
+    var textColor : Int                 //字体颜色
     var txtFontType: Typeface           //正文字体类型//背景颜色
     var rowSpace: Float                 //行距
     var textSize: Float                 //正文部分默认画笔的大小

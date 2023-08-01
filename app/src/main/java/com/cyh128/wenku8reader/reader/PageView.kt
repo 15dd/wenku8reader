@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
@@ -16,7 +17,6 @@ import com.bumptech.glide.Glide
 import com.cyh128.wenku8reader.R
 import com.cyh128.wenku8reader.activity.PhotoViewActivity
 import com.cyh128.wenku8reader.activity.ReadActivity
-import com.google.android.material.slider.Slider
 import kotlin.reflect.KProperty
 
 
@@ -25,11 +25,11 @@ class PageView : ViewFlipper, IPageView {
     override var pageNum: Int by InvalidateAfterSet(1)                    //页数
 
     //    override var backgroundcolor: Int by InvalidateAfterSet(Color.WHITE)
-//    override var textColor: Int by InvalidateAfterSet(Color.BLACK)                    //字体颜色
+    override var textColor: Int by InvalidateAfterSet(Color.BLACK)                    //字体颜色
     override var txtFontType: Typeface by InvalidateAfterSet(Typeface.DEFAULT)  //正文字体类型//背景颜色
-    override var rowSpace: Float by InvalidateAfterSet(1.5f)               //行距
-    override var textSize: Float by InvalidateAfterSet(50f)               //正文部分默认画笔的大小
-    override var bottomTextSize: Float = textSize                                     //底部部分默认画笔的大小
+    override var rowSpace: Float by InvalidateAfterSet(1f)               //行距
+    override var textSize: Float by InvalidateAfterSet(21f)             //正文部分默认画笔的大小
+    override var bottomTextSize: Float by InvalidateAfterSet(60f)        //底部部分默认画笔的大小
     override var text: String by InvalidateAfterSet("")                 //一个未分割章节,格式：章节名|正文
     var title: String = ""                                             //章节名称
     override var isDrawTime = false                    //左下角是否显示时间
@@ -43,6 +43,7 @@ class PageView : ViewFlipper, IPageView {
 
     var mBitmap: Bitmap? = null
     var mBarIsShow: Boolean = false
+    var direction: Orientation? = null
 
     val FLIP_DISTANCE = 80f //最小滑动距离（滑动距离超过这个值才能翻页）
     var mDetector: GestureDetector? =
@@ -78,27 +79,29 @@ class PageView : ViewFlipper, IPageView {
                 velocityX: Float,
                 velocityY: Float
             ): Boolean {
-                if (e1.x - e2.x > FLIP_DISTANCE) {
-                    Log.i("debug", "手指向左滑...")
-                    pageToNext(Orientation.horizontal)
-                    return true
+                if (direction == Orientation.horizontal) {
+                    if (e1.x - e2.x > FLIP_DISTANCE) {
+                        Log.i("debug", "手指向左滑...")
+                        pageToNext(Orientation.horizontal)
+                        return true
+                    }
+                    if (e2.x - e1.x > FLIP_DISTANCE) {
+                        Log.i("debug", "手指向右滑...")
+                        pageToPrevious(Orientation.horizontal)
+                        return true
+                    }
+                } else if (direction == Orientation.vertical) {
+                    if (e1.y - e2.y > FLIP_DISTANCE) {
+                        Log.i("debug", "手指向上滑...")
+                        pageToNext(Orientation.vertical)
+                        return true
+                    }
+                    if (e2.y - e1.y > FLIP_DISTANCE) {
+                        Log.i("debug", "手指向下滑...")
+                        pageToPrevious(Orientation.vertical)
+                        return true
+                    }
                 }
-                if (e2.x - e1.x > FLIP_DISTANCE) {
-                    Log.i("debug", "手指向右滑...")
-                    pageToPrevious(Orientation.horizontal)
-                    return true
-                }
-                if (e1.y - e2.y > FLIP_DISTANCE) {
-                    Log.i("debug", "手指向上滑...")
-                    pageToNext(Orientation.vertical)
-                    return true
-                }
-                if (e2.y - e1.y > FLIP_DISTANCE) {
-                    Log.i("debug", "手指向下滑...")
-                    pageToPrevious(Orientation.vertical)
-                    return true
-                }
-                Log.d("debug", e2.x.toString() + " " + e2.y)
                 return false
             }
 
@@ -115,10 +118,6 @@ class PageView : ViewFlipper, IPageView {
         init(context)
     }
 
-    fun setImgList(list: ArrayList<String>) {
-        imgUrlList = list
-    }
-
     fun init(context: Context) {
         showNext()
     }
@@ -130,27 +129,31 @@ class PageView : ViewFlipper, IPageView {
     override fun onCenterClick() {
         if (mBarIsShow) { //https://blog.csdn.net/u010687392/article/details/48003979
             //显示
-            ReadActivity.showBar()
+            ReadActivity.readActivity.showBar()
             mBarIsShow = !mBarIsShow
         } else {
             //隐藏
-            ReadActivity.hideBar()
+            ReadActivity.readActivity.hideBar()
             mBarIsShow = !mBarIsShow
         }
     }
 
     override fun onNextChapter() {
-        //TODO
+        ReadActivity.readActivity.switchChapter(ReadActivity.Direction.Next)
     }
 
     override fun onPreviousChapter() {
-        //TODO
+        ReadActivity.readActivity.switchChapter(ReadActivity.Direction.Previous)
     }
 
     override fun onPageChange() {
-        Log.e("tag","pageNum"+pageNum+" maxTextPageNum"+maxTextPageNum+" imgUrlList.size"+imgUrlList.size)
-        ReadActivity.readProgress.value = pageNum.toFloat()
-        if (maxTextPageNum != 0) ReadActivity.readProgress.valueTo = (maxTextPageNum + imgUrlList.size).toFloat()
+        if (maxTextPageNum != 0 && ReadActivity.readProgress.valueFrom < (maxTextPageNum + imgUrlList.size).toFloat()) {
+            ReadActivity.readProgress.valueTo = (maxTextPageNum + imgUrlList.size).toFloat()
+            ReadActivity.readProgress.value = pageNum.toFloat()
+            ReadActivity.readProgress.visibility = View.VISIBLE
+        } else {
+            ReadActivity.readProgress.visibility = View.INVISIBLE
+        }
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -200,6 +203,7 @@ class PageView : ViewFlipper, IPageView {
                 mIsDrawTime = isDrawTime
                 mPageNum = 0
                 mMaxPageNum = 0
+                mTextColor = textColor
                 this@PageView.addView(this)
             }
 
@@ -208,34 +212,39 @@ class PageView : ViewFlipper, IPageView {
                 mIsDrawTime = isDrawTime
                 mPageNum = pageNum
                 mMaxPageNum = maxTextPageNum + imgUrlList.size
+                mTextColor = textColor
                 mTitle = title
 
                 Thread {
                     try {
-                        if (this.isActivated && this@PageView.isActivated) {
-                            handler.post {
-                                setImageDrawable(resources.getDrawable(R.drawable.image_loading_small, null))
-                                requestLayout()
-                            }
+                        handler.post {
+                            setImageDrawable(
+                                resources.getDrawable(
+                                    R.drawable.image_loading_small,
+                                    null
+                                )
+                            )
+                            requestLayout()
+                        }
 
-                            var drawAble: Drawable = Glide.with(context)
-                                .asDrawable()
-                                .load(imgUrlList[pageNum - maxTextPageNum - 1].trim())
-                                .submit()
-                                .get()
+                        var drawAble: Drawable = Glide.with(context)
+                            .asDrawable()
+                            .load(imgUrlList[pageNum - maxTextPageNum - 1].trim())
+                            .submit()
+                            .get()
 
+                        if (handler != null) {
                             handler.post {
                                 setImageDrawable(drawAble)
                                 requestLayout()
                             }
                         }
+
                     } catch (e: Exception) {
                         e.printStackTrace()
-                        if (this.isActivated && this@PageView.isActivated) {
-                            handler.post {
-                                this.setImageDrawable(resources.getDrawable(R.drawable.warning, null))
-                                requestLayout()
-                            }
+                        handler.post {
+                            this.setImageDrawable(resources.getDrawable(R.drawable.image_loading_fail_small, null))
+                            requestLayout()
                         }
                     }
                 }.start()
@@ -251,7 +260,7 @@ class PageView : ViewFlipper, IPageView {
                 mRowSpace = rowSpace
                 mPageNum = 0
                 mMaxPageNum = 0
-//                mTextColor = textColor
+                mTextColor = textColor
                 mTxtFontType = txtFontType
                 this@PageView.addView(this)
             }
@@ -267,12 +276,22 @@ class PageView : ViewFlipper, IPageView {
                 mTextSize = textSize
                 mPageNum = pageNum
                 mMaxPageNum = maxTextPageNum + imgUrlList.size
-//                mTextColor = textColor
+                mTextColor = textColor
                 mTitle = title
                 mTxtFontType = txtFontType
             }
             displayedChild = this@PageView.indexOfChild(pC)
         }
+
+        //以下代码是为了防止在用户设置与默认设置不同的字体大小、行距后页码乱跳的问题
+        ReadActivity.showCount++
+        if (ReadActivity.showCount == 4) {
+            pageNum = 1;
+        }
+        Log.i(
+            "tag",
+            "pageNum " + pageNum + " maxTextPageNum " + maxTextPageNum + " imgUrlList.size " + imgUrlList.size
+        )
     }
 
     //正文区域宽度

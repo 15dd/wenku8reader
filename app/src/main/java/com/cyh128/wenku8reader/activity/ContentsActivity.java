@@ -32,7 +32,7 @@ import com.cyh128.wenku8reader.bean.BookcaseBean;
 import com.cyh128.wenku8reader.bean.ContentsCcssBean;
 import com.cyh128.wenku8reader.bean.ContentsVcssBean;
 import com.cyh128.wenku8reader.fragment.BookCaseFragment;
-import com.cyh128.wenku8reader.util.VarTemp;
+import com.cyh128.wenku8reader.util.GlobalConfig;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
@@ -357,7 +357,7 @@ public class ContentsActivity extends AppCompatActivity {
 
     private void isHaveHistory() {
         String sql = String.format("select * from readHistory where bookUrl='%s'", bookUrl);
-        Cursor cursor = VarTemp.db.rawQuery(sql, null);
+        Cursor cursor = GlobalConfig.db.rawQuery(sql, null);
         if (cursor.moveToNext()) {
             for (int i = 0; i < cursor.getCount(); i++) {
                 String indexUrl = cursor.getString(1);
@@ -366,9 +366,11 @@ public class ContentsActivity extends AppCompatActivity {
                 for (int j = 0; j < ccss.size(); j++) {
                     for (int k = 0; k < ccss.get(j).size(); k++) {
                         if (ccss.get(j).get(k).url.equals(indexUrl)) {
-                            Intent toContent = new Intent(ContentsActivity.this, ReaderActivity.class);
+                            Intent toContent = new Intent(ContentsActivity.this, ReadActivity.class);
                             vcssPosition = j;
                             ccssPosition = k;
+                            int position = cursor.getInt(3);
+                            toContent.putExtra("position",position);
                             startActivity(toContent);
                         }
                     }

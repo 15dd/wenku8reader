@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <com.google.android.material.bottomsheet.BottomSheetDragHandleView
@@ -11,49 +12,112 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        android:orientation="vertical"
+        android:padding="20dp">
 
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="字体大小"
-            android:textSize="16sp" />
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <com.google.android.material.slider.Slider
-            android:id="@+id/slider_bottom_sheet_act_reader"
-            android:layout_width="0dp"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="字体大小"
+                android:textSize="16sp" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/slider_bottom_sheet_act_reader_fontsize"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:stepSize="1"
+                android:valueFrom="1"
+                android:valueTo="100" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:stepSize="1"
-            android:valueFrom="1"
-            android:valueTo="50" />
-    </LinearLayout>
+            android:gravity="center"
+            android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="10dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="行距"
+                android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="0dp"
+            <com.google.android.material.slider.Slider
+                android:id="@+id/slider_bottom_sheet_act_reader_linespacing"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:stepSize="0.1"
+                android:valueFrom="1"
+                android:valueTo="10" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="行距"
-            android:textSize="16sp" />
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <com.google.android.material.slider.Slider
-            android:id="@+id/slider_bottom_sheet_act_reader_linespacing"
-            android:layout_width="0dp"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="进度字体大小"
+                android:textSize="16sp" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/slider_bottom_sheet_act_reader_bottomfontsize"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:stepSize="1"
+                android:valueFrom="1"
+                android:valueTo="100" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:stepSize="1"
-            android:valueFrom="1"
-            android:valueTo="50" />
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="翻页方向"
+                android:textSize="16sp" />
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/toggleGroup_bottom_sheet_act_read"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleSelection="true">
+                <com.google.android.material.button.MaterialButton
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:id="@+id/button_bottom_sheet_act_read_utd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="上下" />
+                <com.google.android.material.button.MaterialButton
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:id="@+id/button_bottom_sheet_act_read_ltr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="左右" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

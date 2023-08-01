@@ -3,6 +3,7 @@ package com.cyh128.wenku8reader.reader
 import android.content.Context
 import android.content.Intent
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.util.Log
@@ -24,6 +25,7 @@ class PageImage : androidx.appcompat.widget.AppCompatImageView {
             isFilterBitmap = false
         }
     }
+    var mTextColor: Int = Color.BLACK
     var mBottomTextSize = 35f
     var mPageNum: Int = 0
     var mMaxPageNum: Int = 0
@@ -42,6 +44,7 @@ class PageImage : androidx.appcompat.widget.AppCompatImageView {
 
     override fun onDraw(canvas: Canvas?) {
         mPaint.textSize = mBottomTextSize
+        mPaint.color = mTextColor
         //底部右下角绘制：章节相关信息    格式为:   第 XXX 章节 YYY章节名  ：  n / 该章节总共页数
         val bottomText =
             "${mTitle ?: ""} ${if (mPageNum > mMaxPageNum) 0 else mPageNum}/$mMaxPageNum"

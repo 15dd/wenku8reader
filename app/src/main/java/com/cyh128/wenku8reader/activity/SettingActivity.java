@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cyh128.wenku8reader.R;
-import com.cyh128.wenku8reader.util.VarTemp;
+import com.cyh128.wenku8reader.util.GlobalConfig;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.materialswitch.MaterialSwitch;
 
@@ -22,7 +22,7 @@ public class SettingActivity extends AppCompatActivity {
 
         checkUpdate = findViewById(R.id.switch_check_update);
 
-        checkUpdate.setChecked(VarTemp.checkUpdate);
+        checkUpdate.setChecked(GlobalConfig.checkUpdate);
 
         MaterialToolbar toolbar = findViewById(R.id.toolbar_act_setting);
         setSupportActionBar(toolbar);
@@ -37,14 +37,14 @@ public class SettingActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        VarTemp.checkUpdate = checkUpdate.isChecked();
+        GlobalConfig.checkUpdate = checkUpdate.isChecked();
 
         ContentValues values = new ContentValues();
         values.put("_id", 1);
-        values.put("fontSize", VarTemp.readerFontSize);
-        values.put("lineSpacing",VarTemp.readerLineSpacing);
+        values.put("fontSize", GlobalConfig.readerFontSize);
+        values.put("lineSpacing", GlobalConfig.readerLineSpacing);
         values.put("checkUpdate", checkUpdate.isChecked());
-        values.put("bookcaseViewType",VarTemp.bookcaseViewType);
-        VarTemp.db.replace("setting", null, values);
+        values.put("bookcaseViewType", GlobalConfig.bookcaseViewType);
+        GlobalConfig.db.replace("setting", null, values);
     }
 }

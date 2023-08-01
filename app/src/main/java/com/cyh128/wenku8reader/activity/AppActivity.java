@@ -18,7 +18,7 @@ import com.cyh128.wenku8reader.fragment.HomeFragment;
 import com.cyh128.wenku8reader.fragment.MyinfoFragment;
 import com.cyh128.wenku8reader.util.CheckNetwork;
 import com.cyh128.wenku8reader.util.CheckUpdate;
-import com.cyh128.wenku8reader.util.VarTemp;
+import com.cyh128.wenku8reader.util.GlobalConfig;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class AppActivity extends AppCompatActivity {
         }
         
         //检查更新==================================================================================
-        if (VarTemp.checkUpdate) {
+        if (GlobalConfig.checkUpdate) {
             new Thread(() -> {
                 try {
                     CheckUpdate.checkUpdate(this, CheckUpdate.WITHOUT_TIP);

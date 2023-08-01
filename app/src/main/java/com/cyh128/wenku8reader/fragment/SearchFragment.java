@@ -17,7 +17,7 @@ import com.cyh128.wenku8reader.activity.ContentsActivity;
 import com.cyh128.wenku8reader.activity.SearchActivity;
 import com.cyh128.wenku8reader.adapter.BookListAdapter;
 import com.cyh128.wenku8reader.bean.BookListBean;
-import com.cyh128.wenku8reader.util.VarTemp;
+import com.cyh128.wenku8reader.util.GlobalConfig;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -52,7 +52,7 @@ public class SearchFragment extends Fragment {
         list.setAdapter(bookListAdapter);
 
         new Thread(() -> {
-            if (!VarTemp.isFiveSecondDone) {
+            if (!GlobalConfig.isFiveSecondDone) {
                 list.loadMoreFail();
                 return;
             }
@@ -72,7 +72,7 @@ public class SearchFragment extends Fragment {
         }).start();
 
         list.setOnRefreshListener(() -> {
-            if (!VarTemp.isFiveSecondDone) {
+            if (!GlobalConfig.isFiveSecondDone) {
                 Snackbar.make(view, "因网站限制，请等待5秒之后再重新尝试", Snackbar.LENGTH_SHORT)
                         .setAction("好的", v -> {return;})
                         .show();
@@ -93,7 +93,7 @@ public class SearchFragment extends Fragment {
                 list.loadMoreEnd();
                 return;
             }
-            if (!VarTemp.isFiveSecondDone) {
+            if (!GlobalConfig.isFiveSecondDone) {
                 Snackbar.make(view, "因网站限制，请等待5秒之后再重新尝试", Snackbar.LENGTH_SHORT)
                         .setAction("好的", v -> {return;})
                         .show();
@@ -174,7 +174,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void waitFiveSecond() {
-        VarTemp.isFiveSecondDone = false;
+        GlobalConfig.isFiveSecondDone = false;
         SearchActivity.searchFlag = false; //下滑操作也会触发搜索小说的5秒等待机制，所以需要将搜索框的搜索也加入限制，即下滑操作或者搜索小说的五秒没过，不允许操作
         new CountDownTimer(5500, 1000) {
             @Override
@@ -183,7 +183,7 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onFinish() {
-                VarTemp.isFiveSecondDone = true;
+                GlobalConfig.isFiveSecondDone = true;
                 SearchActivity.searchFlag = true;
             }
         }.start();

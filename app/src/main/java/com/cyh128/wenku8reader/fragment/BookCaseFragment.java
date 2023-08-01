@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.adapter.BookCaseAdapter;
 import com.cyh128.wenku8reader.bean.BookcaseBean;
-import com.cyh128.wenku8reader.util.VarTemp;
+import com.cyh128.wenku8reader.util.GlobalConfig;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -46,16 +46,16 @@ public class BookCaseFragment extends Fragment {
             if (item.getItemId() == R.id.update) {
                 new setBookcase().start();
             } else if (item.getItemId() == R.id.viewType) {
-                VarTemp.bookcaseViewType = !VarTemp.bookcaseViewType ;
-                changeLayout(VarTemp.bookcaseViewType);//更改视图类型
+                GlobalConfig.bookcaseViewType = !GlobalConfig.bookcaseViewType ;
+                changeLayout(GlobalConfig.bookcaseViewType);//更改视图类型
                 //保存视图类型的设置，使下次启动自动使用当前视图类型================================
                 ContentValues values = new ContentValues();
                 values.put("_id", 1);
-                values.put("fontSize", VarTemp.readerFontSize);
-                values.put("lineSpacing",VarTemp.readerLineSpacing);
-                values.put("checkUpdate", VarTemp.checkUpdate);
-                values.put("bookcaseViewType",VarTemp.bookcaseViewType);
-                VarTemp.db.replace("setting", null, values);
+                values.put("fontSize", GlobalConfig.readerFontSize);
+                values.put("lineSpacing", GlobalConfig.readerLineSpacing);
+                values.put("checkUpdate", GlobalConfig.checkUpdate);
+                values.put("bookcaseViewType", GlobalConfig.bookcaseViewType);
+                GlobalConfig.db.replace("setting", null, values);
                 //=========================================================================
             }
             return true;
@@ -128,7 +128,7 @@ public class BookCaseFragment extends Fragment {
         private final Handler firstLaunchHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-                changeLayout(VarTemp.bookcaseViewType);
+                changeLayout(GlobalConfig.bookcaseViewType);
                 toolbar.setTitle("书架(共" + bookCaseAdapter.getItemCount() + "本)");
                 list.setRefreshing(false);
                 return false;
