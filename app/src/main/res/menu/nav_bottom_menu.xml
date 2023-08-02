@@ -14,7 +14,7 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/nav_my"
-        android:title="我的"
-        android:icon="@drawable/my"
+        android:title="更多"
+        android:icon="@drawable/more"
         app:showAsAction="never" />
 </menu>

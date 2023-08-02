@@ -47,11 +47,25 @@
         android:layout_height="wrap_content"
         style="@style/Widget.Material3.MaterialDivider" />
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:gravity="right"
-        android:text="退出本页面后自动保存设置"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical|right"
+        android:padding="10dp">
+
+        <ImageView
+            android:layout_width="@dimen/dp_12"
+            android:layout_height="@dimen/dp_12"
+            android:src="@drawable/info"/>
+
+        <TextView
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="退出本页面后自动保存设置"/>
+
+    </LinearLayout>
 
 </LinearLayout>

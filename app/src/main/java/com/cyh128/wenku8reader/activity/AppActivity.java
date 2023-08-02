@@ -15,7 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.fragment.BookCaseFragment;
 import com.cyh128.wenku8reader.fragment.HomeFragment;
-import com.cyh128.wenku8reader.fragment.MyinfoFragment;
+import com.cyh128.wenku8reader.fragment.MoreFragment;
 import com.cyh128.wenku8reader.util.CheckNetwork;
 import com.cyh128.wenku8reader.util.CheckUpdate;
 import com.cyh128.wenku8reader.util.GlobalConfig;
@@ -28,7 +28,7 @@ public class AppActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private BookCaseFragment bookcaseFragment;
     private HomeFragment homeFragment;
-    private MyinfoFragment myinfoFragment;
+    private MoreFragment moreFragment;
     private BroadcastReceiver receivers = new CheckNetwork();
 
     @Override
@@ -48,7 +48,7 @@ public class AppActivity extends AppCompatActivity {
         if (GlobalConfig.checkUpdate) {
             new Thread(() -> {
                 try {
-                    CheckUpdate.checkUpdate(this, CheckUpdate.WITHOUT_TIP);
+                    CheckUpdate.checkUpdate(this, CheckUpdate.Mode.WITHOUT_TIP);
                 } catch (Exception e) {
                     Log.e("debug", "checkUpdate failed");
                 }
@@ -71,11 +71,11 @@ public class AppActivity extends AppCompatActivity {
     public void initFragment() {
         homeFragment = new HomeFragment();
         bookcaseFragment = new BookCaseFragment();
-        myinfoFragment = new MyinfoFragment();
+        moreFragment = new MoreFragment();
         List<Fragment> fragment = new ArrayList<>();
         fragment.add(homeFragment);
         fragment.add(bookcaseFragment);
-        fragment.add(myinfoFragment);
+        fragment.add(moreFragment);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.appFragment, homeFragment)
@@ -108,7 +108,7 @@ public class AppActivity extends AppCompatActivity {
                 switchFragment(bookcaseFragment);
                 return true;
             } else {
-                switchFragment(myinfoFragment);
+                switchFragment(moreFragment);
                 return true;
             }
         });

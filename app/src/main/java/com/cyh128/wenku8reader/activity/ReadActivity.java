@@ -1,26 +1,17 @@
 package com.cyh128.wenku8reader.activity;
 
 import android.animation.Animator;
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.UiModeManager;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.ContextWrapper;
-import android.content.DialogInterface;
-import android.content.res.Configuration;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Html;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 
@@ -28,7 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.bean.ContentsCcssBean;
 import com.cyh128.wenku8reader.bean.ContentsVcssBean;
@@ -39,13 +29,12 @@ import com.cyh128.wenku8reader.util.Wenku8Spider;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButtonToggleGroup;
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.snackbar.Snackbar;
 import com.gyf.immersionbar.ImmersionBar;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,29 +47,30 @@ public class ReadActivity extends AppCompatActivity {
     public static int ccssPosition = 0;
     public static int vcssPosition = 0;
     public static ReadActivity readActivity; //状态栏和导航栏沉浸所使用的
-    public static int showBarColor;
-    public static int hideBarColor;
+    private int showBarColor;
+    private String hideBarColor;
     public static Slider readProgress;
-    public static Window window;
     private Button previousChapter, nextChapter, setting;
     public PageView pageView;
     private Dialog dialog;
     private MaterialAlertDialogBuilder builder;
     private BottomSheetDialog bottomSheetDialog;
-    private Slider fontSize,lineSpacing,bottomTextSize;
+    private Slider fontSize, lineSpacing, bottomTextSize;
     private boolean isNigntMode;
     private MaterialButtonToggleGroup readDirection;
-    private boolean isUpToDown;
+    private MaterialSwitch switchChapter;
     public static int showCount = 0;
     private int historyPosition = -1;//历史记录
+    private View bottomSheetView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         //我已经逐渐看不懂这个阅读器是怎么写出来的了，好像想整个重写一遍。。。。。。
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read);
+        readActivity = this;
 
-        historyPosition = getIntent().getIntExtra("position",-1);//是否有阅读记录
+        historyPosition = getIntent().getIntExtra("position", -1);//是否有阅读记录
 
         vcss = ContentsActivity.vcss;
         ccss = ContentsActivity.ccss;
@@ -105,67 +95,71 @@ public class ReadActivity extends AppCompatActivity {
         });
         toolbar.setTitle(ccss.get(vcssPosition).get(ccssPosition).ccss);
 
-        readActivity = this;
-        window = getWindow();
-
         TypedValue typedValue = new TypedValue();
         getTheme().resolveAttribute(com.google.android.material.R.attr.colorSurfaceContainer, typedValue, true);
         showBarColor = typedValue.resourceId;
-        getTheme().resolveAttribute(com.google.android.material.R.attr.colorSurface, typedValue, true);
-        hideBarColor = typedValue.resourceId;
-
         toolbar.setBackgroundResource(showBarColor);
         bottombar.setBackgroundResource(showBarColor);
 
         UiModeManager uiModeManager = (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
-        if (uiModeManager.getNightMode()== UiModeManager.MODE_NIGHT_YES) isNigntMode = true;
+        if (uiModeManager.getNightMode() == UiModeManager.MODE_NIGHT_YES) isNigntMode = true;
+        if (isNigntMode) {
+            hideBarColor = "#323232";
+        } else {
+            hideBarColor = "#ffffff";
+        }
 
         bottomSheetDialog = new BottomSheetDialog(this);
-        View bottomSheetView = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_act_reader, null, false);
+        bottomSheetView = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_act_read, null, false);
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.setDismissWithAnimation(true);
         //保存设置
         bottomSheetDialog.setOnDismissListener(dialog -> {
-            //判断是否有改动
-            if (GlobalConfig.readerFontSize != fontSize.getValue()+20f || GlobalConfig.readerLineSpacing != lineSpacing.getValue() || GlobalConfig.readerBottomTextSize != bottomTextSize.getValue() || GlobalConfig.isUpToDown != isUpToDown ) {
-                GlobalConfig.readerFontSize = fontSize.getValue()+20f;
+                GlobalConfig.readerFontSize = fontSize.getValue() + 20f;
                 GlobalConfig.readerLineSpacing = lineSpacing.getValue();
                 GlobalConfig.readerBottomTextSize = bottomTextSize.getValue();
-                GlobalConfig.isUpToDown = isUpToDown;
 
                 ContentValues values = new ContentValues();
                 values.put("_id", 1);
-                values.put("fontSize", fontSize.getValue()+20f);
-                values.put("lineSpacing",lineSpacing.getValue());
-                values.put("bottomTextSize",bottomTextSize.getValue());
-                values.put("isUpToDown",isUpToDown);
+                values.put("fontSize", fontSize.getValue() + 20f);
+                values.put("lineSpacing", lineSpacing.getValue());
+                values.put("bottomTextSize", bottomTextSize.getValue());
+                values.put("isUpToDown", GlobalConfig.isUpToDown);
+                values.put("canSwitchChapterByScroll", GlobalConfig.canSwitchChapterByScroll);
+                values.put("backgroundColor", GlobalConfig.backgroundColor);
 
                 GlobalConfig.db.replace("reader", null, values);
-            }
         });
+
 
         fontSize = bottomSheetView.findViewById(R.id.slider_bottom_sheet_act_reader_fontsize);
         lineSpacing = bottomSheetView.findViewById(R.id.slider_bottom_sheet_act_reader_linespacing);
         bottomTextSize = bottomSheetView.findViewById(R.id.slider_bottom_sheet_act_reader_bottomfontsize);
         readDirection = bottomSheetView.findViewById(R.id.toggleGroup_bottom_sheet_act_read);
+        switchChapter = bottomSheetView.findViewById(R.id.switch_bottom_sheet_act_read);
 
-        fontSize.setValue(GlobalConfig.readerFontSize-20f);
+        fontSize.setValue(GlobalConfig.readerFontSize - 20f); //slider上显示的数字比实际字体大小要小20f
         lineSpacing.setValue(GlobalConfig.readerLineSpacing);
         bottomTextSize.setValue(GlobalConfig.readerBottomTextSize);
         readDirection.check(GlobalConfig.isUpToDown ? R.id.button_bottom_sheet_act_read_utd : R.id.button_bottom_sheet_act_read_ltr);
+        switchChapter.setChecked(GlobalConfig.canSwitchChapterByScroll);
 
         fontSize.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override
-            public void onStartTrackingTouch(@NonNull Slider slider) {}
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+            }
+
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
-                pageView.setTextSize(slider.getValue() + 20f);
+                pageView.setTextSize(slider.getValue() + 20f); //实际字体大小比slider上显示的数字要大20f
             }
         });
 
         lineSpacing.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override
-            public void onStartTrackingTouch(@NonNull Slider slider) {}
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+            }
+
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 pageView.setRowSpace(slider.getValue());
@@ -174,7 +168,9 @@ public class ReadActivity extends AppCompatActivity {
 
         bottomTextSize.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override
-            public void onStartTrackingTouch(@NonNull Slider slider) {}
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+            }
+
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 pageView.setBottomTextSize(slider.getValue());
@@ -184,21 +180,25 @@ public class ReadActivity extends AppCompatActivity {
         readDirection.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (checkedId == R.id.button_bottom_sheet_act_read_ltr && isChecked) {
                 pageView.setDirection(Orientation.horizontal);
-                isUpToDown = false;
+                GlobalConfig.isUpToDown = false;
             } else if (checkedId == R.id.button_bottom_sheet_act_read_utd && isChecked) {
                 pageView.setDirection(Orientation.vertical);
-                isUpToDown = true;
+                GlobalConfig.isUpToDown = true;
             }
         });
 
         readProgress.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override
-            public void onStartTrackingTouch(@NonNull Slider slider) {}
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+            }
+
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 pageView.setPageNum((int) slider.getValue());
             }
         });
+
+        switchChapter.setOnCheckedChangeListener((buttonView, isChecked) -> GlobalConfig.canSwitchChapterByScroll = isChecked);
 
         previousChapter.setOnClickListener(v -> {
             toPreviousChapter();
@@ -210,17 +210,23 @@ public class ReadActivity extends AppCompatActivity {
 
         setting.setOnClickListener(v -> {
             bottomSheetDialog.show();
-            hideBar();
         });
 
-        showBar();
+        bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_default).setOnClickListener(v -> setBackgroundColor("default"));
+        bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_brown).setOnClickListener(v -> setBackgroundColor("#CEC29C"));
+        bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_grey).setOnClickListener(v -> setBackgroundColor("#D1CEC5"));
+        bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_green).setOnClickListener(v -> setBackgroundColor("#CCEBCC"));
+
         showLoadingDialog();
         loadContent();
+        showBar();
 
         //隐藏appbar和bottomAppbar
-        new CountDownTimer(3000, 1000) {
+        new CountDownTimer(1000, 1000) {
             @Override
-            public void onTick(long millisUntilFinished) {}
+            public void onTick(long millisUntilFinished) {
+            }
+
             @Override
             public void onFinish() {
                 hideBar();
@@ -247,6 +253,35 @@ public class ReadActivity extends AppCompatActivity {
         }).start();
     }
 
+    private void setBackgroundColor(String color) {
+        if (isNigntMode) {
+            pageView.setTextColor(Color.parseColor("#555555"));
+            pageView.setBackgroundcolor(Color.BLACK);
+            GlobalConfig.backgroundColor = "default";
+            hideBarColor = "#000000";
+            bottomSheetView.findViewById(R.id.bottom_sheet_act_read_selectBackground).setVisibility(View.GONE);
+        } else {
+            pageView.setTextColor(Color.BLACK);
+            if (color.equals("#CEC29C")) {
+                pageView.setBackgroundcolor(Color.parseColor("#CEC29C"));
+                GlobalConfig.backgroundColor = "#CEC29C";
+                hideBarColor = "#CEC29C";
+            } else if (color.equals("#D1CEC5")) {
+                pageView.setBackgroundcolor(Color.parseColor("#D1CEC5"));
+                GlobalConfig.backgroundColor = "#D1CEC5";
+                hideBarColor = "#D1CEC5";
+            } else if (color.equals("#CCEBCC")) {
+                pageView.setBackgroundcolor(Color.parseColor("#CCEBCC"));
+                GlobalConfig.backgroundColor = "#CCEBCC";
+                hideBarColor = "#CCEBCC";
+            } else if (color.equals("default")) {
+                pageView.setBackgroundcolor(Color.WHITE);
+                GlobalConfig.backgroundColor = "default";
+                hideBarColor = "#FFFFFF";
+            }
+        }
+    }
+
     private void loadContent() {
         new Thread(() -> {
             try {
@@ -257,10 +292,10 @@ public class ReadActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     pageView.removeAllViewsInLayout();
                     pageView.removeAllViews();//删除上一章加载的内容
+                    pageView.setImgUrlList(new ArrayList<>());
                     readProgress.setValue(1);//进度条重置
                     showCount = 0;
 
-                    Log.i("tag","pageNum "+pageView.getPageNum());
                     if (allContent.get(1) != null && allContent.get(1).size() != 0) {
                         pageView.setImgUrlList((ArrayList<String>) allContent.get(1));
                     }
@@ -268,16 +303,13 @@ public class ReadActivity extends AppCompatActivity {
                     pageView.setTextSize(GlobalConfig.readerFontSize);
                     pageView.setBottomTextSize(GlobalConfig.readerBottomTextSize);
                     pageView.setRowSpace(GlobalConfig.readerLineSpacing);
-                    pageView.setDirection(GlobalConfig.isUpToDown? Orientation.vertical:Orientation.horizontal);
+                    pageView.setDirection(GlobalConfig.isUpToDown ? Orientation.vertical : Orientation.horizontal);
                     if (historyPosition != -1) { //如果有传递历史记录，就执行
                         pageView.setPageNum(historyPosition);
                         historyPosition = -1;
                     }
-                    if (isNigntMode) {
-                        pageView.setTextColor(Color.WHITE);
-                    } else {
-                        pageView.setTextColor(Color.BLACK);
-                    }
+
+                    setBackgroundColor(GlobalConfig.backgroundColor);
 
                     if (dialog != null) dialog.dismiss();
                 });
@@ -304,31 +336,32 @@ public class ReadActivity extends AppCompatActivity {
         dialog = builder.show();
     }
 
-    public enum Direction {Next,Previous}
+    public enum Direction {Next, Previous}
+
     public void switchChapter(Direction direction) {
         if (direction == Direction.Next) {
             runOnUiThread(() -> new MaterialAlertDialogBuilder(ReadActivity.this)
                     .setTitle("切换下一章")
                     .setMessage("是否继续？")
-                    .setIcon(R.drawable.info)
+                    .setIcon(R.drawable.info2)
                     .setCancelable(false)
                     .setPositiveButton("继续", (dialog, which) -> toNextChapter())
-                    .setNegativeButton("取消",null)
+                    .setNegativeButton("取消", null)
                     .show());
-        }else if (direction == Direction.Previous){
+        } else if (direction == Direction.Previous) {
             runOnUiThread(() -> new MaterialAlertDialogBuilder(ReadActivity.this)
                     .setTitle("切换上一章")
                     .setMessage("是否继续？")
-                    .setIcon(R.drawable.info)
+                    .setIcon(R.drawable.info2)
                     .setCancelable(false)
                     .setPositiveButton("继续", (dialog, which) -> toPreviousChapter())
-                    .setNegativeButton("取消",null)
+                    .setNegativeButton("取消", null)
                     .show());
         }
     }
 
     public void toNextChapter() {
-        runOnUiThread(()->{
+        runOnUiThread(() -> {
             if (ccssPosition == ccss.get(vcssPosition).size() - 1) {//判断是不是该卷的最后一章
                 Snackbar snackbar = Snackbar.make(toolbar, "没有下一章，已经是这一卷的最后一章了", Snackbar.LENGTH_SHORT);
                 snackbar.setAnchorView(bottombar);//使它出现在bottomAppBar的上面，避免遮挡内容
@@ -345,7 +378,7 @@ public class ReadActivity extends AppCompatActivity {
     }
 
     public void toPreviousChapter() {
-        runOnUiThread(()->{
+        runOnUiThread(() -> {
             if (ccssPosition == 0) { //判断是不是该卷的第一章
                 Snackbar snackbar = Snackbar.make(toolbar, "没有上一章，已经是这一卷的第一章了", Snackbar.LENGTH_SHORT);
                 snackbar.setAnchorView(bottombar);//使它出现在bottomAppBar的上面，避免遮挡内容
@@ -373,12 +406,18 @@ public class ReadActivity extends AppCompatActivity {
                         .autoDarkModeEnable(true)
                         .init();
             }
+
             @Override
-            public void onAnimationEnd(@NonNull Animator animation) {}
+            public void onAnimationEnd(@NonNull Animator animation) {
+            }
+
             @Override
-            public void onAnimationCancel(@NonNull Animator animation) {}
+            public void onAnimationCancel(@NonNull Animator animation) {
+            }
+
             @Override
-            public void onAnimationRepeat(@NonNull Animator animation) {}
+            public void onAnimationRepeat(@NonNull Animator animation) {
+            }
         }).setInterpolator(new AccelerateDecelerateInterpolator());
 
         //底栏显示动画
@@ -392,12 +431,18 @@ public class ReadActivity extends AppCompatActivity {
                         .autoDarkModeEnable(true)
                         .init();
             }
+
             @Override
-            public void onAnimationEnd(@NonNull Animator animation) {}
+            public void onAnimationEnd(@NonNull Animator animation) {
+            }
+
             @Override
-            public void onAnimationCancel(@NonNull Animator animation) {}
+            public void onAnimationCancel(@NonNull Animator animation) {
+            }
+
             @Override
-            public void onAnimationRepeat(@NonNull Animator animation) {}
+            public void onAnimationRepeat(@NonNull Animator animation) {
+            }
         }).setInterpolator(new AccelerateDecelerateInterpolator());
     }
 
@@ -405,7 +450,9 @@ public class ReadActivity extends AppCompatActivity {
         //顶栏隐藏动画
         toolbar.animate().translationY(-toolbar.getHeight()).setListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(@NonNull Animator animation) {}
+            public void onAnimationStart(@NonNull Animator animation) {
+            }
+
             @Override
             public void onAnimationEnd(@NonNull Animator animation) {
                 ImmersionBar.with(ReadActivity.this)
@@ -415,16 +462,22 @@ public class ReadActivity extends AppCompatActivity {
                         .autoDarkModeEnable(true)
                         .init();
             }
+
             @Override
-            public void onAnimationCancel(@NonNull Animator animation) {}
+            public void onAnimationCancel(@NonNull Animator animation) {
+            }
+
             @Override
-            public void onAnimationRepeat(@NonNull Animator animation) {}
+            public void onAnimationRepeat(@NonNull Animator animation) {
+            }
         }).setInterpolator(new AccelerateDecelerateInterpolator());
 
         //底栏隐藏动画
         bottombar.animate().translationY(bottombar.getHeight()).setListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(@NonNull Animator animation) {}
+            public void onAnimationStart(@NonNull Animator animation) {
+            }
+
             @Override
             public void onAnimationEnd(@NonNull Animator animation) {
                 ImmersionBar.with(ReadActivity.this)
@@ -434,10 +487,14 @@ public class ReadActivity extends AppCompatActivity {
                         .autoDarkModeEnable(true)
                         .init();
             }
+
             @Override
-            public void onAnimationCancel(@NonNull Animator animation) {}
+            public void onAnimationCancel(@NonNull Animator animation) {
+            }
+
             @Override
-            public void onAnimationRepeat(@NonNull Animator animation) {}
+            public void onAnimationRepeat(@NonNull Animator animation) {
+            }
         }).setInterpolator(new AccelerateDecelerateInterpolator());
     }
 }

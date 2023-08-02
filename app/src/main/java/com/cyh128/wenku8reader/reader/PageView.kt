@@ -17,17 +17,30 @@ import com.bumptech.glide.Glide
 import com.cyh128.wenku8reader.R
 import com.cyh128.wenku8reader.activity.PhotoViewActivity
 import com.cyh128.wenku8reader.activity.ReadActivity
+import com.cyh128.wenku8reader.util.GlobalConfig
 import kotlin.reflect.KProperty
 
+/*
+cyh128注:
+原作者 https://github.com/ya-b/NetNovelReader
+这个PageView已经被我改的乱七八糟的了，导致老是会莫名其妙的出现一些让人意想不到的问题。
+但至少目前没什么大问题。
+ */
 
-//原作者 https://github.com/ya-b/NetNovelReader
 class PageView : ViewFlipper, IPageView {
     override var pageNum: Int by InvalidateAfterSet(1)                    //页数
 
-    //    override var backgroundcolor: Int by InvalidateAfterSet(Color.WHITE)
-    override var textColor: Int by InvalidateAfterSet(Color.BLACK)                    //字体颜色
+    override var backgroundcolor: Int by InvalidateAfterSet(Color.WHITE)
+    override var textColor: Int by InvalidateAfterSet(Color.BLACK)           //字体颜色
     override var txtFontType: Typeface by InvalidateAfterSet(Typeface.DEFAULT)  //正文字体类型//背景颜色
     override var rowSpace: Float by InvalidateAfterSet(1f)               //行距
+    /*
+    cyh128注:
+    很奇怪，当设置的textSize为19时，居然比设置为21的时候要大很多。
+    多次尝试下，发现1~20这个区间显示的字体大小显示的不太正常。
+    所以我设置了只能在21~120这个区间内调整，也就是在ReadActivity中设置字体大小时+20f。
+    当然，这个问题也有可能是没有根据原作者的原本使用方式来使用导致的，因为原作者的使用方式我看不懂😂😂。
+     */
     override var textSize: Float by InvalidateAfterSet(21f)             //正文部分默认画笔的大小
     override var bottomTextSize: Float by InvalidateAfterSet(60f)        //底部部分默认画笔的大小
     override var text: String by InvalidateAfterSet("")                 //一个未分割章节,格式：章节名|正文
@@ -139,11 +152,11 @@ class PageView : ViewFlipper, IPageView {
     }
 
     override fun onNextChapter() {
-        ReadActivity.readActivity.switchChapter(ReadActivity.Direction.Next)
+        if (GlobalConfig.canSwitchChapterByScroll) ReadActivity.readActivity.switchChapter(ReadActivity.Direction.Next)
     }
 
     override fun onPreviousChapter() {
-        ReadActivity.readActivity.switchChapter(ReadActivity.Direction.Previous)
+        if (GlobalConfig.canSwitchChapterByScroll) ReadActivity.readActivity.switchChapter(ReadActivity.Direction.Previous)
     }
 
     override fun onPageChange() {
@@ -199,6 +212,7 @@ class PageView : ViewFlipper, IPageView {
     fun displayView() {
         if (pageNum > maxTextPageNum && imgUrlList.size != 0 && maxTextPageNum != -1 && pageNum != 0) {
             val pI = PageImage(context).apply {
+                mBgColor = backgroundcolor
                 mBottomTextSize = bottomTextSize
                 mIsDrawTime = isDrawTime
                 mPageNum = 0
@@ -208,6 +222,7 @@ class PageView : ViewFlipper, IPageView {
             }
 
             (getChildAt(this@PageView.indexOfChild(pI)) as PageImage).apply {
+                mBgColor = backgroundcolor
                 mBottomTextSize = bottomTextSize
                 mIsDrawTime = isDrawTime
                 mPageNum = pageNum
@@ -253,7 +268,7 @@ class PageView : ViewFlipper, IPageView {
             displayedChild = this@PageView.indexOfChild(pI)
         } else {
             val pC = PageText(context).apply {
-//                mBgColor = backgroundcolor
+                mBgColor = backgroundcolor
                 mTextSize = textSize
                 mBottomTextSize = bottomTextSize
                 mIsDrawTime = isDrawTime
@@ -266,7 +281,7 @@ class PageView : ViewFlipper, IPageView {
             }
 
             (getChildAt(this@PageView.indexOfChild(pC)) as PageText).apply {
-//                mBgColor = backgroundcolor
+                mBgColor = backgroundcolor
                 if (maxTextPageNum > 0) {
                     if (pageNum > textArray.size) pageNum = textArray.size
                     if (pageNum == 0) pageNum = 1

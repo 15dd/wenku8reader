@@ -108,8 +108,12 @@ wenku8reader
 - com.github.MZCretin:ExpandableTextView  可展开和收回的TextView
 - com.github.TutorialsAndroid:crashx  全局崩溃拦截
 - com.github.youxiaochen:expandable-recyclerview 可展开和收回的recyclerview（用这个主要是不会与nestedscrollview发生滑动冲突）
+- com.geyifeng.immersionbar:immersionbar 阅读器界面沉浸
 ### 开源项目
-- https://github.com/ya-b/NetNovelReader  阅读器实现
+- https://github.com/ya-b/NetNovelReader  阅读器来源
+### 软件界面灵感、参考
+- https://github.com/tachiyomiorg/tachiyomi
+- https://github.com/Ashinch/ReadYou
 ### 其他
 - https://github.com/wildma/ScreenAdaptation  根据屏幕分辨率适配组件大小（Android Studio插件）
 - AI
@@ -122,7 +126,7 @@ wenku8reader
 因为是职高生，所以开发新功能和解决问题的速度会比较慢，这个也请谅解。
 </b>
 <br><br>
-在写那个阅读器时，真的花了我很多时间，在Github上找了很久，总算找到一个可以轻松Ctrl+C的项目（不需要在一串很长的代码、很多文件中找到自己想要的。直接将与reader相关的文件复制过来，然后setText即可），但是只能显示文本，显示不了图片。于是我去修改了他的代码，但在修改的时候是真的很痛苦，首先他的代码都是kotlin写的，我还需要去学一下语法，然后是他使用了自定义view，这方面我根本没了解过，所以在想显示图片的时候也花了很多时间，最后的方法也很简单：写一个跟显示文本页面(PageText)差不多的自定义view，然后修改一下PageView的代码就行了。
+在写那个阅读器时，真的花了我很多时间，在Github上找了很久，总算找到一个可以轻松Ctrl+C的项目（不需要在一串很长的代码、很多文件中找到自己想要的。直接将与reader相关的文件复制过来，然后setText即可），但是只能显示文本，显示不了图片。于是我去修改了他的代码，但在修改的时候是真的很痛苦，首先他的代码都是kotlin写的，我还需要去学一下语法，然后是他使用了自定义view，这方面我根本没了解过，所以在想显示图片的时候也花了很多时间，最后的方法也很简单：写一个跟显示文本页面(PageText)差不多的自定义view，然后修改一下PageView的代码就行了。后面也解决了很多小问题。
 <br><br>
 <br><br>
 本项目是从2023.4.8开始写起来的（安卓相关知识也是从这个时候开始学习的），平常也就放学回家和周六周日的时候写这个，由于本人之前从来没有接触过安卓开发，所以这个软件都是边学边写的，难免会出现一些问题。我甚至连Java都没怎么学过，都是靠C++的语法基础的，所以看源代码的时候轻喷。<br>

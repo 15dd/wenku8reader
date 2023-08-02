@@ -51,8 +51,6 @@ public class BookCaseFragment extends Fragment {
                 //保存视图类型的设置，使下次启动自动使用当前视图类型================================
                 ContentValues values = new ContentValues();
                 values.put("_id", 1);
-                values.put("fontSize", GlobalConfig.readerFontSize);
-                values.put("lineSpacing", GlobalConfig.readerLineSpacing);
                 values.put("checkUpdate", GlobalConfig.checkUpdate);
                 values.put("bookcaseViewType", GlobalConfig.bookcaseViewType);
                 GlobalConfig.db.replace("setting", null, values);

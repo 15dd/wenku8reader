@@ -69,18 +69,36 @@ public class HomeFragment extends Fragment {
                         tab.setText("总推荐榜");
                         break;
                     case 2:
-                        tab.setText("日排行榜");
+                        tab.setText("月排行榜");
                         break;
                     case 3:
-                        tab.setText("日推荐榜");
+                        tab.setText("月推荐榜");
                         break;
                     case 4:
-                        tab.setText("最近更新");
+                        tab.setText("周排行榜");
                         break;
                     case 5:
-                        tab.setText("最近入库");
+                        tab.setText("周推荐榜");
                         break;
                     case 6:
+                        tab.setText("日排行榜");
+                        break;
+                    case 7:
+                        tab.setText("日推荐榜");
+                        break;
+                    case 8:
+                        tab.setText("最新入库");
+                        break;
+                    case 9:
+                        tab.setText("最近更新");
+                        break;
+                    case 10:
+                        tab.setText("总收藏榜");
+                        break;
+                    case 11:
+                        tab.setText("字数排行");
+                        break;
+                    case 12:
                         tab.setText("全部");
                 }
             }
@@ -112,34 +130,76 @@ public class HomeFragment extends Fragment {
                     return allvote;
                 }
                 case 2 -> {
+                    BookListFragment monthvisit = new BookListFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("type", "monthvisit");
+                    monthvisit.setArguments(bundle);
+                    return monthvisit;
+                }
+                case 3 -> {
+                    BookListFragment monthvote = new BookListFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("type", "monthvote");
+                    monthvote.setArguments(bundle);
+                    return monthvote;
+                }
+                case 4 -> {
+                    BookListFragment weekvisit = new BookListFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("type", "weekvisit");
+                    weekvisit.setArguments(bundle);
+                    return weekvisit;
+                }
+                case 5 -> {
+                    BookListFragment weekvote = new BookListFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("type", "weekvote");
+                    weekvote.setArguments(bundle);
+                    return weekvote;
+                }
+                case 6 -> {
                     BookListFragment dayvisit = new BookListFragment();
                     Bundle bundle = new Bundle();
                     bundle.putString("type", "dayvisit");
                     dayvisit.setArguments(bundle);
                     return dayvisit;
                 }
-                case 3 -> {
+                case 7 -> {
                     BookListFragment dayvote = new BookListFragment();
                     Bundle bundle = new Bundle();
                     bundle.putString("type", "dayvote");
                     dayvote.setArguments(bundle);
                     return dayvote;
                 }
-                case 4 -> {
-                    BookListFragment lastupdate = new BookListFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("type", "lastupdate");
-                    lastupdate.setArguments(bundle);
-                    return lastupdate;
-                }
-                case 5 -> {
+                case 8 -> {
                     BookListFragment postdate = new BookListFragment();
                     Bundle bundle = new Bundle();
                     bundle.putString("type", "postdate");
                     postdate.setArguments(bundle);
                     return postdate;
                 }
-                case 6 -> {
+                case 9 -> {
+                    BookListFragment lastupdate = new BookListFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("type", "lastupdate");
+                    lastupdate.setArguments(bundle);
+                    return lastupdate;
+                }
+                case 10 -> {
+                    BookListFragment goodnum = new BookListFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("type", "goodnum");
+                    goodnum.setArguments(bundle);
+                    return goodnum;
+                }
+                case 11 -> {
+                    BookListFragment size = new BookListFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("type", "size");
+                    size.setArguments(bundle);
+                    return size;
+                }
+                case 12 -> {
                     BookListFragment articlelist = new BookListFragment();
                     Bundle bundle = new Bundle();
                     bundle.putString("type", "articlelist");
@@ -152,7 +212,7 @@ public class HomeFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return 7;
+            return 13;
         }
     }
 

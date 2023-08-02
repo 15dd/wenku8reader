@@ -18,7 +18,7 @@ class PageText : View {
             isFilterBitmap = true
         }
     }
-//    var mBgColor = Color.WHITE
+    var mBgColor = Color.WHITE
     var mTextArray: java.util.ArrayList<String>? = null
     var mTextColor: Int = Color.BLACK
     var mTxtFontType: Typeface = Typeface.DEFAULT
@@ -51,7 +51,7 @@ class PageText : View {
         mPaint.color = mTextColor                             //字体颜色
         mPaint.typeface = mTxtFontType
         mPaint.textSize = mBottomTextSize
-//        canvas.drawColor(mBgColor)
+        canvas.drawColor(mBgColor)
         if (mIsDrawTime) {  //全屏条件下绘制
             val date = timeFormatter.format(System.currentTimeMillis())
             //底部左下角绘制：时间。格式如： 14:40

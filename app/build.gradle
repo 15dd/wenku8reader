@@ -25,9 +25,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     buildFeatures {
         viewBinding true
     }
+
     buildToolsVersion '33.0.2'
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_19

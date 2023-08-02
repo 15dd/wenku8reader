@@ -25,6 +25,7 @@ class PageImage : androidx.appcompat.widget.AppCompatImageView {
             isFilterBitmap = false
         }
     }
+    var mBgColor = Color.WHITE
     var mTextColor: Int = Color.BLACK
     var mBottomTextSize = 35f
     var mPageNum: Int = 0
@@ -42,9 +43,10 @@ class PageImage : androidx.appcompat.widget.AppCompatImageView {
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         mPaint.textSize = mBottomTextSize
         mPaint.color = mTextColor
+        canvas.drawColor(mBgColor)
         //底部右下角绘制：章节相关信息    格式为:   第 XXX 章节 YYY章节名  ：  n / 该章节总共页数
         val bottomText =
             "${mTitle ?: ""} ${if (mPageNum > mMaxPageNum) 0 else mPageNum}/$mMaxPageNum"

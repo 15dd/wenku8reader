@@ -41,8 +41,6 @@ public class SettingActivity extends AppCompatActivity {
 
         ContentValues values = new ContentValues();
         values.put("_id", 1);
-        values.put("fontSize", GlobalConfig.readerFontSize);
-        values.put("lineSpacing", GlobalConfig.readerLineSpacing);
         values.put("checkUpdate", checkUpdate.isChecked());
         values.put("bookcaseViewType", GlobalConfig.bookcaseViewType);
         GlobalConfig.db.replace("setting", null, values);

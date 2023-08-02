@@ -12,14 +12,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -42,7 +43,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -65,7 +68,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -88,7 +93,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -115,6 +122,89 @@
                     android:layout_height="wrap_content"
                     android:text="左右" />
             </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="滑动自动切换章节"
+                android:textSize="16sp" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switch_bottom_sheet_act_read"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottom_sheet_act_read_selectBackground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="背景颜色"
+                android:textSize="16sp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView_bottom_sheet_act_read_default"
+                android:layout_width="@dimen/dp_35"
+                android:layout_height="@dimen/dp_35"
+                app:cardCornerRadius="100dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                android:clickable="true"
+                android:focusable="true"
+                android:checkable="true"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView_bottom_sheet_act_read_brown"
+                android:layout_marginLeft="10dp"
+                android:layout_width="@dimen/dp_35"
+                android:layout_height="@dimen/dp_35"
+                app:cardCornerRadius="100dp"
+                app:cardBackgroundColor="#CEC29C"
+                android:clickable="true"
+                android:focusable="true"
+                android:checkable="true"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView_bottom_sheet_act_read_grey"
+                android:layout_marginLeft="10dp"
+                android:layout_width="@dimen/dp_35"
+                android:layout_height="@dimen/dp_35"
+                app:cardCornerRadius="100dp"
+                app:cardBackgroundColor="#D1CEC5"
+                android:clickable="true"
+                android:focusable="true"
+                android:checkable="true"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView_bottom_sheet_act_read_green"
+                android:layout_marginLeft="10dp"
+                android:layout_width="@dimen/dp_35"
+                android:layout_height="@dimen/dp_35"
+                app:cardCornerRadius="100dp"
+                app:cardBackgroundColor="#CCEBCC"
+                android:clickable="true"
+                android:focusable="true"
+                android:checkable="true"/>
 
         </LinearLayout>
 

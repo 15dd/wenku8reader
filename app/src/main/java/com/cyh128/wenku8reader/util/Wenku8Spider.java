@@ -52,6 +52,30 @@ public class Wenku8Spider {
                 //日推荐
                 url = String.format("https://www.wenku8.net/modules/article/toplist.php?sort=dayvote&page=%d", pageindex);
                 break;
+            case "monthvisit":
+                //月排行
+                url = String.format("https://www.wenku8.net/modules/article/toplist.php?sort=monthvisit&page=%d", pageindex);
+                break;
+            case "monthvote":
+                //月推荐
+                url = String.format("https://www.wenku8.net/modules/article/toplist.php?sort=monthvote&page=%d", pageindex);
+                break;
+            case "weekvisit":
+                //周排行
+                url = String.format("https://www.wenku8.net/modules/article/toplist.php?sort=weekvisit&page=%d", pageindex);
+                break;
+            case "weekvote":
+                //周推荐
+                url = String.format("https://www.wenku8.net/modules/article/toplist.php?sort=weekvote&page=%d", pageindex);
+                break;
+            case "goodnum":
+                //总推荐
+                url = String.format("https://www.wenku8.net/modules/article/toplist.php?sort=goodnum&page=%d", pageindex);
+                break;
+            case "size":
+                //字数排行
+                url = String.format("https://www.wenku8.net/modules/article/toplist.php?sort=size&page=%d", pageindex);
+                break;
         }
 
         return parseNovelList(LoginWenku8.getPageHtml(url));

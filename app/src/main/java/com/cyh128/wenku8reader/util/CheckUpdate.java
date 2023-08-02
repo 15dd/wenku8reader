@@ -26,9 +26,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class CheckUpdate { //检查是否有更新
-    public static int WITH_TIP = 0;
-    public static int WITHOUT_TIP = 1;
-    public static void checkUpdate(Context context,int mode) throws IOException {
+    public enum Mode { WITH_TIP,WITHOUT_TIP }
+    public static void checkUpdate(Context context,Mode mode) throws IOException {
         String gitVersion = getGithubLatestReleaseVersion();
         String thisVersion = getVersion(context);
         if (!gitVersion.equals(thisVersion)) {
@@ -50,7 +49,7 @@ public class CheckUpdate { //检查是否有更新
                 }
             });
         } else {
-            if (mode == WITH_TIP) {
+            if (mode == Mode.WITH_TIP) {
                 boolean showDialog = new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context,"已经是最新版本",Toast.LENGTH_SHORT).show());
             }
         }
