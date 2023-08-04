@@ -35,7 +35,7 @@ public class TagSearchFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_booklist, container, false);
         tag = getArguments().getString("tag");
         sort = getArguments().getString("sort");
-        emptyView = inflater.inflate(R.layout.empty_view, container, false);
+        emptyView = inflater.inflate(R.layout.view_empty_view, container, false);
         list = view.findViewById(R.id.booklist);
         list.setLayoutManager(new LinearLayoutManager(view.getContext()));
 

@@ -8,7 +8,8 @@ public class GlobalConfig {//app全局变量存放处
     public static float readerBottomTextSize;
     public static boolean isUpToDown;
     public static boolean canSwitchChapterByScroll;
-    public static String backgroundColor;
+    public static String backgroundColorDay;
+    public static String backgroundColorNight;
     public static boolean checkUpdate;
     public static boolean bookcaseViewType;
     public static SQLiteDatabase db;

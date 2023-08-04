@@ -33,7 +33,7 @@ public class BookListFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_booklist, container, false);
         bookType = getArguments().getString("type");
         list = view.findViewById(R.id.booklist);
-        emptyView = inflater.inflate(R.layout.empty_view, container, false);
+        emptyView = inflater.inflate(R.layout.view_empty_view, container, false);
 
         list.setLayoutManager(new LinearLayoutManager(view.getContext()));
 

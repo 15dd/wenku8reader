@@ -1,8 +1,5 @@
 package com.cyh128.wenku8reader.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.IntentFilter;
-import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,12 +13,10 @@ import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.fragment.BookCaseFragment;
 import com.cyh128.wenku8reader.fragment.HomeFragment;
 import com.cyh128.wenku8reader.fragment.MoreFragment;
-import com.cyh128.wenku8reader.util.CheckNetwork;
 import com.cyh128.wenku8reader.util.CheckUpdate;
 import com.cyh128.wenku8reader.util.GlobalConfig;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AppActivity extends AppCompatActivity {
@@ -29,21 +24,17 @@ public class AppActivity extends AppCompatActivity {
     private BookCaseFragment bookcaseFragment;
     private HomeFragment homeFragment;
     private MoreFragment moreFragment;
-    private BroadcastReceiver receivers = new CheckNetwork();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app);
 
-        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        this.registerReceiver(receivers,filter);
-
         Window window = getWindow();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.setDecorFitsSystemWindows(false);//底部小白条沉浸（全面屏手势）https://juejin.cn/post/6904545697552007181
         }
-        
+
         //检查更新==================================================================================
         if (GlobalConfig.checkUpdate) {
             new Thread(() -> {
@@ -63,19 +54,20 @@ public class AppActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(receivers);
+    public void onBackPressed() {
+        //防止内存泄漏，Android 10专用(Android 10通病)，https://issuetracker.google.com/issues/139738913
+        if (isTaskRoot() && getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            finishAfterTransition();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     public void initFragment() {
         homeFragment = new HomeFragment();
         bookcaseFragment = new BookCaseFragment();
         moreFragment = new MoreFragment();
-        List<Fragment> fragment = new ArrayList<>();
-        fragment.add(homeFragment);
-        fragment.add(bookcaseFragment);
-        fragment.add(moreFragment);
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.appFragment, homeFragment)

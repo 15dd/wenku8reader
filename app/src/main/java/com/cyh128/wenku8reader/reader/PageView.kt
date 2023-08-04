@@ -233,12 +233,11 @@ class PageView : ViewFlipper, IPageView {
                 Thread {
                     try {
                         handler.post {
-                            setImageDrawable(
-                                resources.getDrawable(
-                                    R.drawable.image_loading_small,
-                                    null
-                                )
-                            )
+                            if (ReadActivity.isNigntMode) {
+                                setImageDrawable(resources.getDrawable(R.drawable.image_loading_small_night, null))
+                            } else {
+                                setImageDrawable(resources.getDrawable(R.drawable.image_loading_small_day, null))
+                            }
                             requestLayout()
                         }
 
@@ -258,7 +257,12 @@ class PageView : ViewFlipper, IPageView {
                     } catch (e: Exception) {
                         e.printStackTrace()
                         handler.post {
-                            this.setImageDrawable(resources.getDrawable(R.drawable.image_loading_fail_small, null))
+                            if (ReadActivity.isNigntMode) {
+                                setImageDrawable(resources.getDrawable(R.drawable.image_loading_fail_small_night, null))
+                            } else {
+                                setImageDrawable(resources.getDrawable(R.drawable.image_loading_fail_small_day, null))
+                            }
+
                             requestLayout()
                         }
                     }

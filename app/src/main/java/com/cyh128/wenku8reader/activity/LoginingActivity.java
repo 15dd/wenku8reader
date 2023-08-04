@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -98,7 +97,7 @@ public class LoginingActivity extends AppCompatActivity { //MainActivity
         GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS readHistory(bookUrl TEXT PRIMARY KEY,indexUrl TEXT UNIQUE NOT NULL,title TEXT NOT NULL,location INT NOT NULL)");
         GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS user_info(_id INTEGER PRIMARY KEY autoincrement,username TEXT,password TEXT)");
         GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS setting(_id INTEGER UNIQUE,checkUpdate BOOLEAN NOT NULL,bookcaseViewType BOOLEAN NOT NULL)");
-        GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS reader(_id INTEGER UNIQUE,fontSize FLOAT NOT NULL,lineSpacing FLOAT NOT NULL,bottomTextSize FLOAT NOT NULL,isUpToDown BOOLEAN NOT NULL,canSwitchChapterByScroll BOOLEAN NOT NULL,backgroundColor TEXT NOT NULL)");
+        GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS reader(_id INTEGER UNIQUE,fontSize FLOAT NOT NULL,lineSpacing FLOAT NOT NULL,bottomTextSize FLOAT NOT NULL,isUpToDown BOOLEAN NOT NULL,canSwitchChapterByScroll BOOLEAN NOT NULL,backgroundColorDay TEXT NOT NULL,backgroundColorNight TEXT NOT NULL)");
         try {
             String sql = "select * from setting where _id=1";
             Cursor cursor = GlobalConfig.db.rawQuery(sql, null);
@@ -124,16 +123,18 @@ public class LoginingActivity extends AppCompatActivity { //MainActivity
                     GlobalConfig.readerBottomTextSize = cursor2.getFloat(3);
                     GlobalConfig.isUpToDown = cursor2.getInt(4) == 1;
                     GlobalConfig.canSwitchChapterByScroll = cursor2.getInt(5) == 1;
-                    GlobalConfig.backgroundColor = cursor2.getString(6);
+                    GlobalConfig.backgroundColorDay = cursor2.getString(6);
+                    GlobalConfig.backgroundColorNight = cursor2.getString(7);
                 }
                 cursor2.close();
             } else {
-                GlobalConfig.readerFontSize = 22+20f;
+                GlobalConfig.readerFontSize = 30+20f;
                 GlobalConfig.readerLineSpacing = 1.5f;
-                GlobalConfig.readerBottomTextSize = 40;
+                GlobalConfig.readerBottomTextSize = 50;
                 GlobalConfig.isUpToDown = false;
                 GlobalConfig.canSwitchChapterByScroll = true;
-                GlobalConfig.backgroundColor = "default";
+                GlobalConfig.backgroundColorDay = "default";
+                GlobalConfig.backgroundColorNight = "default";
             }
 
             return true;

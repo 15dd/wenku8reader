@@ -40,7 +40,9 @@
             android:id="@+id/errordetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            android:text="报错信息"
+            android:textIsSelectable="true"/>
 
     </androidx.core.widget.NestedScrollView>
 

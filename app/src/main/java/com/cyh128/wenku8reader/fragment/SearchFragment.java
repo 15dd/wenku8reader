@@ -40,7 +40,7 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         view = inflater.inflate(R.layout.fragment_booklist, container, false);
-        emptyView = inflater.inflate(R.layout.empty_view, container, false);
+        emptyView = inflater.inflate(R.layout.view_empty_view, container, false);
         searchText = getArguments().getString("searchText");
         list = view.findViewById(R.id.booklist);
         novelTitle = getActivity().findViewById(R.id.radiobutton_act_search_noveltitle);

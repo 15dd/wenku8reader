@@ -61,7 +61,7 @@
                 android:layout_weight="4"
                 android:stepSize="0.1"
                 android:valueFrom="1"
-                android:valueTo="10" />
+                android:valueTo="5" />
         </LinearLayout>
 
         <LinearLayout
@@ -76,7 +76,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="进度字体大小"
+                android:text="底部字体大小"
                 android:textSize="16sp" />
 
             <com.google.android.material.slider.Slider
@@ -130,6 +130,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp">
 
@@ -148,11 +149,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/bottom_sheet_act_read_selectBackground"
+            android:id="@+id/bottom_sheet_act_read_selectBackground_day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp">
 
@@ -164,11 +166,11 @@
                 android:textSize="16sp" />
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardView_bottom_sheet_act_read_default"
+                android:id="@+id/cardView_bottom_sheet_act_read_default_day"
                 android:layout_width="@dimen/dp_35"
                 android:layout_height="@dimen/dp_35"
                 app:cardCornerRadius="100dp"
-                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardBackgroundColor="#ffffff"
                 android:clickable="true"
                 android:focusable="true"
                 android:checkable="true"/>
@@ -202,6 +204,46 @@
                 android:layout_height="@dimen/dp_35"
                 app:cardCornerRadius="100dp"
                 app:cardBackgroundColor="#CCEBCC"
+                android:clickable="true"
+                android:focusable="true"
+                android:checkable="true"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottom_sheet_act_read_selectBackground_night"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="背景颜色"
+                android:textSize="16sp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView_bottom_sheet_act_read_default_night"
+                android:layout_width="@dimen/dp_35"
+                android:layout_height="@dimen/dp_35"
+                app:cardCornerRadius="100dp"
+                app:cardBackgroundColor="#000000"
+                android:clickable="true"
+                android:focusable="true"
+                android:checkable="true"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView_bottom_sheet_act_read_black"
+                android:layout_marginLeft="10dp"
+                android:layout_width="@dimen/dp_35"
+                android:layout_height="@dimen/dp_35"
+                app:cardCornerRadius="100dp"
+                app:cardBackgroundColor="#5d5d5d"
                 android:clickable="true"
                 android:focusable="true"
                 android:checkable="true"/>

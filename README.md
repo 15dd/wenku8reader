@@ -28,6 +28,7 @@
 - [代码目录结构](#代码目录结构)
 - [感谢](#感谢)
 - [作者的话](#作者的话)
+- [常见问题](#常见问题)
 
 ## 安装
 [前往release页面下载安装](https://github.com/15dd/wenku8reader/releases)
@@ -48,31 +49,31 @@
 ## 代码目录结构
 ```
 wenku8reader
-│  App.java 实现MD3动态取色、数据库初始化和读取数据
+│  App.java 实现MD3动态取色
 │  
 ├─activity
+│      AboutActivity 关于界面
 │      AppActivity.java 首页界面
 │      CommentActivity.java 评论界面
 │      CommentInCommentActivity.java 评论回复界面
 │      ContentsActivity.java 小说目录界面
-│      LoginingActivity.java 开屏、等待登录完成界面
+│      CrashActivity 软件崩溃界面
+│      LoginingActivity.java 开屏、等待登录完成界面；数据库初始化以及读取数据
 │      LoginInputActivity.java 登录和注册界面
 │      PhotoViewActivity.java 查看原图界面
-│      ReaderActivity.java 阅读器界面
+│      ReadActivity.java 阅读器界面
 │      SearchActivity.java 搜索界面
 │      SettingActivity.java 设置界面
 │      TagSearchActivity.java 按Tag搜索的界面
 │      TagSelectActivity.java 选择Tag的界面
-│      CrashActivity 软件崩溃界面
 │      UserInfoActivity 用户信息界面
 │      
 ├─adapter
 │      BookCaseAdapter.java 书架adapter
-│      BookListAdapter.java 小说信息adapter
+│      BookListAdapter.java 小说列表adapter
 │      CommentAdapter.java 评论adapter
 │      CommentInCommentAdapter.java 回复adapter
 │      ContentsListAdapter.java 小说目录列表adapter
-│      ReaderAdapter.java 阅读器插图adapter(如果有插图的话)
 │      
 ├─bean
 │      BookcaseBean.java 书架bean
@@ -84,17 +85,22 @@ wenku8reader
 │      BookCaseFragment.java 书架fragment
 │      BookListFragment.java 小说信息fragment
 │      HomeFragment.java 首页fragment
-│      MyinfoFragment.java 我的fragment
-│      ReadFragment.java 阅读器fragment
+│      MoreFragment.java 更多fragment
 │      SearchFragment.java 搜索fragment
 │      TagSearchFragment.java 按Tag搜索的fragment
+│
+├─reader
+│      IPageView.kt PageView的interface
+│      Orientation.kt 页面滑动方向的enum
+│      PageImage.kt 图像页面自定义view
+│      PageText.kt 文本页面自定义view
+│      PageView.kt 阅读器自定义view
 │      
 └─util
-       CheckNetwork.java 检测网络状态
        CheckUpdate.java 检查更新
+       GlobalConfig.java 全局变量存放
        LoginWenku8.java 登录wenku8
        MyNestedScrollView.java 自定义NestedScrollView
-       VarTemp.java 全局变量存放
        Wenku8Spider.java Wenku8爬虫
 ```
 ## 感谢
@@ -109,6 +115,7 @@ wenku8reader
 - com.github.TutorialsAndroid:crashx  全局崩溃拦截
 - com.github.youxiaochen:expandable-recyclerview 可展开和收回的recyclerview（用这个主要是不会与nestedscrollview发生滑动冲突）
 - com.geyifeng.immersionbar:immersionbar 阅读器界面沉浸
+- com.squareup.leakcanary:leakcanary-android 内存泄漏检测
 ### 开源项目
 - https://github.com/ya-b/NetNovelReader  阅读器来源
 ### 软件界面灵感、参考
@@ -116,7 +123,7 @@ wenku8reader
 - https://github.com/Ashinch/ReadYou
 ### 其他
 - https://github.com/wildma/ScreenAdaptation  根据屏幕分辨率适配组件大小（Android Studio插件）
-- AI
+- AI（new bing、claude）
 
 
 # 作者的话
@@ -126,18 +133,25 @@ wenku8reader
 因为是职高生，所以开发新功能和解决问题的速度会比较慢，这个也请谅解。
 </b>
 <br><br>
-在写那个阅读器时，真的花了我很多时间，在Github上找了很久，总算找到一个可以轻松Ctrl+C的项目（不需要在一串很长的代码、很多文件中找到自己想要的。直接将与reader相关的文件复制过来，然后setText即可），但是只能显示文本，显示不了图片。于是我去修改了他的代码，但在修改的时候是真的很痛苦，首先他的代码都是kotlin写的，我还需要去学一下语法，然后是他使用了自定义view，这方面我根本没了解过，所以在想显示图片的时候也花了很多时间，最后的方法也很简单：写一个跟显示文本页面(PageText)差不多的自定义view，然后修改一下PageView的代码就行了。后面也解决了很多小问题。
+在写那个阅读器时，真的花了我很多时间，在Github上找了很久，总算找到一个可以轻松使用的小说阅读器项目，但是只能显示文本，显示不了图片。于是我去修改了他的代码，但在修改的时候是真的很痛苦，首先他的代码都是kotlin写的，我还需要去学一下kotlin的语法，然后是他使用了自定义view，这方面我根本没了解过，所以在想关于显示图片的代码的时候也花了很多时间，最后的方法也很简单：写一个跟显示文本页面(PageText)差不多的自定义view，然后修改一下PageView的代码就行了。虽然之后有一些小bug，但基本都解决了。
+<br><br>
+在开发2.0.0版本，解决代码Error时，突然看到了Warning里的`this is a memory leak`这个消息（我之前基本不看Warning的，只要没有Error，软件能跑就行）。然后百度了一下，发现java也有内存泄漏这个情况，因为之前有听说过java有内存回收机制，以为new了一块空间出来就不用管他了。后来用leakcanary一查，确实有内存泄漏这个问题。之后就把已知的内存泄漏问题给解决了，在这期间又发现了因为系统问题导致的内存泄漏（在安卓10这个系统上会出现。这个还是AI找出来的，不然我都不知道是系统的原因），算是涨了很多知识。
 <br><br>
 <br><br>
-本项目是从2023.4.8开始写起来的（安卓相关知识也是从这个时候开始学习的），平常也就放学回家和周六周日的时候写这个，由于本人之前从来没有接触过安卓开发，所以这个软件都是边学边写的，难免会出现一些问题。我甚至连Java都没怎么学过，都是靠C++的语法基础的，所以看源代码的时候轻喷。<br>
+<b>
+本软件是从2023.4.8开始写起来的（安卓相关知识也是从这个时候开始学习的），平常也就放学回家和周六周日的时候写这个，由于本人之前从来没有接触过安卓开发，所以这个软件都是边学边写的，难免会出现一些问题。我甚至连Java都没怎么学过，都是靠C++的语法基础的，所以看源代码的时候轻喷。<br></b>
 很多代码都是我从网上抄的，源代码注释也有写出处。源代码中的文件夹，文件和变量名的命名都挺混乱的，请见谅。
 <br><br>
 我写这个软件的目的是为了适配高版本的安卓系统。<br>
 之前一直在用其他人写的第三方软件，但是在安卓版本高的系统上会出现一些问题（例如安卓13），所以就自己写了一个软件。
 <br><br>
-软件界面的颜色配色我是直接使用了MD3的动态配色，我个人很喜欢MD3的动态配色和Material Design风格。
+软件界面的颜色配色我是直接使用了MD3的动态配色，我个人很喜欢MD3的动态配色和Material Design 3风格。
 <br><br>
 本人也在这个项目中学到了很多东西，比如class的好处（以前我都不喜欢用class的，因为没理解😂），收获也挺多的。
+
+## 常见问题
+- Q：为什么软件一直崩溃？<br>
+  A：首先先看一下网络是否正常，比如没连接上网络，开了vpn之类的。或者打开浏览器访问(https://www.wenku8.net/index.php)。如果能正常访问该网站，而且网络环境没问题的情况下还一直崩溃的话，请提一个issue，并附上报错信息、使用的版本号，以及软件是在什么情况下崩溃的说明。
 
 ## 开源协议
 

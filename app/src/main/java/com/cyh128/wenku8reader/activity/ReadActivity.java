@@ -19,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.app.hubert.guide.NewbieGuide;
+import com.app.hubert.guide.model.GuidePage;
 import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.bean.ContentsCcssBean;
 import com.cyh128.wenku8reader.bean.ContentsVcssBean;
@@ -39,8 +41,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReadActivity extends AppCompatActivity {
-    public static MaterialToolbar toolbar;
-    public static View bottombar;
+    public MaterialToolbar toolbar;
+    public View bottombar;
     public static List<ContentsVcssBean> vcss = new ArrayList<>();
     public static List<List<ContentsCcssBean>> ccss = new ArrayList<>();
     public static String bookUrl = null;
@@ -50,13 +52,12 @@ public class ReadActivity extends AppCompatActivity {
     private int showBarColor;
     private String hideBarColor;
     public static Slider readProgress;
-    private Button previousChapter, nextChapter, setting;
     public PageView pageView;
     private Dialog dialog;
     private MaterialAlertDialogBuilder builder;
     private BottomSheetDialog bottomSheetDialog;
     private Slider fontSize, lineSpacing, bottomTextSize;
-    private boolean isNigntMode;
+    public static boolean isNigntMode;
     private MaterialButtonToggleGroup readDirection;
     private MaterialSwitch switchChapter;
     public static int showCount = 0;
@@ -83,9 +84,9 @@ public class ReadActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar_act_read);
         readProgress = findViewById(R.id.progress_act_read);
 
-        previousChapter = findViewById(R.id.button_act_read_previousChapter);
-        nextChapter = findViewById(R.id.button_act_read_nextChapter);
-        setting = findViewById(R.id.button_act_read_Setting);
+        Button previousChapter = findViewById(R.id.button_act_read_previousChapter);
+        Button nextChapter = findViewById(R.id.button_act_read_nextChapter);
+        Button setting = findViewById(R.id.button_act_read_Setting);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -102,19 +103,22 @@ public class ReadActivity extends AppCompatActivity {
         bottombar.setBackgroundResource(showBarColor);
 
         UiModeManager uiModeManager = (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
-        if (uiModeManager.getNightMode() == UiModeManager.MODE_NIGHT_YES) isNigntMode = true;
-        if (isNigntMode) {
-            hideBarColor = "#323232";
+        if (uiModeManager.getNightMode() == UiModeManager.MODE_NIGHT_YES) {
+            isNigntMode = true;
+            hideBarColor = "#000000";
         } else {
+            isNigntMode = false;
             hideBarColor = "#ffffff";
         }
 
         bottomSheetDialog = new BottomSheetDialog(this);
-        bottomSheetView = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_act_read, null, false);
+        bottomSheetView = LayoutInflater.from(this).inflate(R.layout.view_bottom_sheet_act_read, null, false);
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.setDismissWithAnimation(true);
         //保存设置
         bottomSheetDialog.setOnDismissListener(dialog -> {
+                hideBar();
+
                 GlobalConfig.readerFontSize = fontSize.getValue() + 20f;
                 GlobalConfig.readerLineSpacing = lineSpacing.getValue();
                 GlobalConfig.readerBottomTextSize = bottomTextSize.getValue();
@@ -126,7 +130,8 @@ public class ReadActivity extends AppCompatActivity {
                 values.put("bottomTextSize", bottomTextSize.getValue());
                 values.put("isUpToDown", GlobalConfig.isUpToDown);
                 values.put("canSwitchChapterByScroll", GlobalConfig.canSwitchChapterByScroll);
-                values.put("backgroundColor", GlobalConfig.backgroundColor);
+                values.put("backgroundColorDay", GlobalConfig.backgroundColorDay);
+                values.put("backgroundColorNight", GlobalConfig.backgroundColorNight);
 
                 GlobalConfig.db.replace("reader", null, values);
         });
@@ -212,16 +217,19 @@ public class ReadActivity extends AppCompatActivity {
             bottomSheetDialog.show();
         });
 
-        bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_default).setOnClickListener(v -> setBackgroundColor("default"));
+        bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_default_day).setOnClickListener(v -> setBackgroundColor("default"));
         bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_brown).setOnClickListener(v -> setBackgroundColor("#CEC29C"));
         bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_grey).setOnClickListener(v -> setBackgroundColor("#D1CEC5"));
         bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_green).setOnClickListener(v -> setBackgroundColor("#CCEBCC"));
+
+        bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_default_night).setOnClickListener(v -> setBackgroundColor("default"));
+        bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_black).setOnClickListener(v -> setBackgroundColor("#5D5D5D"));
 
         showLoadingDialog();
         loadContent();
         showBar();
 
-        //隐藏appbar和bottomAppbar
+        //进入阅读界面2秒后隐藏appbar和bottomAppbar
         new CountDownTimer(1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -232,15 +240,22 @@ public class ReadActivity extends AppCompatActivity {
                 hideBar();
             }
         }.start();
+
+        NewbieGuide.with(ReadActivity.this)//新手引导
+                .setLabel("imageLongShow")
+                .addGuidePage(GuidePage.newInstance().setLayoutRes(R.layout.view_image_long_show))
+                .show();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         if (dialog != null) {//防止windowLeaked
             dialog.dismiss();
         }
+        //防止内存泄露
+        readActivity = null;
+        readProgress = null;
 
         new Thread(() -> {
             //保存阅读历史
@@ -255,28 +270,36 @@ public class ReadActivity extends AppCompatActivity {
 
     private void setBackgroundColor(String color) {
         if (isNigntMode) {
-            pageView.setTextColor(Color.parseColor("#555555"));
-            pageView.setBackgroundcolor(Color.BLACK);
-            GlobalConfig.backgroundColor = "default";
-            hideBarColor = "#000000";
-            bottomSheetView.findViewById(R.id.bottom_sheet_act_read_selectBackground).setVisibility(View.GONE);
+            bottomSheetView.findViewById(R.id.bottom_sheet_act_read_selectBackground_day).setVisibility(View.GONE);
+            if (color.equals("#5D5D5D")) {
+                pageView.setTextColor(Color.parseColor("#666666"));
+                pageView.setBackgroundcolor(Color.parseColor("#5D5D5D"));
+                GlobalConfig.backgroundColorNight = "#5D5D5D";
+                hideBarColor = "#5D5D5D";
+            } else {
+                pageView.setTextColor(Color.parseColor("#FFFFFF"));
+                pageView.setBackgroundcolor(Color.BLACK);
+                GlobalConfig.backgroundColorNight = "default";
+                hideBarColor = "#000000";
+            }
         } else {
+            bottomSheetView.findViewById(R.id.bottom_sheet_act_read_selectBackground_night).setVisibility(View.GONE);
             pageView.setTextColor(Color.BLACK);
             if (color.equals("#CEC29C")) {
                 pageView.setBackgroundcolor(Color.parseColor("#CEC29C"));
-                GlobalConfig.backgroundColor = "#CEC29C";
+                GlobalConfig.backgroundColorDay = "#CEC29C";
                 hideBarColor = "#CEC29C";
             } else if (color.equals("#D1CEC5")) {
                 pageView.setBackgroundcolor(Color.parseColor("#D1CEC5"));
-                GlobalConfig.backgroundColor = "#D1CEC5";
+                GlobalConfig.backgroundColorDay = "#D1CEC5";
                 hideBarColor = "#D1CEC5";
             } else if (color.equals("#CCEBCC")) {
                 pageView.setBackgroundcolor(Color.parseColor("#CCEBCC"));
-                GlobalConfig.backgroundColor = "#CCEBCC";
+                GlobalConfig.backgroundColorDay = "#CCEBCC";
                 hideBarColor = "#CCEBCC";
-            } else if (color.equals("default")) {
+            } else {
                 pageView.setBackgroundcolor(Color.WHITE);
-                GlobalConfig.backgroundColor = "default";
+                GlobalConfig.backgroundColorDay = "default";
                 hideBarColor = "#FFFFFF";
             }
         }
@@ -309,7 +332,12 @@ public class ReadActivity extends AppCompatActivity {
                         historyPosition = -1;
                     }
 
-                    setBackgroundColor(GlobalConfig.backgroundColor);
+                    if (isNigntMode) {
+                        setBackgroundColor(GlobalConfig.backgroundColorNight);
+                    } else {
+                        setBackgroundColor(GlobalConfig.backgroundColorDay);
+                    }
+
 
                     if (dialog != null) dialog.dismiss();
                 });
@@ -329,7 +357,7 @@ public class ReadActivity extends AppCompatActivity {
 
     public void showLoadingDialog() {
         dialog = new Dialog(this);
-        View contentView = LayoutInflater.from(this).inflate(R.layout.alert_progress_dialog, null);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.view_alert_progress_dialog, null);
         builder = new MaterialAlertDialogBuilder(this);
         builder.setView(contentView);
         builder.setCancelable(false);
@@ -337,7 +365,6 @@ public class ReadActivity extends AppCompatActivity {
     }
 
     public enum Direction {Next, Previous}
-
     public void switchChapter(Direction direction) {
         if (direction == Direction.Next) {
             runOnUiThread(() -> new MaterialAlertDialogBuilder(ReadActivity.this)

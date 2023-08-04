@@ -15,22 +15,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.fragment.SearchFragment;
-import com.cyh128.wenku8reader.util.CheckNetwork;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class SearchActivity extends AppCompatActivity {
     private TextInputEditText editText;
     public static boolean searchFlag = true;
-    private BroadcastReceiver receivers = new CheckNetwork();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
-        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        this.registerReceiver(receivers,filter);
 
         editText = findViewById(R.id.editText_act_search);
 
@@ -81,11 +76,5 @@ public class SearchActivity extends AppCompatActivity {
             }
             return true;
         });
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(receivers);
     }
 }

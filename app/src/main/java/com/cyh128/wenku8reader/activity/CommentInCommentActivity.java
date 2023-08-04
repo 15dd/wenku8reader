@@ -1,9 +1,6 @@
 package com.cyh128.wenku8reader.activity;
 
-import android.content.BroadcastReceiver;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 
@@ -13,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.adapter.CommentInCommentAdapter;
-import com.cyh128.wenku8reader.util.CheckNetwork;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -30,20 +26,16 @@ public class CommentInCommentActivity extends AppCompatActivity {
     private int pageindex = 0;
     private String url;
     private View emptyView;
-    private BroadcastReceiver receivers = new CheckNetwork();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
 
-        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        this.registerReceiver(receivers,filter);
-
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
         list = findViewById(R.id.recyclerView_act_comment);
-        emptyView = View.inflate(this, R.layout.empty_view, null);
+        emptyView = View.inflate(this, R.layout.view_empty_view, null);
 
         MaterialToolbar toolbar = findViewById(R.id.toolbar_act_comment);
         toolbar.setTitle("回复");
@@ -106,13 +98,6 @@ public class CommentInCommentActivity extends AppCompatActivity {
             }
         });
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(receivers);
-    }
-
 
     private void setPageData(boolean isFirstPage, List<List<String>> data) {
         if (list == null) {

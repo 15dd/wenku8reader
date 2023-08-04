@@ -1,5 +1,7 @@
 package com.cyh128.wenku8reader.activity;
 
+import android.app.UiModeManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -16,7 +18,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 public class PhotoViewActivity extends AppCompatActivity {
     private PhotoView photoView;
     private RequestOptions options = new RequestOptions()
-            .placeholder(R.drawable.image_loading_small)
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.ALL);
 
@@ -34,10 +35,23 @@ public class PhotoViewActivity extends AppCompatActivity {
             finish();
         });
 
+        Boolean isNigntMode = null;
+        UiModeManager uiModeManager = (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
+        if (uiModeManager.getNightMode() == UiModeManager.MODE_NIGHT_YES) {
+            isNigntMode = true;
+        } else {
+            isNigntMode = false;
+        }
+
         Intent intent = getIntent();
         String url = intent.getStringExtra("url");
         try {
-            Glide.with(PhotoViewActivity.this).load(url).apply(options).into(photoView);
+            if (isNigntMode) {
+                Glide.with(PhotoViewActivity.this).load(url).placeholder(R.drawable.image_loading_small_night).apply(options).into(photoView);
+            } else {
+                Glide.with(PhotoViewActivity.this).load(url).placeholder(R.drawable.image_loading_small_day).apply(options).into(photoView);
+            }
+
         } catch (Exception e) {
             runOnUiThread(() -> new MaterialAlertDialogBuilder(PhotoViewActivity.this)
                     .setTitle("网络超时")

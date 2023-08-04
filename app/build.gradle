@@ -15,7 +15,7 @@ android {
         applicationId "com.cyh128.wenku8reader"
         minSdk 29
         targetSdk 33
-        versionCode 230723
+        versionCode 230804
         versionName "1.2.0"
     }
 
@@ -26,11 +26,6 @@ android {
         }
     }
 
-    buildFeatures {
-        viewBinding true
-    }
-
-    buildToolsVersion '33.0.2'
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_19
         targetCompatibility JavaVersion.VERSION_19
@@ -55,5 +50,8 @@ dependencies {
     implementation 'com.github.TutorialsAndroid:crashx:v6.0.19'
     implementation 'com.github.youxiaochen:expandable-recyclerview:1.0.0'
     implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
+    implementation 'com.github.huburt-Hu:NewbieGuide:v2.4.0'
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'
 
 }
