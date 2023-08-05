@@ -59,7 +59,8 @@
                     <ImageView
                         android:id="@+id/image_act_contents"
                         android:layout_width="@dimen/dp_110"
-                        android:layout_height="@dimen/dp_160"/>
+                        android:layout_height="@dimen/dp_160"
+                        android:foreground="?selectableItemBackground"/>
 
                 </androidx.cardview.widget.CardView>
 

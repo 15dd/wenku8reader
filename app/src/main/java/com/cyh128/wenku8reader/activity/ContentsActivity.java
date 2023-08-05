@@ -240,7 +240,7 @@ public class ContentsActivity extends AppCompatActivity {
                 //end===================================================================================================================
 
                 isInBookcase();//判断这本书是否已在书架中
-                otherButtonListener();//评论区按钮监听
+                otherButtonListener();//按钮监听
 
                 Message msg = new Message();
                 setNovelInfo.sendMessage(msg);
@@ -299,6 +299,7 @@ public class ContentsActivity extends AppCompatActivity {
             intent.putExtra("url", novelDetail.get(6));
             startActivity(intent);
         });
+
         recommendButton.setOnClickListener(v -> {
             new Thread(()->{
                 try {
@@ -319,6 +320,12 @@ public class ContentsActivity extends AppCompatActivity {
                             .show());
                 }
             }).start();
+        });
+
+        imageView.setOnClickListener(v -> {
+            Intent intent1 = new Intent(ContentsActivity.this, PhotoViewActivity.class);
+            intent1.putExtra("url",novelDetail.get(4));
+            startActivity(intent1);
         });
     }
 

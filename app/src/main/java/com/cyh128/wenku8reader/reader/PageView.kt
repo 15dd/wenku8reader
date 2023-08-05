@@ -54,6 +54,11 @@ class PageView : ViewFlipper, IPageView {
     var textArray = ArrayList<ArrayList<String>>()
     var imgUrlList = ArrayList<String>()
 
+
+    //防止滑动过快重复显示对话框 https://blog.csdn.net/shitou0/article/details/81020883
+    private val MIN_CLICK_DELAY_TIME = 1000
+    private var lastClickTime: Long = 0
+
     var mBitmap: Bitmap? = null
     var mBarIsShow: Boolean = false
     var direction: Orientation? = null
@@ -152,11 +157,23 @@ class PageView : ViewFlipper, IPageView {
     }
 
     override fun onNextChapter() {
-        if (GlobalConfig.canSwitchChapterByScroll) ReadActivity.readActivity.switchChapter(ReadActivity.Direction.Next)
+        if (!GlobalConfig.canSwitchChapterByScroll) return
+        //https://blog.csdn.net/shitou0/article/details/81020883
+        val curClickTime = System.currentTimeMillis()
+        if (curClickTime - lastClickTime >= MIN_CLICK_DELAY_TIME) {
+            lastClickTime = curClickTime
+            ReadActivity.readActivity.switchChapter(ReadActivity.Direction.Next)
+        }
     }
 
     override fun onPreviousChapter() {
-        if (GlobalConfig.canSwitchChapterByScroll) ReadActivity.readActivity.switchChapter(ReadActivity.Direction.Previous)
+        if (!GlobalConfig.canSwitchChapterByScroll) return
+        //https://blog.csdn.net/shitou0/article/details/81020883
+        val curClickTime = System.currentTimeMillis()
+        if (curClickTime - lastClickTime >= MIN_CLICK_DELAY_TIME) {
+            lastClickTime = curClickTime
+            ReadActivity.readActivity.switchChapter(ReadActivity.Direction.Previous)
+        }
     }
 
     override fun onPageChange() {

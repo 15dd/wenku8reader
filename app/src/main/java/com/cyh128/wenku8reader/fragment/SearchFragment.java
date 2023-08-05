@@ -30,7 +30,7 @@ public class SearchFragment extends Fragment {
     private ByRecyclerView list;
     public int pageindex = 0;//上拉加载数据用，每上拉一次，索引值加1
     public int maxindex = 1;
-    private List<BookListBean> novelList = new ArrayList<>();
+    private List<BookListBean> novelList;
     private View view, emptyView;
     private String searchText;
     private BookListAdapter bookListAdapter;
@@ -45,6 +45,8 @@ public class SearchFragment extends Fragment {
         list = view.findViewById(R.id.booklist);
         novelTitle = getActivity().findViewById(R.id.radiobutton_act_search_noveltitle);
         authorName = getActivity().findViewById(R.id.radiobutton_act_search_authorname);
+
+        novelList = new ArrayList<>();
 
         list.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
@@ -155,11 +157,7 @@ public class SearchFragment extends Fragment {
 
     private List<BookListBean> getData() {
         try {
-            new Thread(() -> {
-                Looper.prepare();
-                waitFiveSecond();
-                Looper.loop();
-            }).start();
+            getActivity().runOnUiThread(() -> waitFiveSecond());
             if (novelTitle.isChecked()) {
                 System.out.println("checked");
             }

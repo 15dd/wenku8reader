@@ -223,7 +223,7 @@ public class ReadActivity extends AppCompatActivity {
         bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_green).setOnClickListener(v -> setBackgroundColor("#CCEBCC"));
 
         bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_default_night).setOnClickListener(v -> setBackgroundColor("default"));
-        bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_black).setOnClickListener(v -> setBackgroundColor("#5D5D5D"));
+        bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_black).setOnClickListener(v -> setBackgroundColor("#2C2C2C"));
 
         showLoadingDialog();
         loadContent();
@@ -271,11 +271,11 @@ public class ReadActivity extends AppCompatActivity {
     private void setBackgroundColor(String color) {
         if (isNigntMode) {
             bottomSheetView.findViewById(R.id.bottom_sheet_act_read_selectBackground_day).setVisibility(View.GONE);
-            if (color.equals("#5D5D5D")) {
-                pageView.setTextColor(Color.parseColor("#666666"));
-                pageView.setBackgroundcolor(Color.parseColor("#5D5D5D"));
-                GlobalConfig.backgroundColorNight = "#5D5D5D";
-                hideBarColor = "#5D5D5D";
+            if (color.equals("#2C2C2C")) {
+                pageView.setTextColor(Color.parseColor("#ffffff"));
+                pageView.setBackgroundcolor(Color.parseColor("#2C2C2C"));
+                GlobalConfig.backgroundColorNight = "#2C2C2C";
+                hideBarColor = "#2C2C2C";
             } else {
                 pageView.setTextColor(Color.parseColor("#FFFFFF"));
                 pageView.setBackgroundcolor(Color.BLACK);

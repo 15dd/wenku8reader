@@ -45,6 +45,7 @@ public class AboutActivity extends AppCompatActivity {
         }
 
         checkUpdate.setOnClickListener(v -> {
+            Toast.makeText(AboutActivity.this,"正在检查更新",Toast.LENGTH_SHORT).show();
             new Thread(() -> {
                 try {
                     CheckUpdate.checkUpdate(AboutActivity.this, CheckUpdate.Mode.WITH_TIP);
