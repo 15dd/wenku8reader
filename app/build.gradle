@@ -15,8 +15,8 @@ android {
         applicationId "com.cyh128.wenku8reader"
         minSdk 29
         targetSdk 33
-        versionCode 230805
-        versionName "2.0.0"
+        versionCode 230815
+        versionName "2.1.0"
     }
 
     buildTypes {
@@ -51,6 +51,7 @@ dependencies {
     implementation 'com.github.youxiaochen:expandable-recyclerview:1.0.0'
     implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
     implementation 'com.github.huburt-Hu:NewbieGuide:v2.4.0'
+    implementation 'com.github.RickyHal:EColorPicker:1.0.4'
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'
 

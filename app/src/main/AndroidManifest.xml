@@ -5,14 +5,16 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/><!-- 读取网络状态 -->
     <uses-permission android:name="android.permission.INTERNET"/><!-- 网络权限 -->
 
+
+    <!-- material design 3自适应颜色图标 https://blog.csdn.net/minping9101/article/details/129436383 -->
     <application
         android:name="com.cyh128.wenku8reader.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/logo"
         android:label="轻小说文库"
-        android:roundIcon="@drawable/logo"
+        android:icon="@mipmap/ic_launcher_logo"
+        android:roundIcon="@mipmap/ic_launcher_logo_round"
         android:screenOrientation="portrait"
         android:theme="@style/Theme.MyApplication"
         android:networkSecurityConfig="@xml/network"
@@ -84,6 +86,10 @@
 
         <activity
             android:name="com.cyh128.wenku8reader.activity.AboutActivity"
+            android:theme="@style/Theme.MyApplication" />
+
+        <activity
+            android:name="com.cyh128.wenku8reader.activity.SelectColorActivity"
             android:theme="@style/Theme.MyApplication" />
 
     </application>

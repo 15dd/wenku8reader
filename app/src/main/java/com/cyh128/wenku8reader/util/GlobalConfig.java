@@ -10,6 +10,8 @@ public class GlobalConfig {//app全局变量存放处
     public static boolean canSwitchChapterByScroll;
     public static String backgroundColorDay;
     public static String backgroundColorNight;
+    public static String textColorDay;
+    public static String textColorNight;
     public static boolean checkUpdate;
     public static boolean bookcaseViewType;
     public static SQLiteDatabase db;

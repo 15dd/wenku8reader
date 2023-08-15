@@ -3,7 +3,6 @@ package com.cyh128.wenku8reader.activity;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,8 +19,6 @@ import com.cyh128.wenku8reader.util.GlobalConfig;
 import com.cyh128.wenku8reader.util.LoginWenku8;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.progressindicator.CircularProgressIndicatorSpec;
-import com.google.android.material.progressindicator.IndeterminateDrawable;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -61,7 +58,7 @@ public class LoginInputActivity extends AppCompatActivity {
             }
 
             //尝试登录
-            new Thread(()->{
+            new Thread(() -> {
                 try {
                     boolean flag = LoginWenku8.login(str_username, str_password);
                     if (flag) {
@@ -75,7 +72,7 @@ public class LoginInputActivity extends AppCompatActivity {
                             values.put("password", str_password);
                             GlobalConfig.db.insert("user_info", null, values);
                         }
-                        Log.e("tag","finish");
+                        Log.e("tag", "finish");
                         LoginInputActivity.this.finish();
                     } else {
                         runOnUiThread(() -> {
@@ -116,7 +113,7 @@ public class LoginInputActivity extends AppCompatActivity {
                     .setTitle("请前往浏览器注册")
                     .setMessage("您需要前往浏览器页面注册，注册成功后再将用户名和密码填入输入框中，点击[前往注册]以继续注册")
                     .setCancelable(false)
-                    .setNegativeButton("取消",null)
+                    .setNegativeButton("取消", null)
                     .setPositiveButton("前往注册", (dialog, which) -> {
                         Uri uri = Uri.parse("https://www.wenku8.net/register.php");    //设置跳转的网站
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);

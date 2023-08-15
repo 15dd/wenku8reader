@@ -5,10 +5,12 @@ import android.app.Dialog;
 import android.app.UiModeManager;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Html;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,10 +107,8 @@ public class ReadActivity extends AppCompatActivity {
         UiModeManager uiModeManager = (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
         if (uiModeManager.getNightMode() == UiModeManager.MODE_NIGHT_YES) {
             isNigntMode = true;
-            hideBarColor = "#000000";
         } else {
             isNigntMode = false;
-            hideBarColor = "#ffffff";
         }
 
         bottomSheetDialog = new BottomSheetDialog(this);
@@ -132,6 +132,8 @@ public class ReadActivity extends AppCompatActivity {
                 values.put("canSwitchChapterByScroll", GlobalConfig.canSwitchChapterByScroll);
                 values.put("backgroundColorDay", GlobalConfig.backgroundColorDay);
                 values.put("backgroundColorNight", GlobalConfig.backgroundColorNight);
+                values.put("textColorDay", GlobalConfig.textColorDay);
+                values.put("textColorNight", GlobalConfig.textColorNight);
 
                 GlobalConfig.db.replace("reader", null, values);
         });
@@ -217,13 +219,6 @@ public class ReadActivity extends AppCompatActivity {
             bottomSheetDialog.show();
         });
 
-        bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_default_day).setOnClickListener(v -> setBackgroundColor("default"));
-        bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_brown).setOnClickListener(v -> setBackgroundColor("#CEC29C"));
-        bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_grey).setOnClickListener(v -> setBackgroundColor("#D1CEC5"));
-        bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_green).setOnClickListener(v -> setBackgroundColor("#CCEBCC"));
-
-        bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_default_night).setOnClickListener(v -> setBackgroundColor("default"));
-        bottomSheetView.findViewById(R.id.cardView_bottom_sheet_act_read_black).setOnClickListener(v -> setBackgroundColor("#2C2C2C"));
 
         showLoadingDialog();
         loadContent();
@@ -245,6 +240,13 @@ public class ReadActivity extends AppCompatActivity {
                 .setLabel("imageLongShow")
                 .addGuidePage(GuidePage.newInstance().setLayoutRes(R.layout.view_image_long_show))
                 .show();
+
+        bottomSheetView.findViewById(R.id.button_select_rgb).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ReadActivity.this, SelectColorActivity.class));
+            }
+        });
     }
 
     @Override
@@ -268,40 +270,15 @@ public class ReadActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void setBackgroundColor(String color) {
+    public void setBackgroundAndTextColor() {
         if (isNigntMode) {
-            bottomSheetView.findViewById(R.id.bottom_sheet_act_read_selectBackground_day).setVisibility(View.GONE);
-            if (color.equals("#2C2C2C")) {
-                pageView.setTextColor(Color.parseColor("#ffffff"));
-                pageView.setBackgroundcolor(Color.parseColor("#2C2C2C"));
-                GlobalConfig.backgroundColorNight = "#2C2C2C";
-                hideBarColor = "#2C2C2C";
-            } else {
-                pageView.setTextColor(Color.parseColor("#FFFFFF"));
-                pageView.setBackgroundcolor(Color.BLACK);
-                GlobalConfig.backgroundColorNight = "default";
-                hideBarColor = "#000000";
-            }
+            pageView.setTextColor(Color.parseColor(GlobalConfig.textColorNight));
+            pageView.setBackgroundcolor(Color.parseColor(GlobalConfig.backgroundColorNight));
+            hideBarColor = GlobalConfig.backgroundColorNight;
         } else {
-            bottomSheetView.findViewById(R.id.bottom_sheet_act_read_selectBackground_night).setVisibility(View.GONE);
-            pageView.setTextColor(Color.BLACK);
-            if (color.equals("#CEC29C")) {
-                pageView.setBackgroundcolor(Color.parseColor("#CEC29C"));
-                GlobalConfig.backgroundColorDay = "#CEC29C";
-                hideBarColor = "#CEC29C";
-            } else if (color.equals("#D1CEC5")) {
-                pageView.setBackgroundcolor(Color.parseColor("#D1CEC5"));
-                GlobalConfig.backgroundColorDay = "#D1CEC5";
-                hideBarColor = "#D1CEC5";
-            } else if (color.equals("#CCEBCC")) {
-                pageView.setBackgroundcolor(Color.parseColor("#CCEBCC"));
-                GlobalConfig.backgroundColorDay = "#CCEBCC";
-                hideBarColor = "#CCEBCC";
-            } else {
-                pageView.setBackgroundcolor(Color.WHITE);
-                GlobalConfig.backgroundColorDay = "default";
-                hideBarColor = "#FFFFFF";
-            }
+            pageView.setTextColor(Color.parseColor(GlobalConfig.textColorDay));
+            pageView.setBackgroundcolor(Color.parseColor(GlobalConfig.backgroundColorDay));
+            hideBarColor = GlobalConfig.backgroundColorDay;
         }
     }
 
@@ -313,12 +290,12 @@ public class ReadActivity extends AppCompatActivity {
                 String text = title + "|" + Html.fromHtml(allContent.get(0).get(0), Html.FROM_HTML_MODE_COMPACT);
 
                 runOnUiThread(() -> {
-                    pageView.removeAllViewsInLayout();
                     pageView.removeAllViews();//删除上一章加载的内容
                     pageView.setImgUrlList(new ArrayList<>());
                     readProgress.setValue(1);//进度条重置
                     showCount = 0;
 
+                    setBackgroundAndTextColor();
                     if (allContent.get(1) != null && allContent.get(1).size() != 0) {
                         pageView.setImgUrlList((ArrayList<String>) allContent.get(1));
                     }
@@ -331,13 +308,6 @@ public class ReadActivity extends AppCompatActivity {
                         pageView.setPageNum(historyPosition);
                         historyPosition = -1;
                     }
-
-                    if (isNigntMode) {
-                        setBackgroundColor(GlobalConfig.backgroundColorNight);
-                    } else {
-                        setBackgroundColor(GlobalConfig.backgroundColorDay);
-                    }
-
 
                     if (dialog != null) dialog.dismiss();
                 });

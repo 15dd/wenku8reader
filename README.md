@@ -64,6 +64,7 @@ wenku8reader
 │      PhotoViewActivity.java 查看原图界面
 │      ReadActivity.java 阅读器界面
 │      SearchActivity.java 搜索界面
+│      SelectColorActivity 颜色选择界面
 │      SettingActivity.java 设置界面
 │      TagSearchActivity.java 按Tag搜索的界面
 │      TagSelectActivity.java 选择Tag的界面
@@ -116,6 +117,8 @@ wenku8reader
 - com.github.TutorialsAndroid:crashx  全局崩溃拦截
 - com.github.youxiaochen:expandable-recyclerview 可展开和收回的recyclerview（用这个主要是不会与nestedscrollview发生滑动冲突）
 - com.geyifeng.immersionbar:immersionbar 阅读器界面沉浸
+- com.github.RickyHal:EColorPicker 颜色选择
+- com.github.huburt-Hu:NewbieGuide 新手引导
 - com.squareup.leakcanary:leakcanary-android 内存泄漏检测
 ### 开源项目
 - https://github.com/ya-b/NetNovelReader  阅读器来源

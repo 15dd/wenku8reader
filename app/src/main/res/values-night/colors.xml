@@ -3,4 +3,5 @@
     <!--    https://zhuanlan.zhihu.com/p/110629634-->
     <!--    https://m3.material.io/theme-builder#/custom-->
     <color name="colorWarning" tools:ignore="MissingDefaultResource">#514700</color>
+    <color name="colorWhite" tools:ignore="MissingDefaultResource">#ffffff</color>
 </resources>

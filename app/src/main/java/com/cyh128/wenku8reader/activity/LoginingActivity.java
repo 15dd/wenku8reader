@@ -97,7 +97,7 @@ public class LoginingActivity extends AppCompatActivity { //MainActivity
         GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS readHistory(bookUrl TEXT PRIMARY KEY,indexUrl TEXT UNIQUE NOT NULL,title TEXT NOT NULL,location INT NOT NULL)");
         GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS user_info(_id INTEGER PRIMARY KEY autoincrement,username TEXT,password TEXT)");
         GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS setting(_id INTEGER UNIQUE,checkUpdate BOOLEAN NOT NULL,bookcaseViewType BOOLEAN NOT NULL)");
-        GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS reader(_id INTEGER UNIQUE,fontSize FLOAT NOT NULL,lineSpacing FLOAT NOT NULL,bottomTextSize FLOAT NOT NULL,isUpToDown BOOLEAN NOT NULL,canSwitchChapterByScroll BOOLEAN NOT NULL,backgroundColorDay TEXT NOT NULL,backgroundColorNight TEXT NOT NULL)");
+        GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS reader(_id INTEGER UNIQUE,fontSize FLOAT NOT NULL,lineSpacing FLOAT NOT NULL,bottomTextSize FLOAT NOT NULL,isUpToDown BOOLEAN NOT NULL,canSwitchChapterByScroll BOOLEAN NOT NULL,backgroundColorDay TEXT NOT NULL,backgroundColorNight TEXT NOT NULL,textColorDay TEXT NOT NULL,textColorNight TEXT NOT NULL)");
         try {
             String sql = "select * from setting where _id=1";
             Cursor cursor = GlobalConfig.db.rawQuery(sql, null);
@@ -125,6 +125,8 @@ public class LoginingActivity extends AppCompatActivity { //MainActivity
                     GlobalConfig.canSwitchChapterByScroll = cursor2.getInt(5) == 1;
                     GlobalConfig.backgroundColorDay = cursor2.getString(6);
                     GlobalConfig.backgroundColorNight = cursor2.getString(7);
+                    GlobalConfig.textColorDay = cursor2.getString(8);
+                    GlobalConfig.textColorNight = cursor2.getString(9);
                 }
                 cursor2.close();
             } else {
@@ -133,8 +135,10 @@ public class LoginingActivity extends AppCompatActivity { //MainActivity
                 GlobalConfig.readerBottomTextSize = 50;
                 GlobalConfig.isUpToDown = false;
                 GlobalConfig.canSwitchChapterByScroll = true;
-                GlobalConfig.backgroundColorDay = "default";
-                GlobalConfig.backgroundColorNight = "default";
+                GlobalConfig.backgroundColorDay = "#FFFFFF";
+                GlobalConfig.backgroundColorNight = "#000000";
+                GlobalConfig.textColorDay = "#000000";
+                GlobalConfig.textColorNight = "#FFFFFF";
             }
 
             return true;
