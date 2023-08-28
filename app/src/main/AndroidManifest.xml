@@ -81,7 +81,11 @@
             android:theme="@style/Theme.MyApplication" />
 
         <activity
-            android:name="com.cyh128.wenku8reader.activity.ReadActivity"
+            android:name="com.cyh128.wenku8reader.newReader.ReaderActivity"
+            android:theme="@style/Theme.MyApplication" />
+
+        <activity
+            android:name="com.cyh128.wenku8reader.oldReader.ReaderActivity"
             android:theme="@style/Theme.MyApplication" />
 
         <activity

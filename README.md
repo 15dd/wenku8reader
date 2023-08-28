@@ -62,7 +62,6 @@ wenku8reader
 │      LoginingActivity.java 开屏、等待登录完成界面；数据库初始化以及读取数据
 │      LoginInputActivity.java 登录和注册界面
 │      PhotoViewActivity.java 查看原图界面
-│      ReadActivity.java 阅读器界面
 │      SearchActivity.java 搜索界面
 │      SelectColorActivity 颜色选择界面
 │      SettingActivity.java 设置界面
@@ -91,15 +90,22 @@ wenku8reader
 │      SearchFragment.java 搜索fragment
 │      TagSearchFragment.java 按Tag搜索的fragment
 │
-├─reader
+├─newReader
 │      IPageView.kt PageView的interface
 │      Orientation.kt 页面滑动方向的enum
 │      PageImage.kt 图像页面自定义view
 │      PageText.kt 文本页面自定义view
 │      PageView.kt 阅读器自定义view
-│      
+│      ReaderActivity 阅读界面
+│
+├─oldReader
+│      ReaderActivity 阅读界面 
+│      ReaderAdapter 图片adapter
+│      ReadFragment 阅读fragment
+│  
 └─util
        CheckUpdate.java 检查更新
+       DatabaseHelper 数据库helper
        GlobalConfig.java 全局变量存放
        LoginWenku8.java 登录wenku8
        MyNestedScrollView.java 自定义NestedScrollView

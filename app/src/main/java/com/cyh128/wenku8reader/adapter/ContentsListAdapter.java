@@ -13,9 +13,10 @@ import androidx.annotation.NonNull;
 
 import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.activity.ContentsActivity;
-import com.cyh128.wenku8reader.activity.ReadActivity;
+import com.cyh128.wenku8reader.newReader.ReaderActivity;
 import com.cyh128.wenku8reader.bean.ContentsCcssBean;
 import com.cyh128.wenku8reader.bean.ContentsVcssBean;
+import com.cyh128.wenku8reader.util.GlobalConfig;
 
 import java.util.List;
 
@@ -68,7 +69,12 @@ public class ContentsListAdapter extends ExpandableRecyclerView.ExpandableAdapte
         ContentsCcssBean ccssBean = childList.get(groupPos).get(childPos);
         vh.ccss.setText(ccssBean.ccss);
         vh.itemView.setOnClickListener(v -> {
-            Intent toContent = new Intent(context, ReadActivity.class);
+            Intent toContent;
+            if (GlobalConfig.readerMode == 1) {
+                toContent = new Intent(context, ReaderActivity.class);
+            } else {
+                toContent = new Intent(context, com.cyh128.wenku8reader.oldReader.ReaderActivity.class);
+            }
             ContentsActivity.vcssPosition = groupPos;
             ContentsActivity.ccssPosition = childPos;
             context.startActivity(toContent);

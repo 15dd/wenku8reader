@@ -1,4 +1,4 @@
-package com.cyh128.wenku8reader.reader
+package com.cyh128.wenku8reader.newReader
 
 import android.content.Context
 import android.graphics.Canvas

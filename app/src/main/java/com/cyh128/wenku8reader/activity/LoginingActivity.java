@@ -94,10 +94,11 @@ public class LoginingActivity extends AppCompatActivity { //MainActivity
     private boolean initDataBase() {//初始化数据库，读取数据
         GlobalConfig.db = openOrCreateDatabase("info.db", MODE_PRIVATE, null);
         //下面是为了防止没有对应的table时报错，一般出现在删除数据库时
-        GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS readHistory(bookUrl TEXT PRIMARY KEY,indexUrl TEXT UNIQUE NOT NULL,title TEXT NOT NULL,location INT NOT NULL)");
+        GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS old_reader_read_history(bookUrl TEXT PRIMARY KEY,indexUrl TEXT UNIQUE NOT NULL,title TEXT NOT NULL,location INT NOT NULL)");
+        GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS new_reader_read_history(bookUrl TEXT PRIMARY KEY,indexUrl TEXT UNIQUE NOT NULL,title TEXT NOT NULL,location INT NOT NULL)");
         GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS user_info(_id INTEGER PRIMARY KEY autoincrement,username TEXT,password TEXT)");
-        GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS setting(_id INTEGER UNIQUE,checkUpdate BOOLEAN NOT NULL,bookcaseViewType BOOLEAN NOT NULL)");
-        GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS reader(_id INTEGER UNIQUE,fontSize FLOAT NOT NULL,lineSpacing FLOAT NOT NULL,bottomTextSize FLOAT NOT NULL,isUpToDown BOOLEAN NOT NULL,canSwitchChapterByScroll BOOLEAN NOT NULL,backgroundColorDay TEXT NOT NULL,backgroundColorNight TEXT NOT NULL,textColorDay TEXT NOT NULL,textColorNight TEXT NOT NULL)");
+        GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS setting(_id INTEGER UNIQUE,checkUpdate BOOLEAN NOT NULL,bookcaseViewType BOOLEAN NOT NULL,readerMode INTEGER NOT NULL)");
+        GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS reader(_id INTEGER UNIQUE,newFontSize FLOAT NOT NULL,newLineSpacing FLOAT NOT NULL,oldFontSize FLOAT NOT NULL,oldLineSpacing FLOAT NOT NULL,bottomTextSize FLOAT NOT NULL,isUpToDown BOOLEAN NOT NULL,canSwitchChapterByScroll BOOLEAN NOT NULL,backgroundColorDay TEXT NOT NULL,backgroundColorNight TEXT NOT NULL,textColorDay TEXT NOT NULL,textColorNight TEXT NOT NULL)");
         try {
             String sql = "select * from setting where _id=1";
             Cursor cursor = GlobalConfig.db.rawQuery(sql, null);
@@ -106,11 +107,13 @@ public class LoginingActivity extends AppCompatActivity { //MainActivity
                     cursor.move(i);
                     GlobalConfig.checkUpdate = cursor.getInt(1) == 1;
                     GlobalConfig.bookcaseViewType = cursor.getInt(2) == 1;
+                    GlobalConfig.readerMode = cursor.getInt(3);
                 }
                 cursor.close();
             } else {
                 GlobalConfig.checkUpdate = true;
                 GlobalConfig.bookcaseViewType = false;
+                GlobalConfig.readerMode = 1;
             }
 
             String sql2 = "select * from reader where _id=1";
@@ -118,20 +121,24 @@ public class LoginingActivity extends AppCompatActivity { //MainActivity
             if (cursor2.moveToNext()) {
                 for (int i = 0; i < cursor2.getCount(); i++) {
                     cursor2.move(i);
-                    GlobalConfig.readerFontSize = cursor2.getFloat(1);
-                    GlobalConfig.readerLineSpacing = cursor2.getFloat(2);
-                    GlobalConfig.readerBottomTextSize = cursor2.getFloat(3);
-                    GlobalConfig.isUpToDown = cursor2.getInt(4) == 1;
-                    GlobalConfig.canSwitchChapterByScroll = cursor2.getInt(5) == 1;
-                    GlobalConfig.backgroundColorDay = cursor2.getString(6);
-                    GlobalConfig.backgroundColorNight = cursor2.getString(7);
-                    GlobalConfig.textColorDay = cursor2.getString(8);
-                    GlobalConfig.textColorNight = cursor2.getString(9);
+                    GlobalConfig.newReaderFontSize = cursor2.getFloat(1);
+                    GlobalConfig.newReaderLineSpacing = cursor2.getFloat(2);
+                    GlobalConfig.oldReaderFontSize = cursor2.getFloat(3);
+                    GlobalConfig.oldReaderLineSpacing = cursor2.getFloat(4);
+                    GlobalConfig.readerBottomTextSize = cursor2.getFloat(5);
+                    GlobalConfig.isUpToDown = cursor2.getInt(6) == 1;
+                    GlobalConfig.canSwitchChapterByScroll = cursor2.getInt(7) == 1;
+                    GlobalConfig.backgroundColorDay = cursor2.getString(8);
+                    GlobalConfig.backgroundColorNight = cursor2.getString(9);
+                    GlobalConfig.textColorDay = cursor2.getString(10);
+                    GlobalConfig.textColorNight = cursor2.getString(11);
                 }
                 cursor2.close();
             } else {
-                GlobalConfig.readerFontSize = 30+20f;
-                GlobalConfig.readerLineSpacing = 1.5f;
+                GlobalConfig.newReaderFontSize = 30+20f;
+                GlobalConfig.newReaderLineSpacing = 1.5f;
+                GlobalConfig.oldReaderFontSize = 16;
+                GlobalConfig.oldReaderLineSpacing = 1f;
                 GlobalConfig.readerBottomTextSize = 50;
                 GlobalConfig.isUpToDown = false;
                 GlobalConfig.canSwitchChapterByScroll = true;
@@ -168,8 +175,7 @@ public class LoginingActivity extends AppCompatActivity { //MainActivity
     }
 
     private void cleanDatabases() { //https://www.jianshu.com/p/603329500679
-        deleteFilesByDirectory(new File("/data/data/"
-                + getPackageName() + "/databases"));
+        deleteFilesByDirectory(new File("/data/data/" + getPackageName() + "/databases"));
     }
     private void deleteFilesByDirectory(File directory) {
         if (directory != null && directory.exists() && directory.isDirectory()) {

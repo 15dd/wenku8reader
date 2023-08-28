@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.cyh128.wenku8reader.R;
 import com.cyh128.wenku8reader.adapter.BookCaseAdapter;
 import com.cyh128.wenku8reader.bean.BookcaseBean;
+import com.cyh128.wenku8reader.util.DatabaseHelper;
 import com.cyh128.wenku8reader.util.GlobalConfig;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -49,11 +50,7 @@ public class BookCaseFragment extends Fragment {
                 GlobalConfig.bookcaseViewType = !GlobalConfig.bookcaseViewType ;
                 changeLayout(GlobalConfig.bookcaseViewType);//更改视图类型
                 //保存视图类型的设置，使下次启动自动使用当前视图类型================================
-                ContentValues values = new ContentValues();
-                values.put("_id", 1);
-                values.put("checkUpdate", GlobalConfig.checkUpdate);
-                values.put("bookcaseViewType", GlobalConfig.bookcaseViewType);
-                GlobalConfig.db.replace("setting", null, values);
+                DatabaseHelper.SaveSetting();
                 //=========================================================================
             }
             return true;

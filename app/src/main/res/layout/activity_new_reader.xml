@@ -15,7 +15,7 @@
         app:title="title"/>
 
 
-    <com.cyh128.wenku8reader.reader.PageView
+    <com.cyh128.wenku8reader.newReader.PageView
         android:id="@+id/readerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

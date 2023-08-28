@@ -1,4 +1,4 @@
-package com.cyh128.wenku8reader.activity;
+package com.cyh128.wenku8reader.newReader;
 
 import android.animation.Animator;
 import android.app.Dialog;
@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Html;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,10 +23,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.app.hubert.guide.NewbieGuide;
 import com.app.hubert.guide.model.GuidePage;
 import com.cyh128.wenku8reader.R;
+import com.cyh128.wenku8reader.activity.ContentsActivity;
+import com.cyh128.wenku8reader.activity.SelectColorActivity;
 import com.cyh128.wenku8reader.bean.ContentsCcssBean;
 import com.cyh128.wenku8reader.bean.ContentsVcssBean;
-import com.cyh128.wenku8reader.reader.Orientation;
-import com.cyh128.wenku8reader.reader.PageView;
+import com.cyh128.wenku8reader.util.DatabaseHelper;
 import com.cyh128.wenku8reader.util.GlobalConfig;
 import com.cyh128.wenku8reader.util.Wenku8Spider;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -42,7 +42,7 @@ import com.gyf.immersionbar.ImmersionBar;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReadActivity extends AppCompatActivity {
+public class ReaderActivity extends AppCompatActivity {
     public MaterialToolbar toolbar;
     public View bottombar;
     public static List<ContentsVcssBean> vcss = new ArrayList<>();
@@ -50,7 +50,7 @@ public class ReadActivity extends AppCompatActivity {
     public static String bookUrl = null;
     public static int ccssPosition = 0;
     public static int vcssPosition = 0;
-    public static ReadActivity readActivity; //状态栏和导航栏沉浸所使用的
+    public static ReaderActivity readerActivity; //状态栏和导航栏沉浸所使用的
     private int showBarColor;
     private String hideBarColor;
     public static Slider readProgress;
@@ -70,8 +70,8 @@ public class ReadActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         //我已经逐渐看不懂这个阅读器是怎么写出来的了，好像想整个重写一遍。。。。。。
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_read);
-        readActivity = this;
+        setContentView(R.layout.activity_new_reader);
+        readerActivity = this;
 
         historyPosition = getIntent().getIntExtra("position", -1);//是否有阅读记录
 
@@ -112,30 +112,18 @@ public class ReadActivity extends AppCompatActivity {
         }
 
         bottomSheetDialog = new BottomSheetDialog(this);
-        bottomSheetView = LayoutInflater.from(this).inflate(R.layout.view_bottom_sheet_act_read, null, false);
+        bottomSheetView = LayoutInflater.from(this).inflate(R.layout.view_bottom_sheet_act_new_reader, null, false);
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.setDismissWithAnimation(true);
         //保存设置
         bottomSheetDialog.setOnDismissListener(dialog -> {
                 hideBar();
 
-                GlobalConfig.readerFontSize = fontSize.getValue() + 20f;
-                GlobalConfig.readerLineSpacing = lineSpacing.getValue();
+                GlobalConfig.newReaderFontSize = fontSize.getValue() + 20f;
+                GlobalConfig.newReaderLineSpacing = lineSpacing.getValue();
                 GlobalConfig.readerBottomTextSize = bottomTextSize.getValue();
 
-                ContentValues values = new ContentValues();
-                values.put("_id", 1);
-                values.put("fontSize", fontSize.getValue() + 20f);
-                values.put("lineSpacing", lineSpacing.getValue());
-                values.put("bottomTextSize", bottomTextSize.getValue());
-                values.put("isUpToDown", GlobalConfig.isUpToDown);
-                values.put("canSwitchChapterByScroll", GlobalConfig.canSwitchChapterByScroll);
-                values.put("backgroundColorDay", GlobalConfig.backgroundColorDay);
-                values.put("backgroundColorNight", GlobalConfig.backgroundColorNight);
-                values.put("textColorDay", GlobalConfig.textColorDay);
-                values.put("textColorNight", GlobalConfig.textColorNight);
-
-                GlobalConfig.db.replace("reader", null, values);
+                DatabaseHelper.SaveReaderSetting();
         });
 
 
@@ -145,8 +133,8 @@ public class ReadActivity extends AppCompatActivity {
         readDirection = bottomSheetView.findViewById(R.id.toggleGroup_bottom_sheet_act_read);
         switchChapter = bottomSheetView.findViewById(R.id.switch_bottom_sheet_act_read);
 
-        fontSize.setValue(GlobalConfig.readerFontSize - 20f); //slider上显示的数字比实际字体大小要小20f
-        lineSpacing.setValue(GlobalConfig.readerLineSpacing);
+        fontSize.setValue(GlobalConfig.newReaderFontSize - 20f); //slider上显示的数字比实际字体大小要小20f
+        lineSpacing.setValue(GlobalConfig.newReaderLineSpacing);
         bottomTextSize.setValue(GlobalConfig.readerBottomTextSize);
         readDirection.check(GlobalConfig.isUpToDown ? R.id.button_bottom_sheet_act_read_utd : R.id.button_bottom_sheet_act_read_ltr);
         switchChapter.setChecked(GlobalConfig.canSwitchChapterByScroll);
@@ -236,7 +224,7 @@ public class ReadActivity extends AppCompatActivity {
             }
         }.start();
 
-        NewbieGuide.with(ReadActivity.this)//新手引导
+        NewbieGuide.with(ReaderActivity.this)//新手引导
                 .setLabel("imageLongShow")
                 .addGuidePage(GuidePage.newInstance().setLayoutRes(R.layout.view_image_long_show))
                 .show();
@@ -244,7 +232,7 @@ public class ReadActivity extends AppCompatActivity {
         bottomSheetView.findViewById(R.id.button_select_rgb).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ReadActivity.this, SelectColorActivity.class));
+                startActivity(new Intent(ReaderActivity.this, SelectColorActivity.class));
             }
         });
     }
@@ -256,18 +244,15 @@ public class ReadActivity extends AppCompatActivity {
             dialog.dismiss();
         }
         //防止内存泄露
-        readActivity = null;
+        readerActivity = null;
         readProgress = null;
 
-        new Thread(() -> {
-            //保存阅读历史
-            ContentValues values = new ContentValues();
-            values.put("bookUrl", bookUrl);
-            values.put("indexUrl", ccss.get(vcssPosition).get(ccssPosition).url);
-            values.put("title", ccss.get(vcssPosition).get(ccssPosition).ccss);
-            values.put("location", pageView.getPageNum());
-            GlobalConfig.db.replace("readHistory", null, values);
-        }).start();
+        DatabaseHelper.SaveNewReaderReadHistory(
+                bookUrl,
+                ccss.get(vcssPosition).get(ccssPosition).url,
+                ccss.get(vcssPosition).get(ccssPosition).ccss,
+                pageView.getPageNum()
+        );
     }
 
     public void setBackgroundAndTextColor() {
@@ -300,9 +285,9 @@ public class ReadActivity extends AppCompatActivity {
                         pageView.setImgUrlList((ArrayList<String>) allContent.get(1));
                     }
                     pageView.setText(text);
-                    pageView.setTextSize(GlobalConfig.readerFontSize);
+                    pageView.setTextSize(GlobalConfig.newReaderFontSize);
                     pageView.setBottomTextSize(GlobalConfig.readerBottomTextSize);
-                    pageView.setRowSpace(GlobalConfig.readerLineSpacing);
+                    pageView.setRowSpace(GlobalConfig.newReaderLineSpacing);
                     pageView.setDirection(GlobalConfig.isUpToDown ? Orientation.vertical : Orientation.horizontal);
                     if (historyPosition != -1) { //如果有传递历史记录，就执行
                         pageView.setPageNum(historyPosition);
@@ -313,7 +298,7 @@ public class ReadActivity extends AppCompatActivity {
                 });
             } catch (Exception e) {
                 e.printStackTrace();
-                runOnUiThread(() -> new MaterialAlertDialogBuilder(ReadActivity.this)
+                runOnUiThread(() -> new MaterialAlertDialogBuilder(ReaderActivity.this)
                         .setTitle("网络超时")
                         .setMessage("连接超时，可能是服务器出错了、也可能是网络卡慢或者您正在连接VPN或代理服务器，请稍后再试")
                         .setIcon(R.drawable.timeout)
@@ -337,7 +322,7 @@ public class ReadActivity extends AppCompatActivity {
     public enum Direction {Next, Previous}
     public void switchChapter(Direction direction) {
         if (direction == Direction.Next) {
-            runOnUiThread(() -> new MaterialAlertDialogBuilder(ReadActivity.this)
+            runOnUiThread(() -> new MaterialAlertDialogBuilder(ReaderActivity.this)
                     .setTitle("切换下一章")
                     .setMessage("是否继续？")
                     .setIcon(R.drawable.info2)
@@ -346,7 +331,7 @@ public class ReadActivity extends AppCompatActivity {
                     .setNegativeButton("取消", null)
                     .show());
         } else if (direction == Direction.Previous) {
-            runOnUiThread(() -> new MaterialAlertDialogBuilder(ReadActivity.this)
+            runOnUiThread(() -> new MaterialAlertDialogBuilder(ReaderActivity.this)
                     .setTitle("切换上一章")
                     .setMessage("是否继续？")
                     .setIcon(R.drawable.info2)
@@ -396,7 +381,7 @@ public class ReadActivity extends AppCompatActivity {
         toolbar.animate().translationY(0).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(@NonNull Animator animation) {
-                ImmersionBar.with(ReadActivity.this)
+                ImmersionBar.with(ReaderActivity.this)
                         .statusBarColor(showBarColor)
                         .navigationBarColor(showBarColor)
                         .fitsSystemWindows(true)
@@ -421,7 +406,7 @@ public class ReadActivity extends AppCompatActivity {
         bottombar.animate().translationY(0).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(@NonNull Animator animation) {
-                ImmersionBar.with(ReadActivity.this)
+                ImmersionBar.with(ReaderActivity.this)
                         .statusBarColor(showBarColor)
                         .navigationBarColor(showBarColor)
                         .fitsSystemWindows(true)
@@ -452,7 +437,7 @@ public class ReadActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(@NonNull Animator animation) {
-                ImmersionBar.with(ReadActivity.this)
+                ImmersionBar.with(ReaderActivity.this)
                         .statusBarColor(hideBarColor)
                         .navigationBarColor(hideBarColor)
                         .fitsSystemWindows(true)
@@ -477,7 +462,7 @@ public class ReadActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(@NonNull Animator animation) {
-                ImmersionBar.with(ReadActivity.this)
+                ImmersionBar.with(ReaderActivity.this)
                         .statusBarColor(hideBarColor)
                         .navigationBarColor(hideBarColor)
                         .fitsSystemWindows(true)

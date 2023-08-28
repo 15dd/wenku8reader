@@ -1,20 +1,10 @@
-package com.cyh128.wenku8reader.reader
+package com.cyh128.wenku8reader.newReader
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.util.Log
-import android.view.MotionEvent
-import com.cyh128.wenku8reader.activity.PhotoViewActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 
 
 class PageImage : androidx.appcompat.widget.AppCompatImageView {

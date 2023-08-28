@@ -1,4 +1,4 @@
-package com.cyh128.wenku8reader.reader
+package com.cyh128.wenku8reader.newReader
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -16,7 +16,6 @@ import android.widget.ViewFlipper
 import com.bumptech.glide.Glide
 import com.cyh128.wenku8reader.R
 import com.cyh128.wenku8reader.activity.PhotoViewActivity
-import com.cyh128.wenku8reader.activity.ReadActivity
 import com.cyh128.wenku8reader.util.GlobalConfig
 import kotlin.reflect.KProperty
 
@@ -147,11 +146,11 @@ class PageView : ViewFlipper, IPageView {
     override fun onCenterClick() {
         if (mBarIsShow) { //https://blog.csdn.net/u010687392/article/details/48003979
             //显示
-            ReadActivity.readActivity.showBar()
+            ReaderActivity.readerActivity.showBar()
             mBarIsShow = !mBarIsShow
         } else {
             //隐藏
-            ReadActivity.readActivity.hideBar()
+            ReaderActivity.readerActivity.hideBar()
             mBarIsShow = !mBarIsShow
         }
     }
@@ -162,7 +161,8 @@ class PageView : ViewFlipper, IPageView {
         val curClickTime = System.currentTimeMillis()
         if (curClickTime - lastClickTime >= MIN_CLICK_DELAY_TIME) {
             lastClickTime = curClickTime
-            ReadActivity.readActivity.switchChapter(ReadActivity.Direction.Next)
+            ReaderActivity.readerActivity.switchChapter(
+                ReaderActivity.Direction.Next)
         }
     }
 
@@ -172,17 +172,18 @@ class PageView : ViewFlipper, IPageView {
         val curClickTime = System.currentTimeMillis()
         if (curClickTime - lastClickTime >= MIN_CLICK_DELAY_TIME) {
             lastClickTime = curClickTime
-            ReadActivity.readActivity.switchChapter(ReadActivity.Direction.Previous)
+            ReaderActivity.readerActivity.switchChapter(
+                ReaderActivity.Direction.Previous)
         }
     }
 
     override fun onPageChange() {
-        if (maxTextPageNum != 0 && ReadActivity.readProgress.valueFrom < (maxTextPageNum + imgUrlList.size).toFloat()) {
-            ReadActivity.readProgress.valueTo = (maxTextPageNum + imgUrlList.size).toFloat()
-            ReadActivity.readProgress.value = pageNum.toFloat()
-            ReadActivity.readProgress.visibility = View.VISIBLE
+        if (maxTextPageNum != 0 && ReaderActivity.readProgress.valueFrom < (maxTextPageNum + imgUrlList.size).toFloat()) {
+            ReaderActivity.readProgress.valueTo = (maxTextPageNum + imgUrlList.size).toFloat()
+            ReaderActivity.readProgress.value = pageNum.toFloat()
+            ReaderActivity.readProgress.visibility = View.VISIBLE
         } else {
-            ReadActivity.readProgress.visibility = View.INVISIBLE
+            ReaderActivity.readProgress.visibility = View.INVISIBLE
         }
     }
 
@@ -250,7 +251,7 @@ class PageView : ViewFlipper, IPageView {
                 Thread {
                     try {
                         handler.post {
-                            if (ReadActivity.isNigntMode) {
+                            if (ReaderActivity.isNigntMode) {
                                 setImageDrawable(resources.getDrawable(R.drawable.image_loading_small_night, null))
                             } else {
                                 setImageDrawable(resources.getDrawable(R.drawable.image_loading_small_day, null))
@@ -270,11 +271,12 @@ class PageView : ViewFlipper, IPageView {
                                 requestLayout()
                             }
                         }
-
+                    } catch (e: NullPointerException) {
+                        e.printStackTrace()
                     } catch (e: Exception) {
                         e.printStackTrace()
                         handler.post {
-                            if (ReadActivity.isNigntMode) {
+                            if (ReaderActivity.isNigntMode) {
                                 setImageDrawable(resources.getDrawable(R.drawable.image_loading_fail_small_night, null))
                             } else {
                                 setImageDrawable(resources.getDrawable(R.drawable.image_loading_fail_small_day, null))
@@ -319,11 +321,6 @@ class PageView : ViewFlipper, IPageView {
             displayedChild = this@PageView.indexOfChild(pC)
         }
 
-        //以下代码是为了防止在用户设置与默认设置不同的字体大小、行距后页码乱跳的问题
-        ReadActivity.showCount++
-        if (ReadActivity.showCount == 4) {
-            pageNum = 1;
-        }
         Log.i(
             "tag",
             "pageNum " + pageNum + " maxTextPageNum " + maxTextPageNum + " imgUrlList.size " + imgUrlList.size
@@ -374,7 +371,7 @@ class PageView : ViewFlipper, IPageView {
                     maxTextPageNum = if (text.length <= title.length + 1
                         || text.isEmpty()
                     ) 0 else textArray.size
-                    pageNum = (maxTextPageNum / scale).toInt().takeIf { it != 0 } ?: 1
+                    pageNum = 1
                 }
 
                 "text" -> {

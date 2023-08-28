@@ -4,8 +4,6 @@ import android.app.UiModeManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cyh128.wenku8reader.R;
+import com.cyh128.wenku8reader.newReader.ReaderActivity;
+import com.cyh128.wenku8reader.util.DatabaseHelper;
 import com.cyh128.wenku8reader.util.GlobalConfig;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputLayout;
@@ -101,21 +101,10 @@ public class SelectColorActivity extends AppCompatActivity {
                 GlobalConfig.textColorDay = textEditText.getText().toString();
                 GlobalConfig.backgroundColorDay = backgroundEditText.getText().toString();
             }
-            ReadActivity.readActivity.setBackgroundAndTextColor();
+            ReaderActivity.readerActivity.setBackgroundAndTextColor();
 
             //数据库保存此设置
-            ContentValues values = new ContentValues();
-            values.put("_id", 1);
-            values.put("fontSize", GlobalConfig.readerFontSize);
-            values.put("lineSpacing", GlobalConfig.readerLineSpacing);
-            values.put("bottomTextSize", GlobalConfig.readerBottomTextSize);
-            values.put("isUpToDown", GlobalConfig.isUpToDown);
-            values.put("canSwitchChapterByScroll", GlobalConfig.canSwitchChapterByScroll);
-            values.put("backgroundColorDay", GlobalConfig.backgroundColorDay);
-            values.put("backgroundColorNight", GlobalConfig.backgroundColorNight);
-            values.put("textColorDay", GlobalConfig.textColorDay);
-            values.put("textColorNight", GlobalConfig.textColorNight);
-            GlobalConfig.db.replace("reader", null, values);
+            DatabaseHelper.SaveReaderSetting();
 
             SelectColorActivity.this.finish();
         });
