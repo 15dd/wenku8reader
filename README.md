@@ -54,21 +54,21 @@ wenku8reader
 │  App.java 实现MD3动态取色
 │  
 ├─activity
-│      AboutActivity 关于界面
+│      AboutActivity.java 关于界面
 │      AppActivity.java 首页界面
 │      CommentActivity.java 评论界面
 │      CommentInCommentActivity.java 评论回复界面
 │      ContentsActivity.java 小说目录界面
-│      CrashActivity 软件崩溃界面
+│      CrashActivity.java 软件崩溃界面
 │      LoginingActivity.java 开屏、等待登录完成界面；数据库初始化以及读取数据
 │      LoginInputActivity.java 登录和注册界面
 │      PhotoViewActivity.java 查看原图界面
 │      SearchActivity.java 搜索界面
-│      SelectColorActivity 颜色选择界面
+│      SelectColorActivity.java 颜色选择界面
 │      SettingActivity.java 设置界面
 │      TagSearchActivity.java 按Tag搜索的界面
 │      TagSelectActivity.java 选择Tag的界面
-│      UserInfoActivity 用户信息界面
+│      UserInfoActivity.java 用户信息界面
 │      
 ├─adapter
 │      BookCaseAdapter.java 书架adapter
@@ -97,16 +97,16 @@ wenku8reader
 │      PageImage.kt 图像页面自定义view
 │      PageText.kt 文本页面自定义view
 │      PageView.kt 阅读器自定义view
-│      ReaderActivity 阅读界面
+│      ReaderActivity.java 阅读界面
 │
 ├─oldReader
-│      ReaderActivity 阅读界面 
-│      ReaderAdapter 图片adapter
-│      ReadFragment 阅读fragment
+│      ReaderActivity.java 阅读界面 
+│      ReaderAdapter.java 图片adapter
+│      ReadFragment.java 阅读fragment
 │  
 └─util
        CheckUpdate.java 检查更新
-       DatabaseHelper 数据库helper
+       DatabaseHelper.java 数据库helper
        GlobalConfig.java 全局变量存放
        LoginWenku8.java 登录wenku8
        MyNestedScrollView.java 自定义NestedScrollView
