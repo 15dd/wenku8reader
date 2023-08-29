@@ -31,26 +31,21 @@ public class CheckUpdate { //检查是否有更新
         String gitVersion = getGithubLatestReleaseVersion();
         String thisVersion = getVersion(context);
         if (!gitVersion.equals(thisVersion)) {
-            boolean showDialog = new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    new MaterialAlertDialogBuilder(context)
-                            .setIcon(R.drawable.new_update)
-                            .setTitle("有新版本")
-                            .setMessage("强烈建议您下载最新版本\n您可以前往Github下载最新版本")
-                            .setCancelable(false)
-                            .setNegativeButton("不更新",null)
-                            .setPositiveButton("前往Github下载更新", (dialog, which) -> {
-                                Uri uri = Uri.parse("https://github.com/15dd/wenku8reader/releases");
-                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                context.startActivity(intent);
-                            })
-                            .show();
-                }
-            });
+            new Handler(Looper.getMainLooper()).post(() -> new MaterialAlertDialogBuilder(context)
+                    .setIcon(R.drawable.new_update)
+                    .setTitle("有新版本")
+                    .setMessage("强烈建议您下载最新版本\n您可以前往Github下载最新版本")
+                    .setCancelable(false)
+                    .setNegativeButton("不更新",null)
+                    .setPositiveButton("前往Github下载更新", (dialog, which) -> {
+                        Uri uri = Uri.parse("https://github.com/15dd/wenku8reader/releases");
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        context.startActivity(intent);
+                    })
+                    .show());
         } else {
             if (mode == Mode.WITH_TIP) {
-                boolean showDialog = new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context,"已经是最新版本",Toast.LENGTH_SHORT).show());
+                new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context,"已经是最新版本",Toast.LENGTH_SHORT).show());
             }
         }
     }

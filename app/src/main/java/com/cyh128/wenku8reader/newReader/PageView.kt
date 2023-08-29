@@ -371,7 +371,14 @@ class PageView : ViewFlipper, IPageView {
                     maxTextPageNum = if (text.length <= title.length + 1
                         || text.isEmpty()
                     ) 0 else textArray.size
-                    pageNum = 1
+
+                    ReaderActivity.showCount++
+                    if (ReaderActivity.showCount == 2) { //防止页数在初始化时乱跳
+                        pageNum = 1
+                    } else {
+                        pageNum = (maxTextPageNum / scale).toInt().takeIf { it != 0 } ?: 1
+                    }
+                    Log.d("tag",pageNum.toString())
                 }
 
                 "text" -> {
