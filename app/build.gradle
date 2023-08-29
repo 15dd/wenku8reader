@@ -16,7 +16,7 @@ android {
         minSdk 29
         targetSdk 33
         versionCode 230829
-        versionName "2.2.0"
+        versionName "2.2.1"
     }
 
     buildTypes {

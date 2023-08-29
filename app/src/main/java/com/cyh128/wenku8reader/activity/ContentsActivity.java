@@ -220,24 +220,10 @@ public class ContentsActivity extends AppCompatActivity {
                 contentsList = Wenku8Spider.getContents(bookUrl);//小说目录
 
                 //获取这本书的aid和bid====================================================================================================
-                try { //https://www.wenku8.net/book/xxxx.htm
-                    this.aid = Integer.parseInt(bookUrl.substring(bookUrl.indexOf("book/") + 5, bookUrl.indexOf(".htm")));
-                } catch (Exception e) {
-                    //https://www.wenku8.net/modules/article/readbookcase.php?aid=xxxx&bid=xxxxxxx
-                    this.aid = Integer.parseInt(bookUrl.substring(bookUrl.indexOf("aid=") + 4, bookUrl.indexOf("&")));
-                }
-                try {//https://www.wenku8.net/modules/article/readbookcase.php?aid=xxxx&bid=xxxxxxx
-                    this.bid = Integer.parseInt(bookUrl.substring(bookUrl.indexOf("bid=") + 4));
-                } catch (
-                        NumberFormatException e) {//https://www.wenku8.net/book/xxxx.htm 如果url没有bid,只有aid,那么就根据它的aid在书架中找到它对应的bid。删除必须用bid
-                    BookCaseFragment.bookcaseList = Wenku8Spider.getBookcase();
-                    for (BookcaseBean bcc : BookCaseFragment.bookcaseList) {
-                        if (Integer.parseInt(bcc.aid) == this.aid) {
-                            this.bid = Integer.parseInt(bcc.bid);
-                            break;
-                        }
-                    }
-                }
+                //aid获取 https://www.wenku8.net/book/xxxx.htm
+                this.aid = Integer.parseInt(bookUrl.substring(bookUrl.indexOf("book/") + 5, bookUrl.indexOf(".htm")));
+                //bid获取 https://www.wenku8.net/book/xxxx.htm 如果url没有bid,只有aid,那么就根据它的aid在书架中找到它对应的bid。删除必须用bid
+                getBid();
                 //end===================================================================================================================
 
                 isInBookcase();//判断这本书是否已在书架中

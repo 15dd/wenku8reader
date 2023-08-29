@@ -84,9 +84,9 @@ public class BookCaseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             .show();
                     return;
                 }
-
+                String url = String.format("https://www.wenku8.net/book/%s.htm",novel.bookUrl.substring(novel.bookUrl.indexOf("aid=") + 4, novel.bookUrl.indexOf("&")));
                 Intent toContents = new Intent(context, ContentsActivity.class);
-                toContents.putExtra("bookUrl", novel.bookUrl);
+                toContents.putExtra("bookUrl", url);
                 context.startActivity(toContents);
             });
         } else if (holder instanceof GridItemViewHolder) {
@@ -111,9 +111,9 @@ public class BookCaseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             .show();
                     return;
                 }
-
+                String url = String.format("https://www.wenku8.net/book/%s.htm",novel.bookUrl.substring(novel.bookUrl.indexOf("aid=") + 4, novel.bookUrl.indexOf("&")));
                 Intent toContents = new Intent(context, ContentsActivity.class);
-                toContents.putExtra("bookUrl", novel.bookUrl);
+                toContents.putExtra("bookUrl", url);
                 context.startActivity(toContents);
             });
         }
