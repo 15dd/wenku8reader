@@ -1,8 +1,11 @@
 package com.cyh128.wenku8reader;
 
-import static org.junit.Assert.assertEquals;
+import com.cyh128.wenku8reader.util.LoginWenku8;
+import com.cyh128.wenku8reader.util.Wenku8Spider;
 
 import org.junit.Test;
+
+import java.io.IOException;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -11,7 +14,7 @@ import org.junit.Test;
  */
 public class ExampleUnitTest {
     @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+    public void spider_isWorking() throws IOException {
+         LoginWenku8.getPageHtml("https://www.wenku8.cc/modules/article/toplist.php?sort=allvisit&page=1");
     }
 }

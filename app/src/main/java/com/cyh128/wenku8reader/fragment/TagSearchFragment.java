@@ -123,7 +123,7 @@ public class TagSearchFragment extends Fragment {
 
     private List<BookListBean> getData() {
         try {
-            String url = String.format("https://www.wenku8.net/modules/article/tags.php?t=%s&page=%d&v=%s", URLEncoder.encode(tag, "gbk"), ++pageindex, sort);
+            String url = String.format("https://www.wenku8.cc/modules/article/tags.php?t=%s&page=%d&v=%s", URLEncoder.encode(tag, "gbk"), ++pageindex, sort);
             return Wenku8Spider.parseNovelList(LoginWenku8.getPageHtml(url));
         } catch (Exception e) {
             pageindex--;

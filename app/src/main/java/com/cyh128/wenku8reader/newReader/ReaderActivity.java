@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Html;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,12 +105,15 @@ public class ReaderActivity extends AppCompatActivity {
         toolbar.setBackgroundResource(showBarColor);
         bottombar.setBackgroundResource(showBarColor);
 
-        UiModeManager uiModeManager = (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
+        //getSystemService导致的内存泄漏问题 https://blog.csdn.net/xiabing082/article/details/53993298
+        UiModeManager uiModeManager = (UiModeManager) getApplicationContext().getSystemService(Context.UI_MODE_SERVICE);
         if (uiModeManager.getNightMode() == UiModeManager.MODE_NIGHT_YES) {
             isNigntMode = true;
         } else {
             isNigntMode = false;
         }
+
+        setBackgroundAndTextColor();//初始化背景颜色的字符串，以便hideBar()调用
 
         bottomSheetDialog = new BottomSheetDialog(this);
         bottomSheetView = LayoutInflater.from(this).inflate(R.layout.view_bottom_sheet_act_new_reader, null, false);
@@ -117,13 +121,11 @@ public class ReaderActivity extends AppCompatActivity {
         bottomSheetDialog.setDismissWithAnimation(true);
         //保存设置
         bottomSheetDialog.setOnDismissListener(dialog -> {
-                hideBar();
-
-                GlobalConfig.newReaderFontSize = fontSize.getValue() + 20f;
-                GlobalConfig.newReaderLineSpacing = lineSpacing.getValue();
-                GlobalConfig.readerBottomTextSize = bottomTextSize.getValue();
-
-                DatabaseHelper.SaveReaderSetting();
+            hideBar();
+            GlobalConfig.newReaderFontSize = fontSize.getValue() + 20f;
+            GlobalConfig.newReaderLineSpacing = lineSpacing.getValue();
+            GlobalConfig.readerBottomTextSize = bottomTextSize.getValue();
+            DatabaseHelper.SaveReaderSetting();
         });
 
 
@@ -381,6 +383,7 @@ public class ReaderActivity extends AppCompatActivity {
         toolbar.animate().translationY(0).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(@NonNull Animator animation) {
+                Log.d("tag","readeractivity hide:"+hideBarColor);
                 ImmersionBar.with(ReaderActivity.this)
                         .statusBarColor(showBarColor)
                         .navigationBarColor(showBarColor)

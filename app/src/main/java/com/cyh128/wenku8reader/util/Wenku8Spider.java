@@ -26,55 +26,55 @@ public class Wenku8Spider {
         switch (type) {
             case "toplist":
                 //总排行
-                url = String.format("https://www.wenku8.net/modules/article/toplist.php?sort=allvisit&page=%d", pageindex);
+                url = String.format("https://www.wenku8.cc/modules/article/toplist.php?sort=allvisit&page=%d", pageindex);
                 break;
             case "lastupdate":
                 //今日更新
-                url = String.format("https://www.wenku8.net/modules/article/toplist.php?sort=lastupdate&page=%d", pageindex);
+                url = String.format("https://www.wenku8.cc/modules/article/toplist.php?sort=lastupdate&page=%d", pageindex);
                 break;
             case "articlelist":
                 //全部轻小说
-                url = String.format("https://www.wenku8.net/modules/article/articlelist.php?page=%d", pageindex);
+                url = String.format("https://www.wenku8.cc/modules/article/articlelist.php?page=%d", pageindex);
                 break;
             case "postdate":
                 //最新入库
-                url = String.format("https://www.wenku8.net/modules/article/toplist.php?sort=postdate&page=%d", pageindex);
+                url = String.format("https://www.wenku8.cc/modules/article/toplist.php?sort=postdate&page=%d", pageindex);
                 break;
             case "allvote":
                 //总推荐
-                url = String.format("https://www.wenku8.net/modules/article/toplist.php?sort=allvote&page=%d", pageindex);
+                url = String.format("https://www.wenku8.cc/modules/article/toplist.php?sort=allvote&page=%d", pageindex);
                 break;
             case "dayvisit":
                 //日排行
-                url = String.format("https://www.wenku8.net/modules/article/toplist.php?sort=dayvisit&page=%d", pageindex);
+                url = String.format("https://www.wenku8.cc/modules/article/toplist.php?sort=dayvisit&page=%d", pageindex);
                 break;
             case "dayvote":
                 //日推荐
-                url = String.format("https://www.wenku8.net/modules/article/toplist.php?sort=dayvote&page=%d", pageindex);
+                url = String.format("https://www.wenku8.cc/modules/article/toplist.php?sort=dayvote&page=%d", pageindex);
                 break;
             case "monthvisit":
                 //月排行
-                url = String.format("https://www.wenku8.net/modules/article/toplist.php?sort=monthvisit&page=%d", pageindex);
+                url = String.format("https://www.wenku8.cc/modules/article/toplist.php?sort=monthvisit&page=%d", pageindex);
                 break;
             case "monthvote":
                 //月推荐
-                url = String.format("https://www.wenku8.net/modules/article/toplist.php?sort=monthvote&page=%d", pageindex);
+                url = String.format("https://www.wenku8.cc/modules/article/toplist.php?sort=monthvote&page=%d", pageindex);
                 break;
             case "weekvisit":
                 //周排行
-                url = String.format("https://www.wenku8.net/modules/article/toplist.php?sort=weekvisit&page=%d", pageindex);
+                url = String.format("https://www.wenku8.cc/modules/article/toplist.php?sort=weekvisit&page=%d", pageindex);
                 break;
             case "weekvote":
                 //周推荐
-                url = String.format("https://www.wenku8.net/modules/article/toplist.php?sort=weekvote&page=%d", pageindex);
+                url = String.format("https://www.wenku8.cc/modules/article/toplist.php?sort=weekvote&page=%d", pageindex);
                 break;
             case "goodnum":
                 //总推荐
-                url = String.format("https://www.wenku8.net/modules/article/toplist.php?sort=goodnum&page=%d", pageindex);
+                url = String.format("https://www.wenku8.cc/modules/article/toplist.php?sort=goodnum&page=%d", pageindex);
                 break;
             case "size":
                 //字数排行
-                url = String.format("https://www.wenku8.net/modules/article/toplist.php?sort=size&page=%d", pageindex);
+                url = String.format("https://www.wenku8.cc/modules/article/toplist.php?sort=size&page=%d", pageindex);
                 break;
         }
 
@@ -89,7 +89,7 @@ public class Wenku8Spider {
         Document document = parse(LoginWenku8.getPageHtml(url));
         Element t1 = document.getElementById("content");
         Elements t2 = t1.getElementsByAttributeValue("style", "width:100px;height:35px;margin:0px;padding:0px;");
-        String ContentsUrl = t2.eq(0).select("a").attr("href");
+        String ContentsUrl = "https://www.wenku8.cc" + t2.eq(0).select("a").attr("href");
         Document document2 = parse(LoginWenku8.getPageHtml(ContentsUrl));
         Elements c1 = document2.getElementsByTag("td");
 
@@ -183,9 +183,9 @@ public class Wenku8Spider {
         String html = null;
         String url;
         if (searchtype.equals("articlename")) {
-            url = String.format("https://www.wenku8.net/modules/article/search.php?searchtype=articlename&searchkey=%s&page=%d", URLEncoder.encode(searchContent, "gbk"), pageindex);
+            url = String.format("https://www.wenku8.cc/modules/article/search.php?searchtype=articlename&searchkey=%s&page=%d", URLEncoder.encode(searchContent, "gbk"), pageindex);
         } else {
-            url = String.format("https://www.wenku8.net/modules/article/search.php?searchtype=author&searchkey=%s&page=%d", URLEncoder.encode(searchContent, "gbk"), pageindex);
+            url = String.format("https://www.wenku8.cc/modules/article/search.php?searchtype=author&searchkey=%s&page=%d", URLEncoder.encode(searchContent, "gbk"), pageindex);
         }
 
         try {
@@ -194,7 +194,7 @@ public class Wenku8Spider {
             Element a = document.getElementById("content");
             Element b = a.select("span[style=width:180px;display:inline-block;]").get(1);
             String bookUrl = b.selectFirst("a").attr("href");
-            bookUrl = String.format("https://www.wenku8.net/book/%s.htm", bookUrl.substring(bookUrl.indexOf("bid=") + 4));
+            bookUrl = String.format("https://www.wenku8.cc/book/%s.htm", bookUrl.substring(bookUrl.indexOf("bid=") + 4));
             Log.d("debug", "search bookurl" + bookUrl);
             list.add(new BookListBean(bookUrl));
 
@@ -209,7 +209,7 @@ public class Wenku8Spider {
         List<BookcaseBean> temp = new ArrayList<>();
         int bookIndex = 0;
         int totalBookcase = 0;
-        String url = "https://www.wenku8.net/modules/article/bookcase.php";
+        String url = "https://www.wenku8.cc/modules/article/bookcase.php";
         Document document = parse(LoginWenku8.getPageHtml(url));
         Element a = document.getElementById("content");
         Elements b = a.getElementsByTag("tr");
@@ -245,12 +245,12 @@ public class Wenku8Spider {
     }
 
     public static void removeBook(int bid) throws IOException {
-        String url = String.format("https://www.wenku8.net/modules/article/bookcase.php?delid=%d", bid);
+        String url = String.format("https://www.wenku8.cc/modules/article/bookcase.php?delid=%d", bid);
         LoginWenku8.getPageHtml(url);
     }
 
     public static boolean addBook(int aid) throws IOException {
-        String addUrl = String.format("https://www.wenku8.net/modules/article/addbookcase.php?bid=%d", Integer.valueOf(aid));
+        String addUrl = String.format("https://www.wenku8.cc/modules/article/addbookcase.php?bid=%d", Integer.valueOf(aid));
         String html = LoginWenku8.getPageHtml(addUrl);
         if (html.contains("出现错误！")) {
             return false;
@@ -265,8 +265,9 @@ public class Wenku8Spider {
         List<String> imgUrl = new ArrayList<>();
 
         Document document = parse(LoginWenku8.getPageHtml(url));
+        Log.d("tag","wenku8spider url:" + url);
         Element a = document.getElementById("content");
-        String contentUrl = a.selectFirst("div[style=text-align:center]").getElementsByTag("a").eq(0).attr("href");
+        String contentUrl = "https://www.wenku8.cc" + a.selectFirst("div[style=text-align:center]").getElementsByTag("a").eq(0).attr("href");
         contentUrl = contentUrl.replace("index.htm", index);
         Document document1 = parse(LoginWenku8.getPageHtml(contentUrl));
         Element b = document1.getElementById("content");//获取文字，如果有的话
@@ -305,10 +306,10 @@ public class Wenku8Spider {
             String Author = temp.getElementsByTag("p").eq(0).text();
             String other = temp.getElementsByTag("p").eq(1).text();
             String tags = temp.getElementsByTag("span").eq(1).text();
-            String bookUrl = temp.getElementsByTag("div").eq(0).select("a").eq(0).attr("href");
+            String bookUrl = "https://www.wenku8.cc" + temp.getElementsByTag("div").eq(0).select("a").eq(0).attr("href");
 
             if (pic.equals("/images/noimg.jpg")) {
-                pic = "https://www.wenku8.net/modules/article/images/nocover.jpg";
+                pic = "https://www.wenku8.cc/modules/article/images/nocover.jpg";
             }
 
             BookListBean nlc = new BookListBean(pic, bookTitle, Author, other, tags, bookUrl, totalPage);
@@ -383,7 +384,7 @@ public class Wenku8Spider {
 
     public static List<String> getUserInfo() throws IOException {
         List<String> userInfo = new ArrayList<>();
-        Document document = Jsoup.parse(LoginWenku8.getPageHtml("https://www.wenku8.net/userdetail.php"));
+        Document document = Jsoup.parse(LoginWenku8.getPageHtml("https://www.wenku8.cc/userdetail.php"));
         Element a = document.getElementById("content");
         Element b = a.selectFirst("tbody");
         String avatar = b.select("tr").get(0).select("td").get(2).selectFirst("img").attr("src");
@@ -414,7 +415,7 @@ public class Wenku8Spider {
     }
 
     public static String bookVote(int aid) throws IOException {
-        String url = "https://www.wenku8.net/modules/article/uservote.php?id=" + aid;
+        String url = "https://www.wenku8.cc/modules/article/uservote.php?id=" + aid;
         Document document = Jsoup.parse(LoginWenku8.getPageHtml(url));
         return document.getElementsByClass("blockcontent").get(0).select("div[style=padding:10px]").get(0).text();
     }

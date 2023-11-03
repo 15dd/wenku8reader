@@ -70,16 +70,16 @@ class PageView : ViewFlipper, IPageView {
                 return true
             }
 
-            override fun onShowPress(e: MotionEvent) {
-            }
-
             override fun onScroll(
-                e1: MotionEvent,
+                e1: MotionEvent?,
                 e2: MotionEvent,
                 distanceX: Float,
                 distanceY: Float
             ): Boolean {
                 return false
+            }
+
+            override fun onShowPress(e: MotionEvent) {
             }
 
             override fun onLongPress(e: MotionEvent) {
@@ -91,13 +91,13 @@ class PageView : ViewFlipper, IPageView {
             }
 
             override fun onFling(
-                e1: MotionEvent,
+                e1: MotionEvent?,
                 e2: MotionEvent,
                 velocityX: Float,
                 velocityY: Float
             ): Boolean {
                 if (direction == Orientation.horizontal) {
-                    if (e1.x - e2.x > FLIP_DISTANCE) {
+                    if (e1!!.x - e2.x > FLIP_DISTANCE) {
                         Log.i("debug", "手指向左滑...")
                         pageToNext(Orientation.horizontal)
                         return true
@@ -108,7 +108,7 @@ class PageView : ViewFlipper, IPageView {
                         return true
                     }
                 } else if (direction == Orientation.vertical) {
-                    if (e1.y - e2.y > FLIP_DISTANCE) {
+                    if (e1!!.y - e2.y > FLIP_DISTANCE) {
                         Log.i("debug", "手指向上滑...")
                         pageToNext(Orientation.vertical)
                         return true

@@ -84,7 +84,7 @@ public class BookCaseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             .show();
                     return;
                 }
-                String url = String.format("https://www.wenku8.net/book/%s.htm",novel.bookUrl.substring(novel.bookUrl.indexOf("aid=") + 4, novel.bookUrl.indexOf("&")));
+                String url = String.format("https://www.wenku8.cc/book/%s.htm",novel.bookUrl.substring(novel.bookUrl.indexOf("aid=") + 4, novel.bookUrl.indexOf("&")));
                 Intent toContents = new Intent(context, ContentsActivity.class);
                 toContents.putExtra("bookUrl", url);
                 context.startActivity(toContents);
@@ -111,7 +111,7 @@ public class BookCaseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             .show();
                     return;
                 }
-                String url = String.format("https://www.wenku8.net/book/%s.htm",novel.bookUrl.substring(novel.bookUrl.indexOf("aid=") + 4, novel.bookUrl.indexOf("&")));
+                String url = String.format("https://www.wenku8.cc/book/%s.htm",novel.bookUrl.substring(novel.bookUrl.indexOf("aid=") + 4, novel.bookUrl.indexOf("&")));
                 Intent toContents = new Intent(context, ContentsActivity.class);
                 toContents.putExtra("bookUrl", url);
                 context.startActivity(toContents);

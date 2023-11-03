@@ -67,7 +67,7 @@ public class BookListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         itemViewHolder.number.setText(String.valueOf(position + 1));
 
         itemViewHolder.itemView.setOnClickListener(v -> {//设置项目点击监听
-            Log.d("debug", "url:" + novel.bookUrl);
+            Log.d("debug", "BookListAdapter url:" + novel.bookUrl);
 
             Intent toContents = new Intent(context, ContentsActivity.class);
             toContents.putExtra("bookUrl", novel.bookUrl);

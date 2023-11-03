@@ -89,7 +89,7 @@ public class LoginInputActivity extends AppCompatActivity {
                         new MaterialAlertDialogBuilder(LoginInputActivity.this)
                                 .setCancelable(false)//禁止点击其他区域
                                 .setTitle("网络错误")
-                                .setMessage("可能是以下原因造成的:\n\n1 -> 请检查是否正在连接VPN或代理服务器\n2 -> 未连接上网络\n3 -> 服务器(wenku8.net)出错，(此网站有时会登不上去)\n\n请稍后再试")
+                                .setMessage("可能是以下原因造成的:\n\n1 -> 请检查是否正在连接VPN或代理服务器\n2 -> 未连接上网络\n3 -> 服务器(wenku8.cc)出错，(此网站有时会登不上去)\n\n请稍后再试")
                                 .setPositiveButton("明白", null)
                                 .setIcon(R.drawable.warning)
                                 .show();
@@ -115,7 +115,7 @@ public class LoginInputActivity extends AppCompatActivity {
                     .setCancelable(false)
                     .setNegativeButton("取消", null)
                     .setPositiveButton("前往注册", (dialog, which) -> {
-                        Uri uri = Uri.parse("https://www.wenku8.net/register.php");    //设置跳转的网站
+                        Uri uri = Uri.parse("https://www.wenku8.cc/register.php");    //设置跳转的网站
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(intent);
                     })

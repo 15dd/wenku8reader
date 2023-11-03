@@ -45,7 +45,7 @@ public class LoginWenku8 {
             builder.add(key, paramsMap.get(key));
         }
         RequestBody formBody = builder.build();
-        Request request = new Request.Builder().url("https://www.wenku8.net/login.php").post(formBody).build();
+        Request request = new Request.Builder().url("https://www.wenku8.cc/login.php").post(formBody).build();
 
         Response response = okHttpClient.newCall(request).execute();
         String html = new String(response.body().bytes(), "gbk");
