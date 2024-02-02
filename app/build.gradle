@@ -16,9 +16,9 @@ android {
     defaultConfig {
         applicationId "com.cyh128.wenku8reader"
         minSdk 29
-        targetSdk 33
-        versionCode 231103
-        versionName "2.2.2"
+        targetSdk 34
+        versionCode 240202
+        versionName "2.3.0"
     }
 
     buildTypes {
