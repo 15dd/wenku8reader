@@ -144,14 +144,14 @@ class PageView : ViewFlipper, IPageView {
     }
 
     override fun onCenterClick() {
-        if (mBarIsShow) { //https://blog.csdn.net/u010687392/article/details/48003979
+        mBarIsShow = if (mBarIsShow) { //https://blog.csdn.net/u010687392/article/details/48003979
             //显示
-            ReaderActivity.readerActivity.showBar()
-            mBarIsShow = !mBarIsShow
+            ReaderActivity.readerActivity?.showBar()
+            !mBarIsShow
         } else {
             //隐藏
-            ReaderActivity.readerActivity.hideBar()
-            mBarIsShow = !mBarIsShow
+            ReaderActivity.readerActivity?.hideBar()
+            !mBarIsShow
         }
     }
 
@@ -161,7 +161,7 @@ class PageView : ViewFlipper, IPageView {
         val curClickTime = System.currentTimeMillis()
         if (curClickTime - lastClickTime >= MIN_CLICK_DELAY_TIME) {
             lastClickTime = curClickTime
-            ReaderActivity.readerActivity.switchChapter(
+            ReaderActivity.readerActivity?.switchChapter(
                 ReaderActivity.Direction.Next)
         }
     }
@@ -172,18 +172,18 @@ class PageView : ViewFlipper, IPageView {
         val curClickTime = System.currentTimeMillis()
         if (curClickTime - lastClickTime >= MIN_CLICK_DELAY_TIME) {
             lastClickTime = curClickTime
-            ReaderActivity.readerActivity.switchChapter(
+            ReaderActivity.readerActivity?.switchChapter(
                 ReaderActivity.Direction.Previous)
         }
     }
 
     override fun onPageChange() {
-        if (maxTextPageNum != 0 && ReaderActivity.readProgress.valueFrom < (maxTextPageNum + imgUrlList.size).toFloat()) {
-            ReaderActivity.readProgress.valueTo = (maxTextPageNum + imgUrlList.size).toFloat()
-            ReaderActivity.readProgress.value = pageNum.toFloat()
-            ReaderActivity.readProgress.visibility = View.VISIBLE
+        if (maxTextPageNum != 0 && ReaderActivity.readProgress!!.valueFrom < (maxTextPageNum + imgUrlList.size).toFloat()) {
+            ReaderActivity.readProgress!!.valueTo = (maxTextPageNum + imgUrlList.size).toFloat()
+            ReaderActivity.readProgress!!.value = pageNum.toFloat()
+            ReaderActivity.readProgress!!.visibility = View.VISIBLE
         } else {
-            ReaderActivity.readProgress.visibility = View.INVISIBLE
+            ReaderActivity.readProgress!!.visibility = View.INVISIBLE
         }
     }
 
@@ -194,17 +194,17 @@ class PageView : ViewFlipper, IPageView {
 
     private fun pageToNext(orientation: Orientation) {
         if (orientation == Orientation.horizontal) {
-            setInAnimation(getContext(), R.anim.slide_in_right)
-            setOutAnimation(getContext(), R.anim.slide_out_left)
+            setInAnimation(context, R.anim.slide_in_right)
+            setOutAnimation(context, R.anim.slide_out_left)
         } else {
-            setInAnimation(getContext(), R.anim.slide_in_bottom)
-            setOutAnimation(getContext(), R.anim.slide_out_top)
+            setInAnimation(context, R.anim.slide_in_bottom)
+            setOutAnimation(context, R.anim.slide_out_top)
         }
         pageFlag = 2
 
 
         if (pageNum < maxTextPageNum + imgUrlList.size) {
-            pageNum = pageNum + 1
+            pageNum += 1
         } else {
             onNextChapter()
         }
@@ -212,17 +212,17 @@ class PageView : ViewFlipper, IPageView {
 
     private fun pageToPrevious(orientation: Orientation) {
         if (orientation == Orientation.horizontal) {
-            setInAnimation(getContext(), R.anim.slide_in_left)
-            setOutAnimation(getContext(), R.anim.slide_out_right)
+            setInAnimation(context, R.anim.slide_in_left)
+            setOutAnimation(context, R.anim.slide_out_right)
         } else {
-            setInAnimation(getContext(), R.anim.slide_in_top)
-            setOutAnimation(getContext(), R.anim.slide_out_bottom)
+            setInAnimation(context, R.anim.slide_in_top)
+            setOutAnimation(context, R.anim.slide_out_bottom)
         }
         pageFlag = 3
         if (pageNum < 2) {
             onPreviousChapter()
         } else {
-            pageNum = pageNum - 1
+            pageNum -= 1
         }
     }
 
@@ -259,7 +259,7 @@ class PageView : ViewFlipper, IPageView {
                             requestLayout()
                         }
 
-                        var drawAble: Drawable = Glide.with(context)
+                        val drawAble: Drawable = Glide.with(context)
                             .asDrawable()
                             .load(imgUrlList[pageNum - maxTextPageNum - 1].trim())
                             .submit()
@@ -340,8 +340,8 @@ class PageView : ViewFlipper, IPageView {
         if (content.isEmpty()) return ArrayList()
         val tmpArray = content.split("\n")
         val tmplist = ArrayList<String>()
-        tmpArray.forEach {
-            val tmp = "  " + it.trim()
+        tmpArray.forEach {item ->
+            val tmp = "  " + item.trim()
             val totalCount = getTextWidth() / textSize.toInt() //一行容纳字数
             for (i in 0..tmp.length / totalCount) {
                 tmp.filterIndexed { index, _ -> index > i * totalCount - 1 && index < (i + 1) * totalCount }
@@ -373,10 +373,10 @@ class PageView : ViewFlipper, IPageView {
                     ) 0 else textArray.size
 
                     ReaderActivity.showCount++
-                    if (ReaderActivity.showCount == 2) { //防止页数在初始化时乱跳
-                        pageNum = 1
+                    pageNum = if (ReaderActivity.showCount == 2) { //防止页数在初始化时乱跳
+                        1
                     } else {
-                        pageNum = (maxTextPageNum / scale).toInt().takeIf { it != 0 } ?: 1
+                        (maxTextPageNum / scale).toInt().takeIf { it != 0 } ?: 1
                     }
                     Log.d("tag",pageNum.toString())
                 }
@@ -384,9 +384,7 @@ class PageView : ViewFlipper, IPageView {
                 "text" -> {
                     if (width < 1) return
                     textArray = spliteText(text)
-                    maxTextPageNum = if (text.length <= title.length + 1
-                        || text.isEmpty()
-                    ) 0 else textArray.size
+                    maxTextPageNum = if (text.length <= title.length + 1 || text.isEmpty()) 0 else textArray.size
                     pageNum = when (pageFlag) {
                         0 -> if (maxTextPageNum == 0) 0 else if (pageNum == 0) 1 else pageNum
                         1, 2 -> if (maxTextPageNum == 0) 0 else 1

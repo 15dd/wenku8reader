@@ -24,6 +24,7 @@
             android:name="com.cyh128.wenku8reader.activity.LoginingActivity"
             android:label="轻小说文库"
             android:theme="@style/Theme.MyApplication"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,68 +34,84 @@
 
         <activity
             android:name="com.cyh128.wenku8reader.activity.AppActivity"
-            android:theme="@style/Theme.MyApplication" />
+            android:theme="@style/Theme.MyApplication"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.cyh128.wenku8reader.activity.LoginInputActivity"
             android:theme="@style/Theme.MyApplication"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.cyh128.wenku8reader.activity.ContentsActivity"
-            android:theme="@style/Theme.MyApplication" />
+            android:theme="@style/Theme.MyApplication"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.cyh128.wenku8reader.activity.SettingActivity"
-            android:theme="@style/Theme.MyApplication" />
+            android:theme="@style/Theme.MyApplication"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.cyh128.wenku8reader.activity.PhotoViewActivity"
-            android:theme="@style/Theme.MyApplication" />
+            android:theme="@style/Theme.MyApplication"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.cyh128.wenku8reader.activity.CommentActivity"
-            android:theme="@style/Theme.MyApplication" />
+            android:theme="@style/Theme.MyApplication"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.cyh128.wenku8reader.activity.CommentInCommentActivity"
-            android:theme="@style/Theme.MyApplication" />
+            android:theme="@style/Theme.MyApplication"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.cyh128.wenku8reader.activity.SearchActivity"
-            android:theme="@style/Theme.MyApplication" />
+            android:theme="@style/Theme.MyApplication"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.cyh128.wenku8reader.activity.TagSearchActivity"
-            android:theme="@style/Theme.MyApplication" />
+            android:theme="@style/Theme.MyApplication"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.cyh128.wenku8reader.activity.TagSelectActivity"
-            android:theme="@style/Theme.MyApplication" />
+            android:theme="@style/Theme.MyApplication"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.cyh128.wenku8reader.activity.CrashActivity"
-            android:theme="@style/Theme.MyApplication" />
+            android:theme="@style/Theme.MyApplication"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.cyh128.wenku8reader.activity.UserInfoActivity"
-            android:theme="@style/Theme.MyApplication" />
+            android:theme="@style/Theme.MyApplication"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.cyh128.wenku8reader.newReader.ReaderActivity"
-            android:theme="@style/Theme.MyApplication" />
+            android:theme="@style/Theme.MyApplication"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.cyh128.wenku8reader.oldReader.ReaderActivity"
-            android:theme="@style/Theme.MyApplication" />
+            android:theme="@style/Theme.MyApplication"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.cyh128.wenku8reader.activity.AboutActivity"
-            android:theme="@style/Theme.MyApplication" />
+            android:theme="@style/Theme.MyApplication"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.cyh128.wenku8reader.activity.SelectColorActivity"
-            android:theme="@style/Theme.MyApplication" />
+            android:theme="@style/Theme.MyApplication"
+            android:screenOrientation="portrait"/>
 
     </application>
 

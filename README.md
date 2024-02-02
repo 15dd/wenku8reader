@@ -1,52 +1,40 @@
-[![GitHub All Releases](https://img.shields.io/github/downloads/15dd/wenku8reader/total?label=下载量&logo=github&style=flat-square)](https://github.com/15dd/wenku8reader/releases)
-# 重要事项
-- <h3>软件bug请提issues，其他问题请发discussions</h3>
-- <h3>本人职高三年级开学了 <s>（现在连周日都要去学校上课，这真的是职高吗？😭 IP:浙江）</s> ，项目维护和更新会非常慢</h3>
-- <h3>本软件目前以维护为主，我接下来计划重写整个项目，只是不知道什么时候能搞好就是了（大约暑假的时候能搞定吧，主要是最近的休息日都在玩galgame，没什么时间）
-- <h3>重构进度（2024.1.11）：学习jetpack compose和kotlin中，compose这个东西的相关教程好难找，谁能给我推荐点相关资料😭，如果有推荐的资料请发在discussions中，感谢🙏🙏</h4>
 
-# 介绍
 <div align="center">
   <div align="center">
-    <img src="./README/logo.png" alt="Logo" width="100" height="100">
+    <img src="./README/logo.png" alt="Logo" width="130" height="130">
   </div>
 
-  <h2 align="center">轻小说文库</h2>
-  <div align="center">
-    一个 <b>第三方</b> 轻小说文库 <b>阅读器</b>
-    <br />
-    <a href="https://www.bilibili.com/video/BV1ns4y1B7J2/"><b>视频展示</b></a>
-    <br />
-  </div>
+  <p align="center">
+    <font size="4">第三方轻小说文库软件</font>
+  </p>
 
+  <img alt="Downloads" src="https://img.shields.io/github/downloads/15dd/wenku8reader/total"/>
+  <img alt="License" src="https://img.shields.io/github/license/15dd/wenku8reader">
+  <a href="https://www.bilibili.com/video/BV1ns4y1B7J2/">
+    <img alt="Bilibili" src="https://img.shields.io/badge/视频展示-bilibili-blue?logo=bilibili">
+  </a>
+  
 </div>
 
-- 使用Java和Kotlin混合开发
-- 使用Material Design 3，界面简洁
-- 支持阅读进度保存
-- 深色模式适配
 ## 注意
 - 本软件是轻小说文库的第三方软件，本软件数据全部来自轻小说文库(www.wenku8.cc)
 - 支持的安卓版本：Android 10+ (API 29+)
-
-<h2>觉得好用别忘了star哦，你的star是对我最大的激励</h2>
-
-## 目录
-- [软件截图](#软件截图)
-- [作者的话](#作者的话)
-- [常见问题](#常见问题)
-- [感谢](#感谢)
+- 觉得好用别忘了star哦，你的star是对我最大的激励
+- 软件bug请提issues，其他问题请发discussions
+- 本项目的大部分代码是Java转成Kotlin的(使用Android Studio的Convert Java File to Kotlin File)，所以有些代码写的莫名奇妙的
+- 本项目目前以维护为主
+- 正在重构整个项目，大概24年的暑假能搞定
 
 ## 软件截图
 浅色模式
-<div align="left">
+<div align="center">
   <img src="./README/1.jpg" width="18%"></img> <img src="./README/2.jpg" width="18%"></img> <img src="./README/3.jpg" width="18%"></img> <img src="./README/4.jpg" width="18%"></img> <img src="./README/5.jpg" width="18%"></img> 
 </div>
 
 <br>
 
 深色模式
-<div align="left">
+<div align="center">
   <img src="./README/n1.jpg" width="18%"></img> <img src="./README/n2.jpg" width="18%"></img> <img src="./README/n3.jpg" width="18%"></img> <img src="./README/n4.jpg" width="18%"></img> <img src="./README/n5.jpg" width="18%"></img> 
 </div>
 
@@ -68,7 +56,7 @@
 在开发2.0.0版本，解决代码Error时，突然看到了Warning里的`this is a memory leak`这个消息（我之前基本不看Warning的，只要没有Error，软件能跑就行）。然后百度了一下，发现java也有内存泄漏这个情况，因为之前有听说过java有内存回收机制，以为new了一块空间出来就不用管他了。后来用leakcanary一查，确实有内存泄漏这个问题。之后就把已知的内存泄漏问题给解决了，在这期间又发现了因为系统问题导致的内存泄漏（在安卓10这个系统上会出现。这个还是AI找出来的，不然我都不知道是系统的原因），然后又解决了一些各种各样的原因导致的内存泄漏问题，算是涨了很多知识。
 <br><br>
 <b>
-本软件是从2023.4.8开始写起来的（安卓相关知识也是从这个时候开始学习的），平常也就空闲的时候写这个，由于本人之前从来没有接触过安卓开发，所以这个软件都是边学边写的，难免会出现一些问题。我甚至连Java都没怎么学过，都是靠C++的语法基础的，所以看源代码的时候轻喷。<br></b>
+本软件是从2023.4.8开始写起来的（安卓相关知识也是从这个时候开始学习的），平常也就空闲的时候写这个，由于本人之前从来没有接触过安卓开发，所以这个软件都是边学边写的，难免会出现一些问题。我甚至连Java都没怎么学过，都是靠C++的语法基础的，所以看源代码的时候轻喷。<br></b><br>
 很多代码都是我从网上抄的，源代码注释也有写出处。源代码中的文件夹，文件和变量名的命名都挺混乱的，请见谅。
 <br><br>
 我写这个软件的目的是为了适配高版本的安卓系统。<br>
@@ -111,30 +99,3 @@
     <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=15dd/wenku8reader&type=Date" />
   </picture>
 </a>
-
-
-## 开源协议
-
-```
-MIT License
-
-Copyright (c) 2023 cyh128
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
