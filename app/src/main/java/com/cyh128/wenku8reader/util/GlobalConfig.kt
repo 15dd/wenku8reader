@@ -11,6 +11,7 @@ object GlobalConfig {
     var readerBottomTextSize = 0f
     var isUpToDown = false
     var canSwitchChapterByScroll = false
+    var canSwitchPageByVolumeKey = false
     var backgroundColorDay: String? = null
     var backgroundColorNight: String? = null
     var textColorDay: String? = null

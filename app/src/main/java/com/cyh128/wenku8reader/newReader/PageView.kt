@@ -192,7 +192,7 @@ class PageView : ViewFlipper, IPageView {
         return true //直接消耗事件
     }
 
-    private fun pageToNext(orientation: Orientation) {
+    fun pageToNext(orientation: Orientation) {
         if (orientation == Orientation.horizontal) {
             setInAnimation(context, R.anim.slide_in_right)
             setOutAnimation(context, R.anim.slide_out_left)
@@ -210,7 +210,7 @@ class PageView : ViewFlipper, IPageView {
         }
     }
 
-    private fun pageToPrevious(orientation: Orientation) {
+    fun pageToPrevious(orientation: Orientation) {
         if (orientation == Orientation.horizontal) {
             setInAnimation(context, R.anim.slide_in_left)
             setOutAnimation(context, R.anim.slide_out_right)

@@ -17,8 +17,8 @@ android {
         applicationId "com.cyh128.wenku8reader"
         minSdk 29
         targetSdk 34
-        versionCode 240202
-        versionName "2.3.0"
+        versionCode 240222
+        versionName "2.3.1"
     }
 
     buildTypes {

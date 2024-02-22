@@ -94,7 +94,7 @@ class LoginingActivity : AppCompatActivity() {
         GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS new_reader_read_history(bookUrl TEXT PRIMARY KEY,indexUrl TEXT UNIQUE NOT NULL,title TEXT NOT NULL,location INT NOT NULL)")
         GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS user_info(_id INTEGER PRIMARY KEY autoincrement,username TEXT,password TEXT)")
         GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS setting(_id INTEGER UNIQUE,checkUpdate BOOLEAN NOT NULL,bookcaseViewType BOOLEAN NOT NULL,readerMode INTEGER NOT NULL)")
-        GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS reader(_id INTEGER UNIQUE,newFontSize FLOAT NOT NULL,newLineSpacing FLOAT NOT NULL,oldFontSize FLOAT NOT NULL,oldLineSpacing FLOAT NOT NULL,bottomTextSize FLOAT NOT NULL,isUpToDown BOOLEAN NOT NULL,canSwitchChapterByScroll BOOLEAN NOT NULL,backgroundColorDay TEXT NOT NULL,backgroundColorNight TEXT NOT NULL,textColorDay TEXT NOT NULL,textColorNight TEXT NOT NULL)")
+        GlobalConfig.db.execSQL("CREATE TABLE IF NOT EXISTS reader(_id INTEGER UNIQUE,newFontSize FLOAT NOT NULL,newLineSpacing FLOAT NOT NULL,oldFontSize FLOAT NOT NULL,oldLineSpacing FLOAT NOT NULL,bottomTextSize FLOAT NOT NULL,isUpToDown BOOLEAN NOT NULL,canSwitchChapterByScroll BOOLEAN NOT NULL,backgroundColorDay TEXT NOT NULL,backgroundColorNight TEXT NOT NULL,textColorDay TEXT NOT NULL,textColorNight TEXT NOT NULL,canSwitchPageByVolumeKey BOOLEAN NOT NULL)")
         return try {
             val sql = "select * from setting where _id=1"
             val cursor = GlobalConfig.db.rawQuery(sql, null)
@@ -113,7 +113,7 @@ class LoginingActivity : AppCompatActivity() {
             }
             val sql2 = "select * from reader where _id=1"
             val cursor2 = GlobalConfig.db.rawQuery(sql2, null)
-            if (cursor2.moveToNext()) {
+            if (cursor2.moveToNext()) { //如果有修改过设置
                 for (i in 0 until cursor2.count) {
                     cursor2.move(i)
                     GlobalConfig.newReaderFontSize = cursor2.getFloat(1)
@@ -127,9 +127,10 @@ class LoginingActivity : AppCompatActivity() {
                     GlobalConfig.backgroundColorNight = cursor2.getString(9)
                     GlobalConfig.textColorDay = cursor2.getString(10)
                     GlobalConfig.textColorNight = cursor2.getString(11)
+                    GlobalConfig.canSwitchPageByVolumeKey = cursor2.getInt(12) == 1
                 }
                 cursor2.close()
-            } else {
+            } else { //如果是第一次启动软件或者没有修改过设置，那么设置为默认值
                 GlobalConfig.newReaderFontSize = 30 + 20f
                 GlobalConfig.newReaderLineSpacing = 1.5f
                 GlobalConfig.oldReaderFontSize = 16f
@@ -141,6 +142,7 @@ class LoginingActivity : AppCompatActivity() {
                 GlobalConfig.backgroundColorNight = "#000000"
                 GlobalConfig.textColorDay = "#000000"
                 GlobalConfig.textColorNight = "#FFFFFF"
+                GlobalConfig.canSwitchPageByVolumeKey = false
             }
             true
         } catch (e: Exception) {

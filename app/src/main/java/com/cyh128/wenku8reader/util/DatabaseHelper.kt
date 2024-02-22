@@ -54,6 +54,7 @@ object DatabaseHelper {
         values.put("backgroundColorNight", GlobalConfig.backgroundColorNight)
         values.put("textColorDay", GlobalConfig.textColorDay)
         values.put("textColorNight", GlobalConfig.textColorNight)
+        values.put("canSwitchPageByVolumeKey", GlobalConfig.canSwitchPageByVolumeKey)
         GlobalConfig.db.replace("reader", null, values)
     }
 }

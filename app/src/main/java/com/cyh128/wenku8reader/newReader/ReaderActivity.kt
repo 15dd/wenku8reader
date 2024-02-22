@@ -11,6 +11,7 @@ import android.os.CountDownTimer
 import android.text.Html
 import android.util.Log
 import android.util.TypedValue
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -35,6 +36,7 @@ import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.Snackbar
 import com.gyf.immersionbar.ImmersionBar
+import java.security.Key
 
 class ReaderActivity : AppCompatActivity() {
     lateinit var toolbar: MaterialToolbar
@@ -52,6 +54,7 @@ class ReaderActivity : AppCompatActivity() {
     private lateinit var switchChapter: MaterialSwitch
     private var historyPosition: Int = -1 //历史记录
     private lateinit var bottomSheetView: View
+    private lateinit var volumeKey: MaterialSwitch
     override fun onCreate(savedInstanceState: Bundle?) {
         //我已经逐渐看不懂这个阅读器是怎么写出来的了，好像想整个重写一遍。。。。。。
         super.onCreate(savedInstanceState)
@@ -88,8 +91,7 @@ class ReaderActivity : AppCompatActivity() {
         bottombar.setBackgroundResource(showBarColor)
 
         //getSystemService导致的内存泄漏问题 https://blog.csdn.net/xiabing082/article/details/53993298
-        val uiModeManager: UiModeManager =
-            applicationContext.getSystemService(UI_MODE_SERVICE) as UiModeManager
+        val uiModeManager: UiModeManager = applicationContext.getSystemService(UI_MODE_SERVICE) as UiModeManager
         isNigntMode = uiModeManager.nightMode == UiModeManager.MODE_NIGHT_YES
         setBackgroundAndTextColor() //初始化背景颜色的字符串，以便hideBar()调用
         bottomSheetDialog = BottomSheetDialog(this)
@@ -109,11 +111,13 @@ class ReaderActivity : AppCompatActivity() {
         bottomTextSize = bottomSheetView.findViewById(R.id.slider_bottom_sheet_act_reader_bottomfontsize)
         readDirection = bottomSheetView.findViewById(R.id.toggleGroup_bottom_sheet_act_read)
         switchChapter = bottomSheetView.findViewById(R.id.switch_bottom_sheet_act_read)
+        volumeKey = bottomSheetView.findViewById(R.id.switch_volume_bottom_sheet_act_read)
         fontSize.value = GlobalConfig.newReaderFontSize - 20f //slider上显示的数字比实际字体大小要小20f
         lineSpacing.value = GlobalConfig.newReaderLineSpacing
         bottomTextSize.value = GlobalConfig.readerBottomTextSize
         readDirection.check(if (GlobalConfig.isUpToDown) R.id.button_bottom_sheet_act_read_utd else R.id.button_bottom_sheet_act_read_ltr)
         switchChapter.isChecked = GlobalConfig.canSwitchChapterByScroll
+        volumeKey.isChecked = GlobalConfig.canSwitchPageByVolumeKey
         fontSize.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
             override fun onStartTrackingTouch(slider: Slider) {}
             override fun onStopTrackingTouch(slider: Slider) {
@@ -147,12 +151,15 @@ class ReaderActivity : AppCompatActivity() {
                 pageView.pageNum = slider.value.toInt()
             }
         })
-        switchChapter.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
+        switchChapter.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             GlobalConfig.canSwitchChapterByScroll = isChecked
         }
-        previousChapter.setOnClickListener { v: View? -> toPreviousChapter() }
-        nextChapter.setOnClickListener { v: View? -> toNextChapter() }
-        setting.setOnClickListener { v: View? -> bottomSheetDialog.show() }
+        volumeKey.setOnCheckedChangeListener { _, isChecked ->
+            GlobalConfig.canSwitchPageByVolumeKey = isChecked
+        }
+        previousChapter.setOnClickListener { toPreviousChapter() }
+        nextChapter.setOnClickListener { toNextChapter() }
+        setting.setOnClickListener { bottomSheetDialog.show() }
         showLoadingDialog()
         loadContent()
         showBar()
@@ -168,15 +175,31 @@ class ReaderActivity : AppCompatActivity() {
             .setLabel("imageLongShow")
             .addGuidePage(GuidePage.newInstance().setLayoutRes(R.layout.view_image_long_show))
             .show()
-        bottomSheetView.findViewById<View>(R.id.button_select_rgb)
-            .setOnClickListener {
-                startActivity(
-                    Intent(
-                        this@ReaderActivity,
-                        SelectColorActivity::class.java
-                    )
+        bottomSheetView.findViewById<View>(R.id.button_select_rgb).setOnClickListener {
+            startActivity(
+                Intent(
+                    this@ReaderActivity,
+                    SelectColorActivity::class.java
                 )
+            )
+        }
+    }
+
+    //音量上下键拦截
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (GlobalConfig.canSwitchPageByVolumeKey) {
+            when(keyCode) {
+                KeyEvent.KEYCODE_VOLUME_UP -> {
+                    pageView.pageToPrevious(pageView.direction!!)
+                    return true
+                }
+                KeyEvent.KEYCODE_VOLUME_DOWN -> {
+                    pageView.pageToNext(pageView.direction!!)
+                    return true
+                }
             }
+        }
+        return super.onKeyDown(keyCode, event)
     }
 
     override fun onDestroy() {
