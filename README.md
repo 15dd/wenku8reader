@@ -11,7 +11,6 @@
     <img alt="Release" src="https://img.shields.io/github/v/release/15dd/wenku8reader">
     <img alt="Downloads" src="https://img.shields.io/github/downloads/15dd/wenku8reader/total">
     <img alt="License" src="https://img.shields.io/github/license/15dd/wenku8reader">
-    <a href="https://www.bilibili.com/video/BV1ns4y1B7J2/"><img alt="Bilibili" src="https://img.shields.io/badge/视频展示-bilibili-blue?logo=bilibili"></a>
     <a href="https://t.me/+JH2H3VpET7ozMTU9"><img alt="Status" src="https://img.shields.io/badge/group-Telegram-blue?logo=telegram"></a>
   </div>
 
@@ -48,7 +47,7 @@
 - <h3>重构</h3>
   由于当时写这个软件的时候没什么经验，很多地方的代码连我自己都看不下去了，所以打算重构了，预计24年的暑假应该能写完
   <br>
-  当前重构进度（24.3.16）：界面搭建中 ====>2%  
+  当前重构进度（24.4.3）：界面搭建中 ====>3%  
 - <h3>有关源代码</h3>
   本项目一开始是用Java写的，但是我后来开始学Kotlin了，为了方便维护软件，我直接用了AS的转换功能。所以设计思想还是Java的，导致有些地方看着怪怪的，比如可以用Kotlin协程的地方却开了个Thread。还有些地方是原本的设计就有问题，我在优化代码的时候，直接把我自己给气笑了，我居然把两个毫不相关的String类型的数据放在同一个`List<String>`里，然后传给一个函数，之后用list.get()这个方法取出想要的数据，而且还有好多地方都是这么写的。虽然也不是不行，但是很难看懂，还麻烦，不好维护。这就是基础不好的后果😭，只能等后期v3.0版本重构了
 - <h3>作者的闲话</h3>

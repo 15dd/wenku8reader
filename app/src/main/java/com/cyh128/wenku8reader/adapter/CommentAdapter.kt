@@ -30,16 +30,12 @@ class CommentAdapter(private val context: Context, private val Comment: List<Lis
         itemViewHolder.viewData.text = "回复:$reply 查看:$view"
         itemViewHolder.date.text = Comment[position][4]
         itemViewHolder.comment.text = Comment[position][5]
-        itemViewHolder.itemView.setOnClickListener { v: View? ->
-            if (viewData.substring(0, viewData.indexOf("/")) == "0") {
-                Snackbar.make(itemViewHolder.user, "此评论没有回复", Snackbar.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+        itemViewHolder.itemView.setOnClickListener {
             val intent = Intent(context, CommentInCommentActivity::class.java)
             intent.putExtra("url", Comment[position][1])
             context.startActivity(intent)
         }
-        itemViewHolder.itemView.setOnLongClickListener { v: View? ->
+        itemViewHolder.itemView.setOnLongClickListener {
             val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clipData = ClipData.newPlainText(null, Comment[position][5])
             clipboard.setPrimaryClip(clipData)

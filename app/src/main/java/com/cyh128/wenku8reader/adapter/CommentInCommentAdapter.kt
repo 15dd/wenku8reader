@@ -27,7 +27,10 @@ class CommentInCommentAdapter(
         itemViewHolder.user.text = Comment[position][0]
         itemViewHolder.date.text = Comment[position][1]
         itemViewHolder.comment.text = Comment[position][2]
-        itemViewHolder.floor.text = (position + 1).toString() + "楼"
+        itemViewHolder.floor.text = (position + 1).let {
+            if (it == 1) return@let "详细内容"
+            else return@let "${it}楼"
+        }
         itemViewHolder.itemView.setOnLongClickListener { v: View? ->
             val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clipData = ClipData.newPlainText(null, Comment[position][2])
