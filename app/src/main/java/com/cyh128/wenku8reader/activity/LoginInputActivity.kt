@@ -28,7 +28,6 @@ class LoginInputActivity : AppCompatActivity() {
     private lateinit var username: TextInputEditText
     private lateinit var password: TextInputEditText
     private lateinit var signIn: MaterialButton
-    private lateinit var signUp: Button
     private lateinit var str_username: String
     private lateinit var str_password: String
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +37,7 @@ class LoginInputActivity : AppCompatActivity() {
 //        CircularProgressIndicatorSpec spec = new CircularProgressIndicatorSpec(this, null, 0, com.google.android.material.R.style.Widget_Material3_CircularProgressIndicator_ExtraSmall);
 //        Drawable drawable = IndeterminateDrawable.createCircularDrawable(this, spec);
         signIn = findViewById(R.id.confirm_login)
-        signIn.setOnClickListener { v: View? ->
+        signIn.setOnClickListener {
             signIn.isClickable = false
             //            signIn.setIcon(drawable);
             //获取输入的字符，判断是否正确
@@ -95,25 +94,10 @@ class LoginInputActivity : AppCompatActivity() {
             }.start()
         }
         val ckb: CheckBox = findViewById(R.id.rememberMe)
-        ckb.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
+        ckb.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             isRemember = isChecked
         } //是否保存用户名和密码
-        signUp = findViewById(R.id.button_act_login_input_sign_up)
-        signUp.setOnClickListener { v: View? ->
-            MaterialAlertDialogBuilder(this)
-                .setTitle("请前往浏览器注册")
-                .setMessage("您需要前往浏览器页面注册，注册成功后再将用户名和密码填入输入框中，点击[前往注册]以继续注册")
-                .setCancelable(false)
-                .setNegativeButton("取消", null)
-                .setPositiveButton(
-                    "前往注册"
-                ) { dialog: DialogInterface?, which: Int ->
-                    val uri: Uri = Uri.parse("https://www.wenku8.cc/register.php") //设置跳转的网站
-                    val intent = Intent(Intent.ACTION_VIEW, uri)
-                    startActivity(intent)
-                }
-                .show()
-        }
+
         usernameLayout = findViewById(R.id.textfield_username)
         passwordLayout = findViewById(R.id.textfield_password)
         username = findViewById(R.id.username)

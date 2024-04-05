@@ -76,15 +76,6 @@
             android:layout_gravity="right"
             tools:ignore="MissingConstraints">
 
-            <Button
-                android:id="@+id/button_act_login_input_sign_up"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="20dp"
-                android:text="注册"
-                android:textSize="14sp"
-                style="@style/Widget.Material3.Button.TextButton"/>
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/confirm_login"
                 android:layout_width="wrap_content"

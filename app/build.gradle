@@ -21,8 +21,22 @@ android {
         versionName "2.3.2"
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile file("$rootDir/app/src/release.jks")
+            storePassword "123456"
+            keyAlias "release"
+            keyPassword "123456"
+        }
+    }
+
     buildTypes {
         release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
