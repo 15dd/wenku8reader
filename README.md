@@ -18,7 +18,7 @@
 
 </div>
 
-### 注意
+## 注意
 - 本软件是轻小说文库的第三方客户端，与轻小说文库官方无关，本软件数据全部来自[轻小说文库](https://www.wenku8.cc)
 - <u><b>本软件不提供注册功能，请前往轻小说文库官方网站注册</b></u>
 - <u><b>在使用本软件的过程中，请关闭梯子，使用中国大陆的ip访问</b></u>
@@ -26,7 +26,7 @@
 - 觉得好用别忘了star哦，你的star是对我最大的激励
 - 欢迎加入[Telegram交流群](https://t.me/+JH2H3VpET7ozMTU9)，一起讨论本软件的功能，使用体验等
 
-### 软件截图
+## 软件截图
 - 浅色模式
 <div align="center">
   <img src="./README/1.jpg" width="18%"></img> <img src="./README/2.jpg" width="18%"></img> <img src="./README/3.jpg" width="18%"></img> <img src="./README/4.jpg" width="18%"></img> <img src="./README/5.jpg" width="18%"></img> 
@@ -39,13 +39,13 @@
   <img src="./README/n1.jpg" width="18%"></img> <img src="./README/n2.jpg" width="18%"></img> <img src="./README/n3.jpg" width="18%"></img> <img src="./README/n4.jpg" width="18%"></img> <img src="./README/n5.jpg" width="18%"></img> 
 </div>
 
-### 常见问题
+## 常见问题
 - Q：为什么软件一直崩溃或者一直提示“内容为空”？<br>
   A：检查网络，查看ip属地是不是中国大陆的
 - Q：图片加载失败怎么办？<br>
   A：长按图片查看原图
 
-### 其他
+## 其他
 - <h3>重构</h3>
   由于当时写这个软件的时候没什么经验，很多地方的代码连我自己都看不下去了，所以打算重构了，预计24年的暑假应该能写完
   <br>
@@ -59,7 +59,7 @@
   这个软件是我在23年3月开始写的，然后第一次接触了Android开发，中间就是边学边做。一放学就马上跑回家坐在电脑面前，不断地完善代码、看教程、查文档。虽然遇到不懂的地方还挺头疼的，但是总体过程还是挺开心的。历时两个月，我写出了第一个正式版，我都没想到我可以做出一个App，并且把我当时想要实现的功能全都做出来了，内心很是激动。在第一个版本发布之后，我继续学习相关知识，不断优化软件，解决大家在使用软件中的问题，然后继续发布更新至今。
 
 
-### 感谢
+## 感谢
 #### 第三方库
 - org.jsoup:jsoup 解析html
 - com.squareup.okhttp3:okhttp  网络请求
@@ -83,12 +83,5 @@
 - https://github.com/wildma/ScreenAdaptation  根据屏幕分辨率适配组件大小（Android Studio插件）
 - AI（new bing、claude）
 
-### Star History
-
-<a href="https://star-history.com/#15dd/wenku8reader&Date">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=15dd/wenku8reader&type=Date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=15dd/wenku8reader&type=Date" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=15dd/wenku8reader&type=Date" />
-  </picture>
-</a>
+## Stargazers over time
+[![Stargazers over time](https://starchart.cc/15dd/wenku8reader.svg?variant=adaptive)](https://starchart.cc/15dd/wenku8reader)
