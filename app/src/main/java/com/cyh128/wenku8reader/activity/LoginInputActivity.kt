@@ -8,10 +8,10 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.CompoundButton
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.cyh128.wenku8reader.R
 import com.cyh128.wenku8reader.util.GlobalConfig
@@ -36,6 +36,22 @@ class LoginInputActivity : AppCompatActivity() {
         //        以下两行会导致内存泄漏，待改进
 //        CircularProgressIndicatorSpec spec = new CircularProgressIndicatorSpec(this, null, 0, com.google.android.material.R.style.Widget_Material3_CircularProgressIndicator_ExtraSmall);
 //        Drawable drawable = IndeterminateDrawable.createCircularDrawable(this, spec);
+        findViewById<Button>(R.id.register).setOnClickListener {
+            MaterialAlertDialogBuilder(this)
+                .setTitle("请前往浏览器注册")
+                .setMessage("您需要前往浏览器页面注册，注册成功后再将用户名和密码填入输入框中，点击[前往注册]以继续注册")
+                .setCancelable(false)
+                .setNegativeButton("取消", null)
+                .setPositiveButton(
+                    "前往注册"
+                ) { _: DialogInterface?, _: Int ->
+                    val uri: Uri = Uri.parse("https://${GlobalConfig.domain}/register.php") //设置跳转的网站
+                    val intent = Intent(Intent.ACTION_VIEW, uri)
+                    startActivity(intent)
+                }
+                .show()
+        }
+
         signIn = findViewById(R.id.confirm_login)
         signIn.setOnClickListener {
             signIn.isClickable = false
@@ -85,7 +101,7 @@ class LoginInputActivity : AppCompatActivity() {
                         MaterialAlertDialogBuilder(this@LoginInputActivity)
                             .setCancelable(false) //禁止点击其他区域
                             .setTitle("网络错误")
-                            .setMessage("可能是以下原因造成的:\n\n1 -> 请检查是否正在连接VPN或代理服务器\n2 -> 未连接上网络\n3 -> 服务器(wenku8.cc)出错，(此网站有时会登不上去)\n\n请稍后再试")
+                            .setMessage("可能是以下原因造成的:\n\n1 -> 请检查网络ip属地是否为中国大陆\n2 -> 未连接上网络\n3 -> 服务器(wenku8.cc)出错，(此网站有时会登不上去)\n4 -> 尝试切换节点\n\n请稍后再试")
                             .setPositiveButton("明白", null)
                             .setIcon(R.drawable.warning)
                             .show()
@@ -103,6 +119,25 @@ class LoginInputActivity : AppCompatActivity() {
         username = findViewById(R.id.username)
         password = findViewById(R.id.password)
         initTextFieldListener() //负责清空错误信息
+
+        findViewById<Button>(R.id.b_a_login_input_domain).setOnClickListener {
+            MaterialAlertDialogBuilder(this)
+                .setTitle("选择节点")
+                .setSingleChoiceItems(
+                    arrayOf("www.wenku8.cc","www.wenku8.net"),
+                    run {
+                        if (GlobalConfig.domain == "www.wenku8.cc") return@run 0
+                        else return@run 1
+                    }
+                ) { dialog: DialogInterface, which: Int ->
+                    when(which) {
+                        0 -> GlobalConfig.domain = "www.wenku8.cc"
+                        1 -> GlobalConfig.domain = "www.wenku8.net"
+                    }
+                    dialog.dismiss()
+                }
+                .show()
+        }
     }
 
     private fun initTextFieldListener() { //负责清空错误信息

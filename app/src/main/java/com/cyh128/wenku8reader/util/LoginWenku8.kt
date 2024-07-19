@@ -40,7 +40,7 @@ object LoginWenku8 {
             builder.add(key, paramsMap[key]!!)
         }
         val formBody: RequestBody = builder.build()
-        val request: Request = Request.Builder().url("https://www.wenku8.cc/login.php").post(formBody).build()
+        val request: Request = Request.Builder().url("https://${GlobalConfig.domain}/login.php").post(formBody).build()
         val response = okHttpClient.newCall(request).execute()
         val html = String(response.body.bytes(), charset("gbk"))
         if (!isCorrectUsernameOrPassword(html)) { //判断密码正确

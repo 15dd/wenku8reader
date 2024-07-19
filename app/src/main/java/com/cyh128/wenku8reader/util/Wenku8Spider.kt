@@ -17,79 +17,79 @@ object Wenku8Spider {
         when (type) {
             "toplist" ->                 //总排行
                 url = String.format(
-                    "https://www.wenku8.cc/modules/article/toplist.php?sort=allvisit&page=%d",
+                    "https://${GlobalConfig.domain}/modules/article/toplist.php?sort=allvisit&page=%d",
                     pageindex
                 )
 
             "lastupdate" ->                 //今日更新
                 url = String.format(
-                    "https://www.wenku8.cc/modules/article/toplist.php?sort=lastupdate&page=%d",
+                    "https://${GlobalConfig.domain}/modules/article/toplist.php?sort=lastupdate&page=%d",
                     pageindex
                 )
 
             "articlelist" ->                 //全部轻小说
                 url = String.format(
-                    "https://www.wenku8.cc/modules/article/articlelist.php?page=%d",
+                    "https://${GlobalConfig.domain}/modules/article/articlelist.php?page=%d",
                     pageindex
                 )
 
             "postdate" ->                 //最新入库
                 url = String.format(
-                    "https://www.wenku8.cc/modules/article/toplist.php?sort=postdate&page=%d",
+                    "https://${GlobalConfig.domain}/modules/article/toplist.php?sort=postdate&page=%d",
                     pageindex
                 )
 
             "allvote" ->                 //总推荐
                 url = String.format(
-                    "https://www.wenku8.cc/modules/article/toplist.php?sort=allvote&page=%d",
+                    "https://${GlobalConfig.domain}/modules/article/toplist.php?sort=allvote&page=%d",
                     pageindex
                 )
 
             "dayvisit" ->                 //日排行
                 url = String.format(
-                    "https://www.wenku8.cc/modules/article/toplist.php?sort=dayvisit&page=%d",
+                    "https://${GlobalConfig.domain}/modules/article/toplist.php?sort=dayvisit&page=%d",
                     pageindex
                 )
 
             "dayvote" ->                 //日推荐
                 url = String.format(
-                    "https://www.wenku8.cc/modules/article/toplist.php?sort=dayvote&page=%d",
+                    "https://${GlobalConfig.domain}/modules/article/toplist.php?sort=dayvote&page=%d",
                     pageindex
                 )
 
             "monthvisit" ->                 //月排行
                 url = String.format(
-                    "https://www.wenku8.cc/modules/article/toplist.php?sort=monthvisit&page=%d",
+                    "https://${GlobalConfig.domain}/modules/article/toplist.php?sort=monthvisit&page=%d",
                     pageindex
                 )
 
             "monthvote" ->                 //月推荐
                 url = String.format(
-                    "https://www.wenku8.cc/modules/article/toplist.php?sort=monthvote&page=%d",
+                    "https://${GlobalConfig.domain}/modules/article/toplist.php?sort=monthvote&page=%d",
                     pageindex
                 )
 
             "weekvisit" ->                 //周排行
                 url = String.format(
-                    "https://www.wenku8.cc/modules/article/toplist.php?sort=weekvisit&page=%d",
+                    "https://${GlobalConfig.domain}/modules/article/toplist.php?sort=weekvisit&page=%d",
                     pageindex
                 )
 
             "weekvote" ->                 //周推荐
                 url = String.format(
-                    "https://www.wenku8.cc/modules/article/toplist.php?sort=weekvote&page=%d",
+                    "https://${GlobalConfig.domain}/modules/article/toplist.php?sort=weekvote&page=%d",
                     pageindex
                 )
 
             "goodnum" ->                 //总推荐
                 url = String.format(
-                    "https://www.wenku8.cc/modules/article/toplist.php?sort=goodnum&page=%d",
+                    "https://${GlobalConfig.domain}/modules/article/toplist.php?sort=goodnum&page=%d",
                     pageindex
                 )
 
             "size" ->                 //字数排行
                 url = String.format(
-                    "https://www.wenku8.cc/modules/article/toplist.php?sort=size&page=%d",
+                    "https://${GlobalConfig.domain}/modules/article/toplist.php?sort=size&page=%d",
                     pageindex
                 )
         }
@@ -108,7 +108,7 @@ object Wenku8Spider {
             "style",
             "width:100px;height:35px;margin:0px;padding:0px;"
         )
-        val ContentsUrl = "https://www.wenku8.cc" + t2.eq(0).select("a").attr("href")
+        val ContentsUrl = "https://${GlobalConfig.domain}" + t2.eq(0).select("a").attr("href")
         val document2 = Jsoup.parse(LoginWenku8.getPageHtml(ContentsUrl))
         val c1 = document2.getElementsByTag("td")
 
@@ -203,13 +203,13 @@ object Wenku8Spider {
         var html: String? = null
         val url: String = if (searchtype == "articlename") {
             String.format(
-                "https://www.wenku8.cc/modules/article/search.php?searchtype=articlename&searchkey=%s&page=%d",
+                "https://${GlobalConfig.domain}/modules/article/search.php?searchtype=articlename&searchkey=%s&page=%d",
                 URLEncoder.encode(searchContent, "gbk"),
                 pageindex
             )
         } else {
             String.format(
-                "https://www.wenku8.cc/modules/article/search.php?searchtype=author&searchkey=%s&page=%d",
+                "https://${GlobalConfig.domain}/modules/article/search.php?searchtype=author&searchkey=%s&page=%d",
                 URLEncoder.encode(searchContent, "gbk"),
                 pageindex
             )
@@ -221,7 +221,7 @@ object Wenku8Spider {
             val b = a!!.select("span[style=width:180px;display:inline-block;]")[1]
             var bookUrl = b.selectFirst("a")!!.attr("href")
             bookUrl = String.format(
-                "https://www.wenku8.cc/book/%s.htm",
+                "https://${GlobalConfig.domain}/book/%s.htm",
                 bookUrl.substring(bookUrl.indexOf("bid=") + 4)
             )
             Log.d("debug", "search bookurl$bookUrl")
@@ -240,7 +240,7 @@ object Wenku8Spider {
             val temp: MutableList<BookcaseBean> = ArrayList()
             var bookIndex = 0
             var totalBookcase = 0
-            val url = "https://www.wenku8.cc/modules/article/bookcase.php"
+            val url = "https://${GlobalConfig.domain}/modules/article/bookcase.php"
             val document = Jsoup.parse(LoginWenku8.getPageHtml(url))
             val a = document.getElementById("content")
             val b = a!!.getElementsByTag("tr")
@@ -275,7 +275,7 @@ object Wenku8Spider {
     @JvmStatic
     @Throws(IOException::class)
     fun removeBook(bid: Int) {
-        val url = String.format("https://www.wenku8.cc/modules/article/bookcase.php?delid=%d", bid)
+        val url = String.format("https://${GlobalConfig.domain}/modules/article/bookcase.php?delid=%d", bid)
         LoginWenku8.getPageHtml(url)
     }
 
@@ -283,7 +283,7 @@ object Wenku8Spider {
     @Throws(IOException::class)
     fun addBook(aid: Int): Boolean {
         val addUrl = String.format(
-            "https://www.wenku8.cc/modules/article/addbookcase.php?bid=%d",
+            "https://${GlobalConfig.domain}/modules/article/addbookcase.php?bid=%d",
             Integer.valueOf(aid)
         )
         val html = LoginWenku8.getPageHtml(addUrl)
@@ -304,7 +304,7 @@ object Wenku8Spider {
         val document = Jsoup.parse(LoginWenku8.getPageHtml(url))
         Log.d("tag", "wenku8spider url:$url")
         val a = document.getElementById("content")
-        var contentUrl = "https://www.wenku8.cc" + a!!.selectFirst("div[style=text-align:center]")!!.getElementsByTag("a").eq(0).attr("href")
+        var contentUrl = "https://${GlobalConfig.domain}" + a!!.selectFirst("div[style=text-align:center]")!!.getElementsByTag("a").eq(0).attr("href")
         contentUrl = contentUrl.replace("index.htm", index!!)
         val document1 = Jsoup.parse(LoginWenku8.getPageHtml(contentUrl))
         val b = document1.getElementById("content")!! //获取文字，如果有的话
@@ -346,9 +346,9 @@ object Wenku8Spider {
             val Author = temp.getElementsByTag("p").eq(0).text()
             val other = temp.getElementsByTag("p").eq(1).text()
             val tags = temp.getElementsByTag("span").eq(1).text()
-            val bookUrl = "https://www.wenku8.cc" + temp.getElementsByTag("div").eq(0).select("a").eq(0).attr("href")
+            val bookUrl = "https://${GlobalConfig.domain}" + temp.getElementsByTag("div").eq(0).select("a").eq(0).attr("href")
             if (pic == "/images/noimg.jpg") {
-                pic = "https://www.wenku8.cc/modules/article/images/nocover.jpg"
+                pic = "https://${GlobalConfig.domain}/modules/article/images/nocover.jpg"
             }
             val nlc = BookListBean(pic, bookTitle, Author, other, tags, bookUrl, totalPage)
             NLC.add(nlc)
@@ -430,7 +430,7 @@ object Wenku8Spider {
         get() {
             val userInfo: MutableList<String> = ArrayList()
             val document =
-                Jsoup.parse(LoginWenku8.getPageHtml("https://www.wenku8.cc/userdetail.php"))
+                Jsoup.parse(LoginWenku8.getPageHtml("https://${GlobalConfig.domain}/userdetail.php"))
             val a = document.getElementById("content")
             val b = a!!.selectFirst("tbody")
             val avatar = b!!.select("tr")[0].select("td")[2].selectFirst("img")!!
@@ -462,7 +462,7 @@ object Wenku8Spider {
     @JvmStatic
     @Throws(IOException::class)
     fun bookVote(aid: Int): String {
-        val url = "https://www.wenku8.cc/modules/article/uservote.php?id=$aid"
+        val url = "https://${GlobalConfig.domain}/modules/article/uservote.php?id=$aid"
         val document = Jsoup.parse(LoginWenku8.getPageHtml(url))
         return document.getElementsByClass("blockcontent")[0].select("div[style=padding:10px]")[0].text()
     }

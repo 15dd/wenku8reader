@@ -16,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.cyh128.wenku8reader.R
 import com.cyh128.wenku8reader.activity.ContentsActivity
 import com.cyh128.wenku8reader.bean.BookcaseBean
+import com.cyh128.wenku8reader.util.GlobalConfig
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class BookCaseAdapter(//https://blog.csdn.net/huweiliyi/article/details/105779329
@@ -66,7 +67,7 @@ class BookCaseAdapter(//https://blog.csdn.net/huweiliyi/article/details/10577932
                     return@setOnClickListener
                 }
                 val url = String.format(
-                    "https://www.wenku8.cc/book/%s.htm",
+                    "https://${GlobalConfig.domain}/book/%s.htm",
                     novel.bookUrl.substring(
                         novel.bookUrl.indexOf("aid=") + 4,
                         novel.bookUrl.indexOf("&")
@@ -98,7 +99,7 @@ class BookCaseAdapter(//https://blog.csdn.net/huweiliyi/article/details/10577932
                     return@setOnClickListener
                 }
                 val url = String.format(
-                    "https://www.wenku8.cc/book/%s.htm",
+                    "https://${GlobalConfig.domain}/book/%s.htm",
                     novel.bookUrl.substring(
                         novel.bookUrl.indexOf("aid=") + 4,
                         novel.bookUrl.indexOf("&")

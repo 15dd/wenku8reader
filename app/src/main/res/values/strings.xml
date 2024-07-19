@@ -6,4 +6,10 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+
+    <string name="pay_attention">请注意：</string>
+    <string name="login_tip">
+        本软件是第三方软件，非官方软件！！！
+        \n使用本软件的时候，请自行调整梯子的分流规则，确保使用软件时的ip属地为中国大陆！！！
+    </string>
 </resources>

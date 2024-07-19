@@ -5,6 +5,7 @@ import com.cyh128.wenku8reader.activity.CrashActivity
 import com.cyh128.wenku8reader.util.GlobalConfig
 import com.developer.crashx.config.CrashConfig
 import com.google.android.material.color.DynamicColors
+import com.tencent.mmkv.MMKV
 
 class App : Application() {
     override fun onCreate() {
@@ -13,6 +14,7 @@ class App : Application() {
         CrashConfig.Builder.create()
             .errorActivity(CrashActivity::class.java)
             .apply()
+        MMKV.initialize(this)
     }
 
     override fun onTerminate() {

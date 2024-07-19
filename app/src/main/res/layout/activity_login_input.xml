@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:errorEnabled="true"
-        android:hint="用户名">
+        android:hint="Wenku8用户名">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/username"
@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         app:endIconMode="password_toggle"
         app:errorEnabled="true"
-        android:hint="密码">
+        android:hint="Wenku8密码">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password"
@@ -77,6 +77,14 @@
             tools:ignore="MissingConstraints">
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/register"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="注册"
+                android:textSize="14sp"/>
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/confirm_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -89,5 +97,60 @@
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_a_login_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        app:cardCornerRadius="8dp"
+        style="?attr/materialCardViewFilledStyle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:src="@drawable/info"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="11dp">
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:text="@string/pay_attention"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="@string/login_tip"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <Button
+        android:id="@+id/b_a_login_input_domain"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:text="节点切换"/>
 
 </LinearLayout>

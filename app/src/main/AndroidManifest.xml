@@ -40,7 +40,7 @@
         <activity
             android:name="com.cyh128.wenku8reader.activity.LoginInputActivity"
             android:theme="@style/Theme.MyApplication"
-            android:windowSoftInputMode="adjustResize"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"/>
 
         <activity

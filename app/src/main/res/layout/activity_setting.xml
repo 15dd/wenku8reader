@@ -74,12 +74,12 @@
                 android:id="@+id/radiobutton_new_reader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="新"/>
+                android:text="横向"/>
             <RadioButton
                 android:id="@+id/radiobutton_old_reader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="老"/>
+                android:text="竖向"/>
 
         </RadioGroup>
 
@@ -131,5 +131,44 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Widget.Material3.MaterialDivider" />
+
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="节点选择"
+            android:textSize="16dp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <RadioGroup
+            android:id="@+id/rg_a_setting_domain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radiobutton_new_reader_cc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="wenku8.cc"/>
+            <RadioButton
+                android:id="@+id/radiobutton_old_reader_net"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="wenku8.net"/>
+
+        </RadioGroup>
+
+    </LinearLayout>
 
 </LinearLayout>

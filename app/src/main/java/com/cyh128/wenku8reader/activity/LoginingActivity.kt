@@ -69,7 +69,7 @@ class LoginingActivity : AppCompatActivity() {
                     MaterialAlertDialogBuilder(this@LoginingActivity)
                         .setCancelable(false) //禁止点击其他区域
                         .setTitle("网络错误")
-                        .setMessage("可能是以下原因造成的:\n\n1 -> 请检查是否正在连接VPN或代理服务器\n2 -> 未连接上网络\n3 -> 服务器(wenku8.cc)出错，(此网站有时会登不上去)\n\n请稍后再试")
+                        .setMessage("可能是以下原因造成的:\n\n1 -> 请检查网络ip属地是否为中国大陆\n2 -> 未连接上网络\n3 -> 服务器(wenku8.cc)出错，(此网站有时会登不上去)\n4 -> 尝试切换节点\n\n请稍后再试")
                         .setPositiveButton(
                             "重启软件"
                         ) { dialogInterface: DialogInterface?, i: Int ->

@@ -3,6 +3,7 @@ package com.cyh128.wenku8reader.activity
 import android.os.Bundle
 import android.view.View
 import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.cyh128.wenku8reader.R
 import com.cyh128.wenku8reader.util.DatabaseHelper
@@ -33,6 +34,18 @@ class SettingActivity : AppCompatActivity() {
             // 退出当前页面
             finish()
         }
+
+        findViewById<RadioGroup>(R.id.rg_a_setting_domain).setOnCheckedChangeListener { group, checkedId ->
+            when(checkedId) {
+                R.id.radiobutton_new_reader_cc -> GlobalConfig.domain = "www.wenku8.cc"
+                R.id.radiobutton_old_reader_net -> GlobalConfig.domain = "www.wenku8.net"
+            }
+        }
+
+        if (GlobalConfig.domain == "www.wenku8.cc")
+            findViewById<RadioButton>(R.id.radiobutton_new_reader_cc).isChecked = true
+        else
+            findViewById<RadioButton>(R.id.radiobutton_old_reader_net).isChecked = true
     }
 
     override fun onDestroy() {

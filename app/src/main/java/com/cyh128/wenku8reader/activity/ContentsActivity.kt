@@ -204,10 +204,10 @@ class ContentsActivity : AppCompatActivity() {
                 contentsList = getContents(bookUrl!!) //小说目录
 
                 //获取这本书的aid和bid====================================================================================================
-                //aid获取 https://www.wenku8.cc/book/xxxx.htm
+                //aid获取 https://www.wenku8.net/book/xxxx.htm
                 aid = bookUrl!!.substring(bookUrl!!.indexOf("book/") + 5, bookUrl!!.indexOf(".htm"))
                     .toInt()
-                //bid获取 https://www.wenku8.cc/book/xxxx.htm 如果url没有bid,只有aid,那么就根据它的aid在书架中找到它对应的bid。删除必须用bid
+                //bid获取 https://www.wenku8.net/book/xxxx.htm 如果url没有bid,只有aid,那么就根据它的aid在书架中找到它对应的bid。删除必须用bid
                 getBid()
                 //end===================================================================================================================
                 isInBookcase() //判断这本书是否已在书架中
@@ -251,7 +251,7 @@ class ContentsActivity : AppCompatActivity() {
 
     @Throws(IOException::class)
     private fun getBid() {
-        //https://www.wenku8.cc/book/xxxx.htm 如果url没有bid,只有aid,那么就根据它的aid在书架中找到它对应的bid。因为删除必须用bid
+        //https://www.wenku8.net/book/xxxx.htm 如果url没有bid,只有aid,那么就根据它的aid在书架中找到它对应的bid。因为删除必须用bid
         BookCaseFragment.bookcaseList = bookcase
         for (bcc in BookCaseFragment.bookcaseList) {
             if (bcc.aid.toInt() == aid) {

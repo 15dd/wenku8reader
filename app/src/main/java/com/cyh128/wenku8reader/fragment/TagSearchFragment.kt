@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.cyh128.wenku8reader.R
 import com.cyh128.wenku8reader.adapter.BookListAdapter
 import com.cyh128.wenku8reader.bean.BookListBean
+import com.cyh128.wenku8reader.util.GlobalConfig
 import com.cyh128.wenku8reader.util.LoginWenku8
 import com.cyh128.wenku8reader.util.Wenku8Spider.parseNovelList
 import me.jingbin.library.ByRecyclerView
@@ -111,7 +112,7 @@ class TagSearchFragment : Fragment() {
         get() {
             return try {
                 val url: String = String.format(
-                    "https://www.wenku8.cc/modules/article/tags.php?t=%s&page=%d&v=%s",
+                    "https://${GlobalConfig.domain}/modules/article/tags.php?t=%s&page=%d&v=%s",
                     URLEncoder.encode(tag, "gbk"),
                     ++pageindex,
                     sort
