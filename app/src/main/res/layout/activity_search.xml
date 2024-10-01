@@ -1,145 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:fitsSystemWindows="true"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical" >
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_act_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:titleEnabled="false">
+            app:title="搜索"/>
 
-            <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="搜索"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editText_act_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="?attr/actionBarSize"
-                app:layout_collapseMode="parallax">
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:singleLine="true"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tl_a_search"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:hint="@string/search"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:endIconMode="clear_text">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tiet_a_search"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:imeOptions="actionSearch"
-                        android:inputType="text"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/search_method"
-                    android:paddingLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:textSize="14sp"
-                    android:textStyle="bold"/>
-
-                <com.google.android.material.chip.ChipGroup
-                    android:paddingLeft="20dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:checkedChip="@id/c_a_search_by_novel_title"
-                    app:selectionRequired="true"
-                    app:singleSelection="true">
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/c_a_search_by_novel_title"
-                        style="@style/Widget.Material3.Chip.Filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/by_novel_title"/>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/c_a_search_by_author"
-                        style="@style/Widget.Material3.Chip.Filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/by_author"/>
-
-                </com.google.android.material.chip.ChipGroup>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/search_history"
-                    android:paddingLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:textSize="14sp"
-                    android:textStyle="bold"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingBottom="20dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_a_search"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent"
-                        android:fadingEdgeLength="30dp"
-                        android:requiresFadingEdge="horizontal"
-                        tools:listitem="@layout/item_search_history"/>
-
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/Widget.Material3.Button.IconButton"
-                        android:id="@+id/b_a_search_clear_all_history"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:icon="@drawable/ic_delete"
-                        android:tooltipText="@string/clear_all_search_history"
-                        tools:targetApi="o" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/tb_a_search"
+            <RadioGroup
+                android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:title="@string/search"/>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/radiobutton_act_search_noveltitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="按小说标题搜索"/>
+                <RadioButton
+                    android:id="@+id/radiobutton_act_search_authorname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="按作者名称搜索"/>
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+            </RadioGroup>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.MaterialDivider" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:fillViewport="true"
+    <com.cyh128.wenku8reader.util.MyNestedScrollView
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fcv_a_search"
+        <FrameLayout
+            android:id="@+id/fragment_act_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-    </androidx.core.widget.NestedScrollView>
+    </com.cyh128.wenku8reader.util.MyNestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_act_tag_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="选择Tag" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:id="@+id/layout_bottom_sheet_act_tag_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="日常系属性Tags"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_xy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="校园"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_qc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="青春"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_la"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="恋爱"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_zy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="治愈"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_qx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="群像"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_jj"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="竞技"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_yy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="音乐"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_ms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="美食"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_lx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="旅行"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_hlx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="欢乐向"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_jy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="经营"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_zc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="职场"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_dz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="斗智"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_nd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="脑洞"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_zwh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="宅文化"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+            </com.google.android.material.chip.ChipGroup>
+            
+            
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="幻想系属性Tags"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_cy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="穿越"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_qh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="奇幻"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_mf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="魔法"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_yn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="异能"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_zd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="战斗"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_kh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="科幻"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_jz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="机战"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_zz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="战争"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_mx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="冒险"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_lat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="龙傲天"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="黑深残属性Tags"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_xy2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="悬疑"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_fz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="犯罪"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_fc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="复仇"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_ha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="黑暗"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_lq"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="猎奇"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_js"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="惊悚"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_jd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="间谍"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_mr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="末日"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_yx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="游戏"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_dts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="大逃杀"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="人物属性类Tags"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_qmzm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="青梅竹马"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_mm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="妹妹"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_ne"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="女儿"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_jk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="JK"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_jc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="JC"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_dxj"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="大小姐"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_xz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="性转"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_wn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="伪娘"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_rw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="人外"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="特殊属性类Tags"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_hg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="后宫"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_bh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="百合"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_dm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="耽美"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_ntr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NTR"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tag_nxsj"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="女性视角"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"/>
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

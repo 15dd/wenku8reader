@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        tools:ignore="MissingConstraints"
+        android:gravity="center_vertical">
+
+        <TextView
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:id="@+id/text_item_chapter_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:text="vcss"
+            android:padding="12dp"
+            android:textSize="16sp"
+            tools:ignore="MissingConstraints" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/image_item_chapter_group"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginRight="24dp"
+            android:src="@drawable/arrow"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:ignore="MissingConstraints"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

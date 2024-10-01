@@ -1,8 +1,9 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
-    <style name="Base.Theme.HikariNovel" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.MyApplication" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-         <item name="color">#ffffff</item>
+        <!-- <item name="colorPrimary">@color/material_dynamic_primary70</item>-->
     </style>
 
+    <style name="Theme.MyApplication" parent="Base.Theme.MyApplication" />
 </resources>

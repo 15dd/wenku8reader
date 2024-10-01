@@ -1,38 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:fitsSystemWindows="true"
+        android:id="@+id/appbarlayout_home"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:liftOnScroll="false">
+        android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/tb_f_home"
+            android:id="@+id/toolbar_home"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:menu="@menu/menu_frag_home"
-            app:title="@string/home"/>
+            app:menu="@menu/app_appbar_top_menu"
+            app:title="首页"/>
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tl_f_home"
+            android:id="@+id/tabLayout_home"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabMode="scrollable"
-            app:tabGravity="start" />
+            android:layout_height="wrap_content" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/vp_f_home"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:id="@+id/fragment_home_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>
+

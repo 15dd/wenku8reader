@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.cyh128.hikari_novel",
+  "applicationId": "com.cyh128.wenku8reader",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 241001,
-      "versionName": "3.0.0",
+      "versionCode": 240719,
+      "versionName": "2.3.3",
       "outputFile": "app-release.apk"
     }
   ],
@@ -33,5 +33,5 @@
       ]
     }
   ],
-  "minSdkVersionForDexing": 24
+  "minSdkVersionForDexing": 29
 }

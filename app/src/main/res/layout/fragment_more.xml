@@ -1,116 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:clipToPadding="false">
+    android:fitsSystemWindows="true">
 
-    <LinearLayout
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logo"
+        android:layout_gravity="top|center"
+        android:layout_margin="50dp" />
+
+    <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.MaterialDivider" />
 
-        <ImageView
-            android:id="@+id/header"
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:padding="30dp"
-            android:src="@drawable/ic_logo_header"
-            tools:ignore="MissingConstraints"
-            android:contentDescription="@null" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_frag_myinfo_userinfo"
+        android:foreground="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        style="@style/Widget.MaterialComponents.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
 
-        <com.google.android.material.divider.MaterialDivider
-            style="@style/Widget.MaterialComponents.MaterialDivider"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <LinearLayout
-            android:id="@+id/ll_f_more_account"
+        <TextView
+            android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:text="用户信息"
+            android:textSize="20sp"
+            android:gravity="center" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:contentDescription="@null"
-                android:paddingLeft="8dp"
-                android:src="@drawable/ic_person"
-                app:tint="?colorOnSurface" />
+    </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:text="@string/account"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"/>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_frag_myinfo_setting"
+        android:foreground="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        style="@style/Widget.MaterialComponents.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_f_more_setting"
+        <TextView
+            android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:text="设置"
+            android:textSize="20sp"
+            android:gravity="center" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:contentDescription="@null"
-                android:paddingLeft="8dp"
-                android:src="@drawable/ic_setting"
-                app:tint="?colorOnSurface" />
+    </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:text="@string/setting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"/>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_frag_myinfo_about"
+        android:foreground="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        style="@style/Widget.MaterialComponents.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_f_more_about"
+        <TextView
+            android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:text="关于"
+            android:textSize="20sp"
+            android:gravity="center" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:contentDescription="@null"
-                android:paddingLeft="8dp"
-                android:src="@drawable/ic_info"
-                app:tint="?colorOnSurface" />
+    </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:text="@string/about"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"/>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_frag_myinfo_disclaimers"
+        android:foreground="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        style="@style/Widget.MaterialComponents.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
 
-        </LinearLayout>
+        <TextView
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="免责声明"
+            android:textSize="20sp"
+            android:gravity="center" />
 
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-</androidx.core.widget.NestedScrollView>
+</LinearLayout>

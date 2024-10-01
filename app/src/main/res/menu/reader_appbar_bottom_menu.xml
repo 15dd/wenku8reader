@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/setting"
+        android:icon="@drawable/page_info"
+        android:title="设置"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/previous"
+        android:icon="@drawable/navigate_previous"
+        android:title="上一章"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/next"
+        android:icon="@drawable/navigate_next"
+        android:title="下一章"
+        app:showAsAction="always" />
+</menu>
