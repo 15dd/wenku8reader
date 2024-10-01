@@ -12,13 +12,12 @@
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar_act_select_color"
+            android:id="@+id/tb_a_select_color"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="选择颜色" />
 
     </com.google.android.material.appbar.AppBarLayout>
-
 
     <androidx.core.widget.NestedScrollView
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
@@ -31,57 +30,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <com.ricky.color_picker.ui.ColorWheelPickerView
-                    android:id="@+id/colorWheelPickerView"
-                    android:layout_width="280dp"
-                    android:layout_height="280dp"
-                    android:layout_gravity="center_horizontal"/>
-
-                <TextView
-                    android:id="@+id/text_act_select_color_colorTip"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textSize="16sp" />
-
-                <LinearLayout
-                    android:id="@+id/layout_act_select_color_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <View
-                        android:id="@+id/view_act_select_color_tip"
-                        android:layout_width="@dimen/dp_30"
-                        android:layout_height="@dimen/dp_30"/>
-
-                    <Button
-                        android:id="@+id/button_act_select_color_setTextColor"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="将选择的颜色设为文字颜色" />
-
-                    <Button
-                        android:id="@+id/button_act_select_color_setBgColor"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="将选择的颜色设为背景颜色" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout_act_select_color_text"
+                android:id="@+id/tl_a_select_color_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -90,14 +40,14 @@
                 android:hint="字体颜色(十六进制)">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editText_act_select_color_text"
+                    android:id="@+id/tiet_a_select_color_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout_act_select_color_bg"
+                android:id="@+id/tl_a_select_color_bg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -106,18 +56,17 @@
                 android:hint="背景颜色(十六进制)">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editText_act_select_color_bg"
+                    android:id="@+id/tiet_a_select_color_bg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardView_act_select_color_recommendDay"
+                android:id="@+id/cv_a_select_color_recommend_day"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                app:cardCornerRadius="8dp"
                 style="?attr/materialCardViewFilledStyle">
 
                 <LinearLayout
@@ -127,9 +76,10 @@
                     android:padding="12dp">
 
                     <ImageView
-                        android:layout_width="@dimen/dp_20"
-                        android:layout_height="@dimen/dp_20"
-                        android:src="@drawable/info"/>
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_info"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -138,6 +88,7 @@
                         android:layout_marginLeft="11dp">
 
                         <TextView
+                            style="@style/TextAppearance.AppCompat.Large"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
@@ -148,9 +99,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
-                            android:text="#000000"/>
+                            android:text="000000"/>
 
                         <TextView
+                            style="@style/TextAppearance.AppCompat.Large"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
@@ -161,7 +113,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
-                            android:text="#CEC29C，#D1CEC5，#CCEBCC，#FFFFFF"/>
+                            android:text="CEC29C，D1CEC5，CCEBCC，FFFFFF"/>
 
                     </LinearLayout>
 
@@ -170,11 +122,10 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardView_act_select_color_recommendNight"
+                android:id="@+id/cv_a_select_color_recommend_night"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                app:cardCornerRadius="8dp"
                 style="?attr/materialCardViewFilledStyle">
 
                 <LinearLayout
@@ -184,9 +135,10 @@
                     android:padding="12dp">
 
                     <ImageView
-                        android:layout_width="@dimen/dp_20"
-                        android:layout_height="@dimen/dp_20"
-                        android:src="@drawable/info"/>
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_info"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -195,6 +147,7 @@
                         android:layout_marginLeft="11dp">
 
                         <TextView
+                            style="@style/TextAppearance.AppCompat.Large"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
@@ -205,9 +158,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
-                            android:text="#FFFFFF"/>
+                            android:text="FFFFFF"/>
 
                         <TextView
+                            style="@style/TextAppearance.AppCompat.Large"
+
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
@@ -218,7 +173,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
-                            android:text="#2C2C2C，#000000"/>
+                            android:text="2C2C2C，000000"/>
 
                     </LinearLayout>
 
@@ -233,19 +188,19 @@
                 android:gravity="right">
 
                 <Button
-                    android:id="@+id/button_act_select_color_discardSaveSetting"
+                    android:id="@+id/b_a_select_color_cancel"
                     style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="取消"/>
+                    android:text="@string/cancel"/>
 
                 <Button
-                    android:id="@+id/button_act_select_color_saveSetting"
+                    android:id="@+id/b_a_select_color_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:layout_marginRight="20dp"
-                    android:text="保存设置" />
+                    android:text="@string/save_config" />
 
             </LinearLayout>
 

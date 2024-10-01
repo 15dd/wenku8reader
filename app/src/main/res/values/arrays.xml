@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="category">
+        <item>@string/school</item>
+        <item>@string/youth</item>
+        <item>@string/love</item>
+        <item>@string/healing</item>
+        <item>@string/group_portrait</item>
+        <item>@string/sports</item>
+        <item>@string/music</item>
+        <item>@string/food</item>
+        <item>@string/travel</item>
+        <item>@string/joy</item>
+        <item>@string/manage</item>
+        <item>@string/workplace</item>
+        <item>@string/battle_of_wits</item>
+        <item>@string/brain_cavity</item>
+        <item>@string/otaku_culture</item>
+        <item>@string/pass_through</item>
+        <item>@string/fantasy</item>
+        <item>@string/magic</item>
+        <item>@string/supernatural_ability</item>
+        <item>@string/fighting</item>
+        <item>@string/science_fiction</item>
+        <item>@string/machine_warfare</item>
+        <item>@string/warfare</item>
+        <item>@string/adventure</item>
+        <item>@string/dragon_proud_sky</item>
+        <item>@string/suspense</item>
+        <item>@string/crime</item>
+        <item>@string/revenge</item>
+        <item>@string/darkness</item>
+        <item>@string/hunting_for_novelty</item>
+        <item>@string/thrilling</item>
+        <item>@string/spy</item>
+        <item>@string/apocalypse</item>
+        <item>@string/game</item>
+        <item>@string/battle_royale_game</item>
+        <item>@string/childhood_sweetheart</item>
+        <item>@string/younger_sisiter</item>
+        <item>@string/daughter</item>
+        <item>@string/jk</item>
+        <item>@string/jc</item>
+        <item>@string/princess</item>
+        <item>@string/sexual_conversion</item>
+        <item>@string/cross_dressing</item>
+        <item>@string/extra_human</item>
+        <item>@string/harem</item>
+        <item>@string/lily</item>
+        <item>@string/danmei</item>
+        <item>@string/ntr</item>
+        <item>@string/female_perspective</item>
+    </string-array>
+
+    <string-array name="ranking">
+        <item>@string/last_update</item>
+        <item>@string/post_date</item>
+        <item>@string/all_visit</item>
+        <item>@string/all_vote</item>
+        <item>@string/good_num</item>
+        <item>@string/day_visit</item>
+        <item>@string/day_vote</item>
+        <item>@string/month_visit</item>
+        <item>@string/month_vote</item>
+        <item>@string/week_visit</item>
+        <item>@string/week_vote</item>
+        <item>@string/size</item>
+        <item>@string/animated</item>
+    </string-array>
+</resources>

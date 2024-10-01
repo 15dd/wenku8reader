@@ -1,28 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar_act_photo_view"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="查看原图" />
-
-    </com.google.android.material.appbar.AppBarLayout>
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <com.github.chrisbanes.photoview.PhotoView
-        android:layout_gravity="center"
-        android:id="@+id/photoview_act_photo_view"
+        android:id="@+id/pv_a_photo_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="?attr/actionBarSize" />
+        android:layout_height="match_parent"/>
 
-</LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/b_a_photo_view"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_close"
+        android:layout_margin="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="left"
+        android:tooltipText="@string/close"
+        app:iconSize="24dp"
+        tools:targetApi="o"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/b_a_photo_web"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_web"
+        android:layout_margin="10dp"
+        android:layout_gravity="right"
+        android:tooltipText="@string/open_in_browser"
+        app:iconSize="24dp"
+        tools:targetApi="o"/>
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/cpi_a_photo_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:hideAnimationBehavior="outward"
+        android:layout_gravity="center"/>
+
+</FrameLayout>
