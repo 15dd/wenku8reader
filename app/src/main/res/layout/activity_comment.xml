@@ -1,31 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        app:liftOnScrollTargetViewId="@id/rv_a_comment">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar_act_comment"
+            android:id="@+id/tb_a_comment"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="评论" />
+            android:layout_height="wrap_content"
+            app:title="@string/comment" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/cpi_a_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            app:hideAnimationBehavior="outward"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <me.jingbin.library.ByRecyclerView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srl_a_comment"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        android:id="@+id/recyclerView_act_comment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/item_comment" />
+        android:visibility="invisible"
+        tools:visibility="visible">
+
+        <me.jingbin.library.ByRecyclerView
+            android:id="@+id/rv_a_comment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

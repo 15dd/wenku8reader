@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.cyh128.hikarinovel.ui.view.read.horizontal.PageView
+        android:id="@+id/pv_a_h_read"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <include
+        android:id="@+id/i_a_h_read_guide"
+        layout="@layout/view_horizontal_read_guide" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/tb_a_h_read"
+        style="@style/Widget.MaterialComponents.AppBarLayout.Surface"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?colorSurfaceContainer"
+        tools:title="title"
+        app:menu="@menu/menu_act_v_h_read"/>
+
+    <LinearLayout
+        android:id="@+id/ll_a_h_read_bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="?colorSurfaceContainer"
+        android:gravity="center">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_a_h_read_bottom_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                app:layout_constraintBottom_toTopOf="@id/ll_a_h_read_bottom_2">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/b_a_h_read_previous_chapter"
+                    style="@style/Widget.Material3.Button.IconButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:icon="@drawable/ic_skip_previous"
+                    android:textSize="16sp" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/s_a_h_read_progress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:valueFrom="1"
+                    android:stepSize="1"
+                    android:value="1"
+                    android:valueTo="10"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/b_a_h_read_next_chapter"
+                    style="@style/Widget.Material3.Button.IconButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:icon="@drawable/ic_skip_next"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_a_h_read_bottom_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/ll_a_h_read_bottom_1">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/b_a_h_read_config"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/more_setting"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

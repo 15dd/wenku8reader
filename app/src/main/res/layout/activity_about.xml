@@ -1,95 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/abl_a_about"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar_act_about"
+            android:id="@+id/tb_a_about"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="关于"/>
+            app:title="@string/about"/>
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        app:layout_constraintTop_toBottomOf="@id/abl_a_about"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <ImageView
-            android:layout_marginTop="@dimen/dp_110"
-            android:layout_width="@dimen/dp_160"
-            android:layout_height="@dimen/dp_160"
-            android:src="@drawable/logo"/>
-
-        <TextView
-            android:id="@+id/text_act_about_version"
+            android:id="@+id/header"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Version"
-            android:textSize="16sp"
-            android:layout_marginLeft="@dimen/dp_90"
-            android:background="@drawable/textview_radius_background"/>
+            android:layout_height="200dp"
+            android:padding="30dp"
+            android:src="@drawable/ic_logo_header"
+            tools:ignore="MissingConstraints"
+            android:contentDescription="@null" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="轻小说文库"
-            android:textSize="40sp"
-            android:textStyle="bold"
-            android:layout_marginTop="5dp"/>
+
+        <com.google.android.material.divider.MaterialDivider
+            style="@style/Widget.MaterialComponents.MaterialDivider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <LinearLayout
-            android:layout_marginTop="@dimen/dp_190"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp"
+            android:orientation="vertical">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardView_act_about_checkUpdate"
-                android:layout_margin="10dp"
-                android:layout_width="@dimen/dp_60"
-                android:layout_height="@dimen/dp_60"
-                app:cardCornerRadius="100dp"
-                app:cardBackgroundColor="?attr/colorPrimaryContainer"
-                app:strokeWidth="0dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="@string/app_version"/>
 
-                <ImageView
-                    android:layout_width="@dimen/dp_30"
-                    android:layout_height="@dimen/dp_30"
-                    android:src="@drawable/check_update"
-                    android:layout_gravity="center"
-                    android:padding="4dp"/>
+            <TextView
+                android:id="@+id/tv_a_about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="versionName"/>
 
-            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_a_about_update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:padding="20dp"
+            android:orientation="vertical">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardView_act_about_goToGithub"
-                android:layout_margin="10dp"
-                android:layout_width="@dimen/dp_60"
-                android:layout_height="@dimen/dp_60"
-                app:cardCornerRadius="100dp"
-                app:cardBackgroundColor="?attr/colorPrimaryContainer"
-                app:strokeWidth="0dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="@string/check_update"/>
 
-                <ImageView
-                    android:layout_width="@dimen/dp_30"
-                    android:layout_height="@dimen/dp_30"
-                    android:src="@drawable/github"
-                    android:layout_gravity="center"
-                    android:padding="4dp"/>
+        </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView>
+        <LinearLayout
+            android:id="@+id/ll_a_about_help"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:padding="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="@string/using_help"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_a_about_disclaimers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:padding="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="@string/disclaimers"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="30dp"
+        android:gravity="center">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/b_a_about_github"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_github"
+            android:text="Github"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/b_a_about_telegram"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_telegram"
+            android:text="Telegram"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?selectableItemBackground"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="0dp"
+            android:foreground="?selectableItemBackground">
+
+            <ImageView
+                android:id="@+id/iv_i_v_read_image"
+                android:layout_width="280dp"
+                android:layout_height="420dp"
+                android:scaleType="centerCrop"
+                tools:ignore="ContentDescription" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/cpi_i_v_read_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            app:hideAnimationBehavior="outward" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_i_v_read_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:textSize="13sp"
+        tools:text="drawable 1" />
+
+    <!--    <TextView-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:textSize="16dp"-->
+    <!--        android:text="点击查看原图"-->
+    <!--        android:layout_marginBottom="20dp" />-->
+
+</LinearLayout>

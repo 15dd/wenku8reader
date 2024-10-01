@@ -1,15 +1,259 @@
 <resources>
-    <string name="app_name">轻小说文库</string>
-    <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+    <string name="logging">登录中</string>
+    <string name="home">首页</string>
+    <string name="ranking">排行榜</string>
+    <string name="completion">完结</string>
+    <string name="all_novel">全部小说</string>
+    <string name="bookshelf">书架</string>
+    <string name="more">更多</string>
+    <string name="login">登录</string>
+    <string name="wenku8_username">Wenku8用户名</string>
+    <string name="wenku8_password">Wenku8密码</string>
+    <string name="remember_me">记住我</string>
+    <string name="register">注册</string>
+    <string name="account">账户</string>
+    <string name="setting">设置</string>
+    <string name="about">关于</string>
+    <string name="login_successful">登录成功</string>
+    <string name="login_failed">登录失败，请重新登录！</string>
+    <string name="logout">退出登录</string>
+    <string name="logout_successful">退出登录成功！</string>
+    <string name="network_error">网络错误</string>
+    <string name="re_login">重新登录</string>
+    <string name="cancel">取消</string>
+    <string name="ok">好的</string>
+    <string name="confirm">确定</string>
+    <string name="username_error">用户名错误</string>
+    <string name="password_error">密码错误</string>
+    <string name="not_null">不能为空</string>
+    <string name="novel_detail">小说详情</string>
+    <string name="continue_from_history">继续阅读</string>
+    <string name="add_to_bookshelf">添加至书架</string>
+    <string name="added_in_bookshelf">已在书架中</string>
+    <string name="comment_area">评论区</string>
+    <string name="open_in_browser">在浏览器中打开</string>
+    <string name="recommend_this_novel">推荐本书</string>
+    <string name="github">Github</string>
+    <string name="telegram">Telegram群组</string>
+    <string name="comment">评论</string>
+    <string name="report_to_developer">向开发者报告错误</string>
+    <string name="restart_app">重启软件</string>
+    <string name="app_crashed">软件崩溃了</string>
+    <string name="common">通用</string>
+    <string name="auto_check_update">自动检查更新</string>
 
+    <string name="app_version">软件版本</string>
+    <string name="check_update">检查更新</string>
+    <string name="update_available">新版本</string>
+    <string name="update_available_tip">是否前往浏览器下载？</string>
+    <string name="check_update_failure">检查更新失败</string>
+    <string name="no_available_update">无更新</string>
+    <string name="you_have_used_in_latest_version">暂无更新，当前版本已经是最新版本</string>
+    <string name="app_statement">本软件数据全部来自轻小说文库，本软件仅供学习和参考使用</string>
+    <string name="floors">楼</string>
+    <string name="content">内容</string>
+    <string name="getting_bookshelf">获取书架信息中</string>
+    <string name="add_novel_error">添加失败</string>
+    <string name="add_novel_error_msg">无法添加，请重试</string>
+    <string name="disclaimers">免责声明</string>
+    <string name="disclaimers_message">
+        在使用本软件之前，请你仔细阅读以下内容，并确保你充分理解并同意以下条款：\n
+        1、本软件为开源的第三方软件，可以免费下载用于测试相关功能，在测试完毕后应及时卸载本软件。\n
+        2、本软件为第三方开源软件，不与轻小说文库(wenku8.cc)有任何关联。软件内所有内容均来自轻小说文库(wenku8.cc)公开在互联网的资源，仅供用户参考和学习使用，不得用于商业和非法用途。对于使用本软件所造成的任何后果，本软件作者概不负责。\n
+        3、如果本软件存在侵犯你的合法权益的情况，请及时与作者联系，作者将会及时删除有关内容。\n
+        4、本软件不会收集、存储、使用任何用户的个人信息，包括但不限于姓名、地址、电子邮件地址、电话号码等。在使用本软件过程中，不会进行任何形式的个人信息采集。如用户提供任何个人信息，将被视为用户已自愿提供，并且用户将自行承担由此产生的所有法律责任。\n
+        5、本软件使用者应遵守国家相关法律法规和使用规范，不得利用本软件从事任何违法违规行为。如因使用本软件而导致的违法行为，使用者应承担相应的法律责任。\n
+        6、本软件作者保留对免责声明的最终解释权。\n
+        如你不同意本免责声明中的任何内容，请勿使用本软件。使用本软件即代表你已完全理解并同意上述内容。\n
+    </string>
+    <string name="close">关闭</string>
+    <string name="search">搜索</string>
+    <string name="read_history">阅读历史</string>
+    <string name="visit_history">浏览历史</string>
+    <string name="search_history">搜索历史</string>
+    <string name="filter">筛选</string>
+    <string name="empty_content">空内容</string>
+    <string name="recommendation">推荐</string>
+    <string name="category">分类</string>
+    <string name="by_novel_title">按小说标题</string>
+    <string name="by_author">按作者</string>
+    <string name="in_five_second_tip">因Wenku8官方限制，请等待5秒之后再重新尝试</string>
+    <string name="no_history_can_clear_tip">没有可以清除的历史记录</string>
+    <string name="clear_all_search_history">清空所有搜索记录</string>
+    <string name="opened_in_other_page">已在其它页面中打开</string>
+
+    <!--小说类别-->
+    <string name="school">校园</string>
+    <string name="youth">青春</string>
+    <string name="love">恋爱</string>
+    <string name="healing">治愈</string>
+    <string name="group_portrait">群像</string>
+    <string name="sports">竞技</string>
+    <string name="music">音乐</string>
+    <string name="food">美食</string>
+    <string name="travel">旅行</string>
+    <string name="joy">欢乐向</string>
+    <string name="manage">经营</string>
+    <string name="workplace">职场</string>
+    <string name="battle_of_wits">斗智</string>
+    <string name="brain_cavity">脑洞</string>
+    <string name="otaku_culture">宅文化</string>
+    <string name="pass_through">穿越</string>
+    <string name="fantasy">奇幻</string>
+    <string name="magic">魔法</string>
+    <string name="supernatural_ability">异能</string>
+    <string name="fighting">战斗</string>
+    <string name="science_fiction">科幻</string>
+    <string name="machine_warfare">机战</string>
+    <string name="warfare">战争</string>
+    <string name="adventure">冒险</string>
+    <string name="dragon_proud_sky">龙傲天</string>
+    <string name="suspense">悬疑</string>
+    <string name="crime">犯罪</string>
+    <string name="revenge">复仇</string>
+    <string name="darkness">黑暗</string>
+    <string name="hunting_for_novelty">猎奇</string>
+    <string name="thrilling">惊悚</string>
+    <string name="spy">间谍</string>
+    <string name="apocalypse">末日</string>
+    <string name="game">游戏</string>
+    <string name="battle_royale_game">大逃杀</string>
+    <string name="childhood_sweetheart">青梅竹马</string>
+    <string name="younger_sisiter">妹妹</string>
+    <string name="daughter">女儿</string>
+    <string name="jk">JK</string>
+    <string name="jc">JC</string>
+    <string name="princess">大小姐</string>
+    <string name="sexual_conversion">性转</string>
+    <string name="cross_dressing">伪娘</string>
+    <string name="extra_human">人外</string>
+    <string name="harem">后宫</string>
+    <string name="lily">百合</string>
+    <string name="danmei">耽美</string>
+    <string name="ntr">NTR</string>
+    <string name="female_perspective">女性视角</string>
+    <string name="reset">重置</string>
+    <string name="refresh">刷新</string>
+
+    <!--排行榜-->
+    <string name="last_update">最近更新</string>
+    <string name="post_date">最新入库</string>
+    <string name="all_visit">总排行</string>
+    <string name="all_vote">总推荐</string>
+    <string name="good_num">总收藏</string>
+    <string name="day_visit">日排行</string>
+    <string name="day_vote">日推荐</string>
+    <string name="month_visit">月排行</string>
+    <string name="month_vote">月推荐</string>
+    <string name="week_visit">周排行</string>
+    <string name="week_vote">周推荐</string>
+    <string name="size">字数排行</string>
+    <string name="animated">已动画化</string>
+    <string name="not_animated">未动画化</string>
+
+
+    <string name="search_method">搜索方式</string>
+    <string name="loading">加载中</string>
+    <string name="clear_all_visit_history">清空所有浏览记录</string>
+    <string name="user_id">用户id</string>
+    <string name="level">等级</string>
+    <string name="email">电子邮件</string>
+    <string name="register_date">注册日期</string>
+    <string name="contribution">贡献值</string>
+    <string name="experience">经验值</string>
+    <string name="current_point">现有积分</string>
+    <string name="max_bookshelf_number">书架最大收藏量</string>
+    <string name="daily_max_recommend_number">每天允许推荐次数</string>
+    <string name="sort_by_update">按更新查看</string>
+    <string name="sort_by_heat">按热门查看</string>
+    <string name="sort_by_completion">只看已完结</string>
+    <string name="sort_by_animated">只看动画化</string>
+    <string name="view_more_completion_novel">查看更多完结轻小说</string>
+
+    <string name="http_code_403">403 服务器拒绝请求\n请检查网络ip属地\nWenku8官方禁止日本ip访问\n建议使用中国大陆ip访问</string>
+    <string name="http_code_5xx">服务器错误，请稍后重试</string>
+    <string name="login_failed_tip">如果多次登录失败，请检查网络ip属地是否为中国大陆</string>
+
+
+    <!--阅读器相关-->
+    <string name="next_chapter">下一章</string>
+    <string name="previous_chapter">上一章</string>
+    <string name="more_setting">更多设置</string>
+    <string name="read_progress">阅读进度</string>
+    <string name="fontsize">字体大小</string>
+    <string name="line_spacing">行距</string>
+    <string name="hide_bar">隐藏上下栏</string>
+    <string name="reader">阅读器</string>
+    <string name="read_mode">阅读模式</string>
+    <string name="read_mode_tip">选择你想使用的阅读模式</string>
+    <string name="vertical">竖向</string>
+    <string name="horizontal">横向</string>
+    <string name="read_mode_tip_2">竖向阅读和横向阅读的历史阅读记录和部分设置不会共享</string>
+    <string name="save_config">保存设置</string>
     <string name="pay_attention">请注意：</string>
     <string name="login_tip">
         本软件是第三方软件，非官方软件！！！
         \n使用本软件的时候，请自行调整梯子的分流规则，确保使用软件时的ip属地为中国大陆！！！
     </string>
+    <string name="switch_node">切换节点</string>
+    <string name="login_help">登录遇到问题？查看帮助</string>
+    <string name="using_help">使用帮助</string>
+    <string name="guide_1">欢迎使用Hikari Novel</string>
+    <string name="guide_2">请阅读以下注意事项</string>
+    <string name="guide_3">注意事项1</string>
+    <string name="guide_4">本软件是轻小说文库的第三方软件\n与轻小说文库官方无关！</string>
+    <string name="guide_5">注意事项2</string>
+    <string name="guide_6">如果遇到问题，请先检查软件的网络环境，参考使用帮助</string>
+    <string name="guide_7">免责声明请点击下方按钮查看</string>
+    <string name="guide_8">我已了解上方注意事项并阅读了免责声明</string>
+    <string name="go_on">继续</string>
+    <string name="sign_in">签到</string>
+    <string name="menu">菜单</string>
+    <string name="menu_tip">在有图片的页面点击图片正中间可以放大查看</string>
+
+    <string name="go_to_download">前往下载</string>
+    <string name="sign_in_success">签到成功</string>
+    <string name="sign_in_success_msg">积分+1</string>
+    <string name="sign_in_failure">签到失败</string>
+    <string name="sign_in_failure_msg">你可能已经签到了</string>
+    <string name="sign_in_failure_msg2">你现在处于临时登录状态，无法进行签到</string>
+
+    <string name="vote">投票</string>
+
+    <string name="no_next_chapter">没有下一章，已经是这一卷的最后一章了</string>
+    <string name="no_previous_chapter">没有上一章，这是这本小说的第一章</string>
+    <string name="have_image_tip">当前章节含有插图，请注意查看</string>
+
+    <string name="register_msg1">请前往浏览器注册</string>
+    <string name="register_msg2">你需要前往浏览器页面注册，注册成功后再将用户名和密码填入输入框中，点击[前往注册]以继续注册</string>
+    <string name="go_to_register">前往注册</string>
+    <string name="unread">未阅读</string>
+    <string name="history">历史</string>
+    <string name="history_restore_tip">此章节有你的历史阅读记录，是否恢复？</string>
+    <string name="restore_chapter_read_history">恢复章节历史记录</string>
+    <string name="not_restore">不恢复</string>
+    <string name="not_restore_and_close_forever">永不显示此提示（仅当前阅读模式）</string>
+    <string name="completed_reading">阅读完成</string>
+    <string name="partly_completed_reading">部分已读</string>
+    <string name="last_read">上次阅读</string>
+    <string name="delete">删除</string>
+    <string name="delete_reading_history_tip">删除此章节的历史阅读记录？</string>
+    <string name="delete_all_reading_history_tip">
+        删除所有章节的历史阅读记录？
+        \n\n注：仅会删除当前阅读模式的所有章节的历史阅读记录，另一阅读模式的记录不受影响
+    </string>
+    <string name="back_key_pressed_tip">再按一次退出</string>
+    <string name="no">否</string>
+    <string name="yes">是</string>
+    <string name="language">语言</string>
+    <string name="simplified_chinese">简体中文</string>
+    <string name="traditional_chinese">繁体中文</string>
+    <string name="follow_system">跟随系统</string>
+    <string name="language_tip">设置完成后需要重启</string>
+    <string name="off_shelf">已下架</string>
+    <string name="update">更新</string>
+    <string name="no_heat_msg">作品热度：无 ，当前热度上升指数为：无</string>
+    <string name="heat">热度</string>
+    <string name="rising_rate">上升指数</string>
+
 </resources>
