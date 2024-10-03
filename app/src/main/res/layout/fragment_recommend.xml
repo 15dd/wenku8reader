@@ -1,12 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fcv_f_recommend"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:id="@+id/srl_f_recommend"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
 
-</LinearLayout>
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsv_f_recommend"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/tv_f_recommend_title_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:text="block1" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_f_recommend_block_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fadingEdgeLength="60dp"
+                        android:nestedScrollingEnabled="false"
+                        android:requiresFadingEdge="horizontal" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/tv_f_recommend_title_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:text="block2" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_f_recommend_block_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fadingEdgeLength="60dp"
+                        android:nestedScrollingEnabled="false"
+                        android:requiresFadingEdge="horizontal" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/tv_f_recommend_title_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:text="block3" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_f_recommend_block_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fadingEdgeLength="60dp"
+                        android:nestedScrollingEnabled="false"
+                        android:requiresFadingEdge="horizontal" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/tv_f_recommend_title_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:text="block4" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_f_recommend_block_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fadingEdgeLength="60dp"
+                        android:nestedScrollingEnabled="false"
+                        android:requiresFadingEdge="horizontal" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/tv_f_recommend_title_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:text="block5" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_f_recommend_block_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fadingEdgeLength="60dp"
+                        android:nestedScrollingEnabled="false"
+                        android:requiresFadingEdge="horizontal" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

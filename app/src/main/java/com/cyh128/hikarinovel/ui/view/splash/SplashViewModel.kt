@@ -57,16 +57,17 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    //前往"登录中"页面
-    fun emitToLoggingInScreenSignal() {
-        viewModelScope.launch {
-            _eventFlow.emit(Event.ToLoggingInScreenEvent)
-        }
-    }
-
     //获取首次启动状态
     fun getIsFirstLaunch() = appRepository.getIsFirstLaunch()
 
     //设置首次启动状态
     fun setIsFirstLaunch(isFirstLaunch: Boolean) = appRepository.setIsFirstLaunch(isFirstLaunch)
+
+    //获取网页wenku8节点
+    fun getWenku8Node() = wenku8Repository.getWenku8Node()
+
+    //设置网页wenku8节点
+    fun setWenku8Node(node: String) = wenku8Repository.setWenku8Node(node)
+
+    fun getLanguage() = appRepository.getLanguage()
 }

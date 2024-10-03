@@ -35,14 +35,6 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.progressindicator.CircularProgressIndicator
-                android:id="@+id/cpi_i_novel_cover"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:hideAnimationBehavior="outward"
-                android:indeterminate="true"/>
-
         </FrameLayout>
 
         <TextView

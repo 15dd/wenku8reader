@@ -59,9 +59,12 @@ class AppRepository @Inject constructor(
     suspend fun checkUpdate(): Result<Boolean> {
         network.getData("https://api.github.com/repos/15dd/wenku8reader/releases/latest")
             .awaitResult {
-                val result = Gson().fromJson(it.body()!!.string(), Map::class.java)
-                return if (result["tag_name"] == getVersion()) Result.success(false)
-                else Result.success(true)
+                it.body()?.let { data ->
+                    val result = Gson().fromJson(data.string(), Map::class.java)
+                    return if (result["tag_name"] == getVersion()) Result.success(false)
+                    else Result.success(true)
+                }
+                return Result.success(false)
             }.onFailure {
                 return Result.failure(NetworkErrorException(it.message))
             }

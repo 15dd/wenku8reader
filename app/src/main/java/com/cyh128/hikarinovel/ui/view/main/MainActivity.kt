@@ -6,18 +6,21 @@ import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.cyh128.hikarinovel.R
 import com.cyh128.hikarinovel.base.BaseActivity
 import com.cyh128.hikarinovel.data.model.Event
 import com.cyh128.hikarinovel.databinding.ActivityMainBinding
-import com.cyh128.hikarinovel.ui.view.main.home.bookshelf.BookshelfFragment
-import com.cyh128.hikarinovel.ui.view.main.home.home.HomeFragment
-import com.cyh128.hikarinovel.ui.view.main.home.more.MoreFragment
-import com.cyh128.hikarinovel.ui.view.main.home.visit_history.VisitHistoryFragment
+import com.cyh128.hikarinovel.ui.view.main.main.bookshelf.BookshelfFragment
+import com.cyh128.hikarinovel.ui.view.main.main.home.HomeFragment
+import com.cyh128.hikarinovel.ui.view.main.main.more.MoreFragment
+import com.cyh128.hikarinovel.ui.view.main.main.visit_history.VisitHistoryFragment
 import com.cyh128.hikarinovel.util.launchWithLifecycle
 import com.cyh128.hikarinovel.util.openUrl
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.trendyol.medusalib.navigator.MultipleStackNavigator
+import com.trendyol.medusalib.navigator.Navigator
+import com.trendyol.medusalib.navigator.NavigatorConfiguration
+import com.trendyol.medusalib.navigator.transaction.NavigatorTransaction
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -29,49 +32,67 @@ import kotlinx.coroutines.sync.withLock
 class MainActivity : BaseActivity<ActivityMainBinding>() {
     private val viewModel by lazy { ViewModelProvider(this)[MainViewModel::class.java] }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        binding.vpAMain.adapter = object : FragmentStateAdapter(this) {
-            override fun getItemCount(): Int = 4
-            override fun createFragment(position: Int): Fragment = when(position) {
-                0 -> HomeFragment()
-                1 -> BookshelfFragment()
-                2 -> VisitHistoryFragment()
-                3 -> MoreFragment()
-                else -> throw IllegalArgumentException()
+    private val rootFragmentProvider: List<() -> Fragment> = listOf (
+        { HomeFragment() },
+        { BookshelfFragment() },
+        { VisitHistoryFragment() },
+        { MoreFragment() }
+    )
+
+    private val navigatorListener = object : Navigator.NavigatorListener {
+        override fun onTabChanged(tabIndex: Int) {
+            when(tabIndex) {
+                0 -> binding.bnvAMain.selectedItemId = R.id.homeFragment
+                1 -> binding.bnvAMain.selectedItemId = R.id.bookshelfFragment
+                2 -> binding.bnvAMain.selectedItemId = R.id.visitHistoryFragment
+                3 -> binding.bnvAMain.selectedItemId = R.id.moreFragment
             }
         }
+    }
 
-        binding.vpAMain.isUserInputEnabled = false
+    private val navigator = MultipleStackNavigator(
+        supportFragmentManager,
+        R.id.fcv_a_main,
+        rootFragmentProvider,
+        navigatorListener,
+        NavigatorConfiguration(0,true, NavigatorTransaction.SHOW_HIDE)
+    )
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        navigator.onSaveInstanceState(outState)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        navigator.initialize(savedInstanceState)
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         binding.bnvAMain.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.homeFragment -> {
-                    viewModel.currentItem.value = 0
+                    navigator.switchTab(0)
                     true
                 }
 
                 R.id.bookshelfFragment -> {
-                    viewModel.currentItem.value = 1
+                    navigator.switchTab(1)
                     true
                 }
 
                 R.id.visitHistoryFragment -> {
-                    viewModel.currentItem.value = 2
+                    navigator.switchTab(2)
                     true
                 }
 
                 R.id.moreFragment -> {
-                    viewModel.currentItem.value = 3
+                    navigator.switchTab(3)
                     true
                 }
 
                 else -> throw IllegalArgumentException()
             }
-        }
-
-        viewModel.currentItem.observe(this) {
-            binding.vpAMain.setCurrentItem(it, false)
         }
 
         launchWithLifecycle {
@@ -116,7 +137,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 return@launch
             }
             onBackPressedMutex.withLock {
-                Toast.makeText(this@MainActivity,R.string.back_key_pressed_tip,Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity, R.string.back_key_pressed_tip, Toast.LENGTH_SHORT)
+                    .show()
                 delay(2000)
             }
         }

@@ -60,4 +60,12 @@
 
     </LinearLayout>
 
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.Material3.Button.TextButton"
+        android:id="@+id/b_f_login_error_domain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/switch_node"
+        app:icon="@drawable/ic_network_node"/>
+
 </LinearLayout>

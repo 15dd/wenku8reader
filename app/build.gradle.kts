@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.cyh128.hikari_novel"
-        minSdk = 24
+        minSdk = 25
         targetSdk = 34
         versionCode = 241001
         versionName = "3.0.0"
@@ -113,6 +113,9 @@ dependencies {
 
     //加强版recyclerview
     implementation("com.github.youlookwhat:ByRecyclerView:1.3.7")
+
+    //fragment管理
+    implementation("com.trendyol:medusa:0.12.1")
 
     //持久化存储
     implementation("com.tencent:mmkv:1.3.7")

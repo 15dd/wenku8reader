@@ -24,27 +24,39 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <activity
             android:name=".ui.view.splash.LoginActivity"
             android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".ui.view.main.home.more.more.account.AccountActivity"/>
-        <activity android:name=".ui.view.main.home.more.more.about.AboutActivity"/>
+
+        <activity android:name=".ui.view.main.main.more.more.account.AccountActivity"/>
+
+        <activity android:name=".ui.view.main.main.more.more.about.AboutActivity"/>
+
         <activity
             android:name=".ui.view.main.MainActivity"
             android:windowSoftInputMode="adjustPan" />
+
         <activity android:name=".ui.view.detail.NovelInfoActivity"/>
+
         <activity android:name=".ui.view.other.CrashActivity"/>
+
         <activity android:name=".ui.view.detail.comment.CommentActivity"/>
-        <activity android:name=".ui.view.main.home.more.more.setting.SettingActivity"/>
+
+        <activity android:name=".ui.view.main.main.more.more.setting.SettingActivity" />
+
         <activity android:name=".ui.view.other.PhotoViewActivity"/>
-        <activity android:name=".ui.view.main.home.home.search.SearchActivity"/>
+
+        <activity android:name=".ui.view.main.main.home.search.SearchActivity"/>
+
         <activity android:name=".ui.view.read.vertical.ReadActivity"/>
+
         <activity android:name=".ui.view.read.horizontal.ReadActivity"/>
+
         <activity android:name=".ui.view.read.SelectColorActivity"/>
 
     </application>

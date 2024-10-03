@@ -1,7 +1,6 @@
 package com.cyh128.hikarinovel
 
 import android.app.Application
-import com.cyh128.hikarinovel.data.model.Language
 import com.cyh128.hikarinovel.ui.view.other.CrashActivity
 import com.developer.crashx.config.CrashConfig
 import com.google.android.material.color.DynamicColors
@@ -11,7 +10,6 @@ import dagger.hilt.android.HiltAndroidApp
 import okhttp3.OkHttpClient
 import rxhttp.RxHttpPlugins
 import rxhttp.wrapper.cookie.CookieStore
-import java.util.Locale
 import javax.net.ssl.SSLSession
 
 
@@ -35,16 +33,6 @@ class HikariApp : Application() {
             .errorActivity(CrashActivity::class.java)
             .apply()
 
-        Lingver.init(this, Locale.SIMPLIFIED_CHINESE)
-        when(getLanguage()) {
-            Language.FOLLOW_SYSTEM -> Lingver.getInstance().setFollowSystemLocale(this)
-            Language.ZH_CN -> Lingver.getInstance().setLocale(this, Locale.SIMPLIFIED_CHINESE)
-            Language.ZH_TW -> Lingver.getInstance().setLocale(this, Locale.TRADITIONAL_CHINESE)
-        }
-    }
-
-    private fun getLanguage(): Language { //TODO 待改进
-        val cursor = MMKV.mmkvWithID("app_config")
-        return enumValues<Language>()[cursor.decodeInt("language", Language.FOLLOW_SYSTEM.ordinal)]
+        Lingver.init(this)
     }
 }
