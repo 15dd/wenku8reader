@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.cyh128.hikarinovel.ui.view.read.horizontal.PageView
+    <com.cyh128.hikari_novel.ui.view.read.horizontal.PageView
         android:id="@+id/pv_a_h_read"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.cyh128.hikarinovel"
+    namespace = "com.cyh128.hikari_novel"
     compileSdk = 34
 
     defaultConfig {
