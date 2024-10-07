@@ -1,5 +1,6 @@
 package com.cyh128.hikarinovel.data.source.local.mmkv
 
+import com.cyh128.hikarinovel.data.model.DefaultTab
 import com.cyh128.hikarinovel.data.model.Language
 import com.cyh128.hikarinovel.data.model.ReaderOrientation
 import com.tencent.mmkv.MMKV
@@ -45,5 +46,11 @@ class AppConfig @Inject constructor() {
         get() = cursor.decodeInt("language",Language.FOLLOW_SYSTEM.ordinal)
         set(value) {
             cursor.encode("language", value)
+        }
+
+    var defaultTab: Int
+        get() = cursor.decodeInt("default_tab", DefaultTab.Home.ordinal)
+        set(value) {
+            cursor.encode("default_tab", value)
         }
 }

@@ -33,9 +33,9 @@
             android:name=".ui.view.splash.LoginActivity"
             android:windowSoftInputMode="adjustPan"/>
 
-        <activity android:name=".ui.view.main.main.more.more.account.AccountActivity"/>
+        <activity android:name=".ui.view.main.more.more.account.AccountActivity"/>
 
-        <activity android:name=".ui.view.main.main.more.more.about.AboutActivity"/>
+        <activity android:name=".ui.view.main.more.more.about.AboutActivity"/>
 
         <activity
             android:name=".ui.view.main.MainActivity"
@@ -47,11 +47,11 @@
 
         <activity android:name=".ui.view.detail.comment.CommentActivity"/>
 
-        <activity android:name=".ui.view.main.main.more.more.setting.SettingActivity" />
+        <activity android:name=".ui.view.main.more.more.setting.SettingActivity" />
 
         <activity android:name=".ui.view.other.PhotoViewActivity"/>
 
-        <activity android:name=".ui.view.main.main.home.search.SearchActivity"/>
+        <activity android:name=".ui.view.main.home.search.SearchActivity"/>
 
         <activity android:name=".ui.view.read.vertical.ReadActivity"/>
 

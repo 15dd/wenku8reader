@@ -1,7 +1,6 @@
 package com.cyh128.hikarinovel.ui.view.main
 
 import android.content.pm.PackageManager
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cyh128.hikarinovel.HikariApp
@@ -21,9 +20,9 @@ class MainViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<Event>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    var currentItem = MutableLiveData<Int>()
-
     val isAutoUpdate get() = appRepository.getIsAutoUpdate()
+
+    val defaultTab get() = appRepository.getDefaultTab()
 
     fun checkUpdate() {
         viewModelScope.launch(Dispatchers.IO) {

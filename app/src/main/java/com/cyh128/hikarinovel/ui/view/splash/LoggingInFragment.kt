@@ -18,4 +18,9 @@ class LoggingInFragment: BaseFragment<FragmentLoggingInBinding>() {
             binding.tvFLoggingIn.text = it
         }
     }
+
+    override fun onDestroyView() {
+        binding.liFLoggingIn.clearAnimation() //防止内存泄漏
+        super.onDestroyView()
+    }
 }

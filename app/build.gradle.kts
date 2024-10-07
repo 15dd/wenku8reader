@@ -13,10 +13,10 @@ android {
 
     defaultConfig {
         applicationId = "com.cyh128.hikari_novel"
-        minSdk = 25
+        minSdk = 24
         targetSdk = 34
-        versionCode = 241001
-        versionName = "3.0.0"
+        versionCode = 241007
+        versionName = "3.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -84,8 +84,8 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.viewpager2:viewpager2:1.1.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.8.1")
-    implementation("androidx.navigation:navigation-ui-ktx:2.8.1")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.2")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.2")
 
     //数据库
     implementation("androidx.room:room-ktx:2.6.1")

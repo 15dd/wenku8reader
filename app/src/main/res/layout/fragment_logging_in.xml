@@ -25,10 +25,10 @@
 <!--            android:layout_height="60dp"-->
 <!--            android:indeterminate="true" />-->
 
-        <ProgressBar
+        <com.google.android.material.loadingindicator.LoadingIndicator
+            android:id="@+id/li_f_logging_in"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true" />
+            android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/tv_f_logging_in"

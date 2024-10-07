@@ -8,12 +8,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.cyh128.hikarinovel.R
 import com.cyh128.hikarinovel.base.BaseActivity
+import com.cyh128.hikarinovel.data.model.DefaultTab
 import com.cyh128.hikarinovel.data.model.Event
 import com.cyh128.hikarinovel.databinding.ActivityMainBinding
-import com.cyh128.hikarinovel.ui.view.main.main.bookshelf.BookshelfFragment
-import com.cyh128.hikarinovel.ui.view.main.main.home.HomeFragment
-import com.cyh128.hikarinovel.ui.view.main.main.more.MoreFragment
-import com.cyh128.hikarinovel.ui.view.main.main.visit_history.VisitHistoryFragment
+import com.cyh128.hikarinovel.ui.view.main.bookshelf.BookshelfFragment
+import com.cyh128.hikarinovel.ui.view.main.home.HomeFragment
+import com.cyh128.hikarinovel.ui.view.main.more.MoreFragment
+import com.cyh128.hikarinovel.ui.view.main.visit_history.VisitHistoryFragment
 import com.cyh128.hikarinovel.util.launchWithLifecycle
 import com.cyh128.hikarinovel.util.openUrl
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -69,32 +70,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        binding.bnvAMain.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.homeFragment -> {
-                    navigator.switchTab(0)
-                    true
-                }
-
-                R.id.bookshelfFragment -> {
-                    navigator.switchTab(1)
-                    true
-                }
-
-                R.id.visitHistoryFragment -> {
-                    navigator.switchTab(2)
-                    true
-                }
-
-                R.id.moreFragment -> {
-                    navigator.switchTab(3)
-                    true
-                }
-
-                else -> throw IllegalArgumentException()
-            }
-        }
-
         launchWithLifecycle {
             viewModel.eventFlow.collect { event ->
                 when (event) {
@@ -126,9 +101,45 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             }
         }
 
+        binding.bnvAMain.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.homeFragment -> {
+                    navigator.switchTab(0)
+                    true
+                }
+
+                R.id.bookshelfFragment -> {
+                    navigator.switchTab(1)
+                    true
+                }
+
+                R.id.visitHistoryFragment -> {
+                    navigator.switchTab(2)
+                    true
+                }
+
+                R.id.moreFragment -> {
+                    navigator.switchTab(3)
+                    true
+                }
+
+                else -> throw IllegalArgumentException()
+            }
+        }
+
+        //检查软件更新
         if (viewModel.isAutoUpdate) viewModel.checkUpdate()
+
+        //冷启动tab初始化
+        when(viewModel.defaultTab) {
+            DefaultTab.Home -> navigator.switchTab(0)
+            DefaultTab.Bookshelf -> navigator.switchTab(1)
+            DefaultTab.History -> navigator.switchTab(2)
+            DefaultTab.More -> navigator.switchTab(3)
+        }
     }
 
+    //二次确认退出
     private val onBackPressedMutex = Mutex()
     override fun onBackPressed() {
         lifecycleScope.launch {

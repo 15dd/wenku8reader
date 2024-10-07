@@ -3,6 +3,7 @@ package com.cyh128.hikarinovel.data.repository
 import android.accounts.NetworkErrorException
 import android.content.pm.PackageManager
 import com.cyh128.hikarinovel.HikariApp
+import com.cyh128.hikarinovel.data.model.DefaultTab
 import com.cyh128.hikarinovel.data.model.Language
 import com.cyh128.hikarinovel.data.model.ReaderOrientation
 import com.cyh128.hikarinovel.data.source.local.mmkv.AppConfig
@@ -53,6 +54,12 @@ class AppRepository @Inject constructor(
 
     fun setLanguage(language: Language) {
         appConfig.language = language.ordinal
+    }
+
+    fun getDefaultTab() = enumValues<DefaultTab>()[appConfig.defaultTab]
+
+    fun setDefaultTab(defaultTab: DefaultTab) {
+        appConfig.defaultTab = defaultTab.ordinal
     }
 
     //检查更新

@@ -249,5 +249,6 @@
     <string name="no_heat_msg">作品熱度：無 ，目前熱度上升指數為：無</string>
     <string name="heat">熱度</string>
     <string name="rising_rate">上升指數</string>
+    <string name="default_tab">冷開機默認Tab</string>
 
 </resources>

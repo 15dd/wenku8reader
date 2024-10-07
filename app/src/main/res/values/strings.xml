@@ -170,9 +170,9 @@
     <string name="sort_by_animated">只看动画化</string>
     <string name="view_more_completion_novel">查看更多完结轻小说</string>
 
-    <string name="http_code_403">403 服务器拒绝请求\n请检查网络ip属地\nWenku8官方禁止日本ip访问\n建议使用中国大陆ip访问</string>
+    <string name="http_code_403">403 服务器拒绝请求\n请检查网络ip属地\nWenku8官方禁止日本ip访问</string>
     <string name="http_code_5xx">服务器错误，请稍后重试</string>
-    <string name="login_failed_tip">如果多次登录失败，请检查网络ip属地是否为中国大陆</string>
+    <string name="login_failed_tip">如果多次登录失败，请在浏览器中确认能否正常登录wenku8官方网站</string>
 
 
     <!--阅读器相关-->
@@ -193,7 +193,6 @@
     <string name="pay_attention">请注意：</string>
     <string name="login_tip">
         本软件是第三方软件，非官方软件！！！
-        \n使用本软件的时候，请自行调整梯子的分流规则，确保使用软件时的ip属地为中国大陆！！！
     </string>
     <string name="switch_node">切换节点</string>
     <string name="login_help">登录遇到问题？查看帮助</string>
@@ -255,5 +254,6 @@
     <string name="no_heat_msg">作品热度：无 ，当前热度上升指数为：无</string>
     <string name="heat">热度</string>
     <string name="rising_rate">上升指数</string>
+    <string name="default_tab">冷启动默认Tab</string>
 
 </resources>

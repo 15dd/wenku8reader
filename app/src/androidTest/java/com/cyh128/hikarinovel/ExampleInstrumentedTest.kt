@@ -17,7 +17,7 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.cyh128.hikarinovel", appContext.packageName)
+        assertEquals("com.cyh128.hikari_novel", appContext.packageName)
     }
 
 }

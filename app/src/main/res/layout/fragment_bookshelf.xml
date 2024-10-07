@@ -6,10 +6,10 @@
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/abl_f_bookshelf"
         android:fitsSystemWindows="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:liftOnScrollTargetViewId="@id/fcv_f_bookshelf">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/tb_f_bookshelf"

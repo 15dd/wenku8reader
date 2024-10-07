@@ -29,6 +29,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
     private lateinit var spec: CircularProgressIndicatorSpec
     private lateinit var progressIndicatorDrawable: IndeterminateDrawable<CircularProgressIndicatorSpec>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

@@ -17,7 +17,7 @@ import com.cyh128.hikarinovel.data.model.ReadParcel
 import com.cyh128.hikarinovel.data.model.ReaderOrientation
 import com.cyh128.hikarinovel.databinding.ActivityNovelInfoBinding
 import com.cyh128.hikarinovel.ui.view.detail.comment.CommentActivity
-import com.cyh128.hikarinovel.ui.view.main.main.home.search.SearchActivity
+import com.cyh128.hikarinovel.ui.view.main.home.search.SearchActivity
 import com.cyh128.hikarinovel.ui.view.other.PhotoViewActivity
 import com.cyh128.hikarinovel.util.launchWithLifecycle
 import com.cyh128.hikarinovel.util.openUrl

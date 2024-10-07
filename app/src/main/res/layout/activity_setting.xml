@@ -183,6 +183,46 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <LinearLayout
+                android:id="@+id/ll_a_setting_default_tab"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:orientation="horizontal"
+                android:background="?selectableItemBackground">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:srcCompat="@drawable/ic_page_control"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="20dp"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:text="@string/default_tab"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_a_setting_default_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="首页"/>
+
+            </LinearLayout>
+
 
             <TextView
                 style="@style/TextAppearance.Material3.TitleSmall"
