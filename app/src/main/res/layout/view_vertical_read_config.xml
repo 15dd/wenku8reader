@@ -21,7 +21,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/fontsize"
+            android:text="@string/font_size"
             android:textSize="16sp" />
 
         <com.google.android.material.slider.Slider
@@ -73,7 +73,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="屏幕常亮"
+            android:text="@string/keep_screen_on"
             android:textSize="16sp" />
 
         <com.google.android.material.materialswitch.MaterialSwitch
@@ -96,7 +96,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="章节历史阅读记录恢复提示"
+            android:text="@string/restore_chapter_read_history_with_confirm"
             android:textSize="16sp" />
 
         <com.google.android.material.materialswitch.MaterialSwitch
@@ -119,14 +119,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="字体颜色和背景颜色"
+            android:text="@string/font_color_bg_color"
             android:textSize="16sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/b_v_v_read_config_change_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="修改"/>
+            android:text="@string/modify"/>
 
     </LinearLayout>
 

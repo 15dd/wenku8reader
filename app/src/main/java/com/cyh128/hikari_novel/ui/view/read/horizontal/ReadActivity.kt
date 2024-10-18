@@ -91,7 +91,7 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
                                                     bottomViewBinding.sVHReadConfigRestoreChapterReadHistory.isChecked = false
                                                 }
                                                 .setNegativeButton(R.string.not_restore) { _, _ -> }
-                                                .setPositiveButton(R.string.restore_chapter_read_history) { _, _ ->
+                                                .setPositiveButton(R.string.restore_chapter_read_history_with_confirm) { _, _ ->
                                                     binding.pvAHRead.pageNum = it.location
                                                 }
                                                 .show()

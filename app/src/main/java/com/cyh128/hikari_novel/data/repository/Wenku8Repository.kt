@@ -70,15 +70,14 @@ class Wenku8Repository @Inject constructor(
         val requestUrl: String?
         val charset: String?
         when(Lingver.getInstance().getLocale()) {
-            Locale.SIMPLIFIED_CHINESE -> {
-                requestUrl = "https://${getWenku8Node()}/modules/article/toplist.php?sort=$ranking&page=$index"
-                charset = "GBK"
-            }
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/toplist.php?sort=$ranking&page=$index&charset=big5"
                 charset = "BIG5-HKSCS"
             }
-            else -> throw RuntimeException()
+            else -> {
+                requestUrl = "https://${getWenku8Node()}/modules/article/toplist.php?sort=$ranking&page=$index"
+                charset = "GBK"
+            }
         }
         network.getData(requestUrl)
             .awaitResult { body ->
@@ -101,15 +100,14 @@ class Wenku8Repository @Inject constructor(
         val requestUrl: String?
         val charset: String?
         when(Lingver.getInstance().getLocale()) {
-            Locale.SIMPLIFIED_CHINESE -> {
-                requestUrl = "https://${getWenku8Node()}/modules/article/tags.php?t=$category&v=$sort&page=$index"
-                charset = "GBK"
-            }
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/tags.php?t=$category&v=$sort&page=$index&charset=big5"
                 charset = "BIG5-HKSCS"
             }
-            else -> throw RuntimeException()
+            else -> {
+                requestUrl = "https://${getWenku8Node()}/modules/article/tags.php?t=$category&v=$sort&page=$index"
+                charset = "GBK"
+            }
         }
         network.getData(requestUrl)
             .awaitResult { body ->
@@ -128,15 +126,14 @@ class Wenku8Repository @Inject constructor(
         val requestUrl: String?
         val charset: String?
         when(Lingver.getInstance().getLocale()) {
-            Locale.SIMPLIFIED_CHINESE -> {
-                requestUrl = url
-                charset = "GBK"
-            }
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "$url&charset=big5"
                 charset = "BIG5-HKSCS" //不能使用普通的big5编码，不然无法显示日文
             }
-            else -> throw RuntimeException()
+            else -> {
+                requestUrl = url
+                charset = "GBK"
+            }
         }
         network.getData(requestUrl)
             .awaitResult { body ->
@@ -155,15 +152,14 @@ class Wenku8Repository @Inject constructor(
         val requestUrl: String?
         val charset: String?
         when(Lingver.getInstance().getLocale()) {
-            Locale.SIMPLIFIED_CHINESE -> {
-                requestUrl = url
-                charset = "GBK"
-            }
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "$url?charset=big5"
                 charset = "BIG5-HKSCS"
             }
-            else -> throw RuntimeException()
+            else -> {
+                requestUrl = url
+                charset = "GBK"
+            }
         }
         network.getData(requestUrl)
             .awaitResult { body ->
@@ -181,15 +177,14 @@ class Wenku8Repository @Inject constructor(
         val requestUrl: String?
         val charset: String?
         when(Lingver.getInstance().getLocale()) {
-            Locale.SIMPLIFIED_CHINESE -> {
-                requestUrl = "https://${getWenku8Node()}/modules/article/addbookcase.php?bid=$aid"
-                charset = "GBK"
-            }
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/addbookcase.php?bid=$aid&charset=big5"
                 charset = "BIG5-HKSCS"
             }
-            else -> throw RuntimeException()
+            else -> {
+                requestUrl = "https://${getWenku8Node()}/modules/article/addbookcase.php?bid=$aid"
+                charset = "GBK"
+            }
         }
         network.getData(requestUrl)
             .awaitResult { body ->
@@ -218,15 +213,14 @@ class Wenku8Repository @Inject constructor(
         val requestUrl: String?
         val charset: String?
         when(Lingver.getInstance().getLocale()) {
-            Locale.SIMPLIFIED_CHINESE -> {
-                requestUrl = "https://${getWenku8Node()}/modules/article/bookcase.php"
-                charset = "GBK"
-            }
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/bookcase.php?charset=big5"
                 charset = "BIG5-HKSCS"
             }
-            else -> throw RuntimeException()
+            else -> {
+                requestUrl = "https://${getWenku8Node()}/modules/article/bookcase.php"
+                charset = "GBK"
+            }
         }
         network.getData(requestUrl)
             .awaitResult { body ->
@@ -244,15 +238,14 @@ class Wenku8Repository @Inject constructor(
         val requestUrl: String?
         val charset: String?
         when(Lingver.getInstance().getLocale()) {
-            Locale.SIMPLIFIED_CHINESE -> {
-                requestUrl = "https://${getWenku8Node()}/modules/article/reviews.php?aid=$aid&page=$index"
-                charset = "GBK"
-            }
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/reviews.php?aid=$aid&page=$index&charset=big5"
                 charset = "BIG5-HKSCS"
             }
-            else -> throw RuntimeException()
+            else -> {
+                requestUrl = "https://${getWenku8Node()}/modules/article/reviews.php?aid=$aid&page=$index"
+                charset = "GBK"
+            }
         }
         network.getData(requestUrl)
             .awaitResult { body ->
@@ -270,15 +263,14 @@ class Wenku8Repository @Inject constructor(
         val requestUrl: String?
         val charset: String?
         when(Lingver.getInstance().getLocale()) {
-            Locale.SIMPLIFIED_CHINESE -> {
-                requestUrl = "$url&page=$index"
-                charset = "GBK"
-            }
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "$url&page=$index&charset=big5"
                 charset = "BIG5-HKSCS"
             }
-            else -> throw RuntimeException()
+            else -> {
+                requestUrl = "$url&page=$index"
+                charset = "GBK"
+            }
         }
         network.getData(requestUrl)
             .awaitResult { body ->
@@ -295,15 +287,14 @@ class Wenku8Repository @Inject constructor(
         val requestUrl: String?
         val charset: String?
         when(Lingver.getInstance().getLocale()) {
-            Locale.SIMPLIFIED_CHINESE -> {
-                requestUrl = "https://${getWenku8Node()}/index.php"
-                charset = "GBK"
-            }
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/index.php?charset=big5"
                 charset = "BIG5-HKSCS"
             }
-            else -> throw RuntimeException()
+            else -> {
+                requestUrl = "https://${getWenku8Node()}/index.php"
+                charset = "GBK"
+            }
         }
         network.getData(requestUrl)
             .awaitResult { body ->
@@ -321,15 +312,14 @@ class Wenku8Repository @Inject constructor(
         val requestUrl: String?
         val charset: String?
         when(Lingver.getInstance().getLocale()) {
-            Locale.SIMPLIFIED_CHINESE -> {
-                requestUrl = "https://${getWenku8Node()}/modules/article/uservote.php?id=$aid"
-                charset = "GBK"
-            }
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/uservote.php?id=$aid&charset=big5"
                 charset = "BIG5-HKSCS"
             }
-            else -> throw RuntimeException()
+            else -> {
+                requestUrl = "https://${getWenku8Node()}/modules/article/uservote.php?id=$aid"
+                charset = "GBK"
+            }
         }
         network.getData(requestUrl)
             .awaitResult { body ->
@@ -347,15 +337,14 @@ class Wenku8Repository @Inject constructor(
         val requestUrl: String?
         val charset: String?
         when(Lingver.getInstance().getLocale()) {
-            Locale.SIMPLIFIED_CHINESE -> {
-                requestUrl = "https://${getWenku8Node()}/modules/article/search.php?searchtype=articlename&searchkey=$title&page=$index"
-                charset = "GBK"
-            }
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/search.php?searchtype=articlename&searchkey=$title&page=$index&charset=big5"
                 charset = "BIG5-HKSCS"
             }
-            else -> throw RuntimeException()
+            else -> {
+                requestUrl = "https://${getWenku8Node()}/modules/article/search.php?searchtype=articlename&searchkey=$title&page=$index"
+                charset = "GBK"
+            }
         }
         network.getData(requestUrl)
             .awaitResult { body ->
@@ -380,15 +369,14 @@ class Wenku8Repository @Inject constructor(
         val requestUrl: String?
         val charset: String?
         when(Lingver.getInstance().getLocale()) {
-            Locale.SIMPLIFIED_CHINESE -> {
-                requestUrl = "https://${getWenku8Node()}/modules/article/search.php?searchtype=author&searchkey=$author&page=$index"
-                charset = "GBK"
-            }
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/search.php?searchtype=author&searchkey=$author&page=$index&charset=big5"
                 charset = "BIG5-HKSCS"
             }
-            else -> throw RuntimeException()
+            else -> {
+                requestUrl = "https://${getWenku8Node()}/modules/article/search.php?searchtype=author&searchkey=$author&page=$index"
+                charset = "GBK"
+            }
         }
         network.getData(requestUrl)
             .awaitResult { body ->
@@ -418,15 +406,14 @@ class Wenku8Repository @Inject constructor(
         val requestUrl: String?
         val charset: String?
         when(Lingver.getInstance().getLocale()) {
-            Locale.SIMPLIFIED_CHINESE -> {
-                requestUrl = "https://${getWenku8Node()}/userdetail.php"
-                charset = "GBK"
-            }
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/userdetail.php?charset=big5"
                 charset = "BIG5-HKSCS"
             }
-            else -> throw RuntimeException()
+            else -> {
+                requestUrl = "https://${getWenku8Node()}/userdetail.php"
+                charset = "GBK"
+            }
         }
         network.getData(requestUrl)
             .awaitResult { body ->
@@ -444,15 +431,14 @@ class Wenku8Repository @Inject constructor(
         val requestUrl: String?
         val charset: String?
         when(Lingver.getInstance().getLocale()) {
-            Locale.SIMPLIFIED_CHINESE -> {
-                requestUrl = "https://${getWenku8Node()}/modules/article/articlelist.php?fullflag=1&page=$index"
-                charset = "GBK"
-            }
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/articlelist.php?fullflag=1&page=$index&charset=big5"
                 charset = "BIG5-HKSCS"
             }
-            else -> throw RuntimeException()
+            else -> {
+                requestUrl = "https://${getWenku8Node()}/modules/article/articlelist.php?fullflag=1&page=$index"
+                charset = "GBK"
+            }
         }
         network.getData(requestUrl)
             .awaitResult { body ->
@@ -473,9 +459,8 @@ class Wenku8Repository @Inject constructor(
     //获取小说内容
     suspend fun getNovelContent(aid: String, cid: String): Result<ChapterContentResponse> {
         val requestUrl = when(Lingver.getInstance().getLocale()) {
-            Locale.SIMPLIFIED_CHINESE -> "action=book&do=text&aid=$aid&cid=$cid&t=0"
             Locale.TRADITIONAL_CHINESE -> "action=book&do=text&aid=$aid&cid=$cid&t=1"
-            else -> throw RuntimeException()
+            else -> "action=book&do=text&aid=$aid&cid=$cid&t=0"
         }
         network.getDataFromAppWenku8Com(requestUrl)
             .awaitResult {

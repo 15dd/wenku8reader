@@ -3,7 +3,9 @@ package com.cyh128.hikari_novel.ui.view.other
 import android.os.Bundle
 import com.cyh128.hikari_novel.base.BaseActivity
 import com.cyh128.hikari_novel.databinding.ActivityCrashBinding
+import com.cyh128.hikari_novel.ui.view.main.more.more.setting.SettingActivity
 import com.cyh128.hikari_novel.util.openUrl
+import com.cyh128.hikari_novel.util.startActivity
 import com.developer.crashx.CrashActivity
 
 class CrashActivity: BaseActivity<ActivityCrashBinding>() {
@@ -16,6 +18,9 @@ class CrashActivity: BaseActivity<ActivityCrashBinding>() {
         }
         binding.bACrashReport.setOnClickListener {
             openUrl("https://github.com/15dd/wenku8reader/issues")
+        }
+        binding.bACrashSetting.setOnClickListener {
+            startActivity<SettingActivity>()
         }
     }
 }

@@ -56,10 +56,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         }
 
         when (viewModel.getLanguage()) {
-            Language.FOLLOW_SYSTEM -> {
-                Lingver.getInstance().setFollowSystemLocale(this)
-                if (Lingver.getInstance().getLanguage() != "zh") Lingver.getInstance().setLocale(this, Locale.SIMPLIFIED_CHINESE)
-            }
+            Language.FOLLOW_SYSTEM -> Lingver.getInstance().setFollowSystemLocale(this)
             Language.ZH_CN -> Lingver.getInstance().setLocale(this, Locale.SIMPLIFIED_CHINESE)
             Language.ZH_TW -> Lingver.getInstance().setLocale(this, Locale.TRADITIONAL_CHINESE)
         }

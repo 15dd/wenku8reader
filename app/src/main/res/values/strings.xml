@@ -229,7 +229,7 @@
     <string name="unread">未阅读</string>
     <string name="history">历史</string>
     <string name="history_restore_tip">此章节有你的历史阅读记录，是否恢复？</string>
-    <string name="restore_chapter_read_history">恢复章节历史记录</string>
+    <string name="restore_chapter_read_history_with_confirm">恢复章节历史记录</string>
     <string name="not_restore">不恢复</string>
     <string name="not_restore_and_close_forever">永不显示此提示（仅当前阅读模式）</string>
     <string name="completed_reading">阅读完成</string>
@@ -255,5 +255,13 @@
     <string name="heat">热度</string>
     <string name="rising_rate">上升指数</string>
     <string name="default_tab">冷启动默认Tab</string>
+    <string name="restore_chapter_read_history_without_confirm">直接恢复历史记录并且不提醒</string>
+    <string name="switch_animation">翻页动画</string>
+    <string name="key_down_switch_chapter">音量键翻页</string>
+    <string name="keep_screen_on">屏幕常亮</string>
+    <string name="progress_text_size">进度提示字体大小</string>
+    <string name="font_size">字体大小</string>
+    <string name="modify">修改</string>
+    <string name="font_color_bg_color">字体颜色和背景颜色</string>
 
 </resources>

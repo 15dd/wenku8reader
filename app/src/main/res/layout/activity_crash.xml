@@ -55,6 +55,13 @@
         android:padding="20dp">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/b_a_crash_setting"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/b_a_crash_report"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="match_parent"

@@ -227,7 +227,7 @@
     <string name="unread">未閱讀</string>
     <string name="history">歷史</string>
     <string name="history_restore_tip">此章節有你的歷史閱讀記錄，是否恢復？</string>
-    <string name="restore_chapter_read_history">恢復章節歷史記錄</string>
+    <string name="restore_chapter_read_history_with_confirm">恢復章節歷史記錄</string>
     <string name="not_restore">不恢復</string>
     <string name="not_restore_and_close_forever">永不顯示此提示（僅當前閱讀模式）</string>
     <string name="completed_reading">閱讀完成</string>

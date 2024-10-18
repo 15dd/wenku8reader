@@ -113,7 +113,7 @@ class ReadFragment : BaseFragment<FragmentVerticalReadBinding>() {
                                             (requireActivity() as ReadActivity).setRestoreChapterReadHistoryDisable()
                                         }
                                         .setNegativeButton(R.string.not_restore) { _, _ -> }
-                                        .setPositiveButton(R.string.restore_chapter_read_history) { _, _ ->
+                                        .setPositiveButton(R.string.restore_chapter_read_history_with_confirm) { _, _ ->
                                             binding.nsvFVRead.scrollTo(0, it.location) //滚动到指定位置
                                         }
                                         .show()

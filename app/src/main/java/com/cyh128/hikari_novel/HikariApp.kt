@@ -10,6 +10,7 @@ import dagger.hilt.android.HiltAndroidApp
 import okhttp3.OkHttpClient
 import rxhttp.RxHttpPlugins
 import rxhttp.wrapper.cookie.CookieStore
+import java.util.Locale
 import javax.net.ssl.SSLSession
 
 
@@ -33,6 +34,6 @@ class HikariApp : Application() {
             .errorActivity(CrashActivity::class.java)
             .apply()
 
-        Lingver.init(this)
+        Lingver.init(this, Locale.SIMPLIFIED_CHINESE)
     }
 }
