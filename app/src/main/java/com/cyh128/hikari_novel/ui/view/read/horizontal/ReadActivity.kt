@@ -79,22 +79,26 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
                                         binding.pvAHRead.pageNum = it.location
                                     } else {
                                         if (viewModel.getIsShowChapterReadHistory()) {
-                                            MaterialAlertDialogBuilder(this@ReadActivity)
-                                                .setTitle(R.string.history)
-                                                .setIcon(R.drawable.ic_history)
-                                                .setMessage(R.string.history_restore_tip)
-                                                .setCancelable(false)
-                                                .setNeutralButton(
-                                                    R.string.not_restore_and_close_forever
-                                                ) { _, _ ->
-                                                    viewModel.setIsShowChapterReadHistory(false)
-                                                    bottomViewBinding.sVHReadConfigRestoreChapterReadHistory.isChecked = false
-                                                }
-                                                .setNegativeButton(R.string.not_restore) { _, _ -> }
-                                                .setPositiveButton(R.string.restore_chapter_read_history_with_confirm) { _, _ ->
-                                                    binding.pvAHRead.pageNum = it.location
-                                                }
-                                                .show()
+                                            if (viewModel.getIsShowChapterReadHistoryWithoutConfirm()) {
+                                                binding.pvAHRead.pageNum = it.location
+                                            } else {
+                                                MaterialAlertDialogBuilder(this@ReadActivity)
+                                                    .setTitle(R.string.history)
+                                                    .setIcon(R.drawable.ic_history)
+                                                    .setMessage(R.string.history_restore_tip)
+                                                    .setCancelable(false)
+                                                    .setNeutralButton(
+                                                        R.string.not_restore_and_close_forever
+                                                    ) { _, _ ->
+                                                        viewModel.setIsShowChapterReadHistory(false)
+                                                        bottomViewBinding.sVHReadConfigRestoreChapterReadHistory.isChecked = false
+                                                    }
+                                                    .setNegativeButton(R.string.not_restore) { _, _ -> }
+                                                    .setPositiveButton(R.string.restore_chapter_read_history_with_confirm) { _, _ ->
+                                                        binding.pvAHRead.pageNum = it.location
+                                                    }
+                                                    .show()
+                                            }
                                         }
                                     }
                                 }
@@ -199,6 +203,9 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
         bottomViewBinding.sVHReadConfigSwitchAnimation.isChecked = viewModel.getSwitchAnimation()
         bottomViewBinding.sVHReadConfigRestoreChapterReadHistory.isChecked = viewModel.getIsShowChapterReadHistory()
         bottomViewBinding.sVHReadConfigKeepScreenOn.isChecked = viewModel.getKeepScreenOn()
+
+        bottomViewBinding.sVHReadConfigRestoreChapterReadHistoryWithoutConfirm.isChecked = viewModel.getIsShowChapterReadHistoryWithoutConfirm()
+        bottomViewBinding.sVHReadConfigRestoreChapterReadHistoryWithoutConfirm.isEnabled = viewModel.getIsShowChapterReadHistory()
 
         if (viewModel.getKeepScreenOn()) window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) //保持屏幕常亮
         else window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -350,6 +357,11 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
 
         bottomViewBinding.sVHReadConfigRestoreChapterReadHistory.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setIsShowChapterReadHistory(isChecked)
+            bottomViewBinding.sVHReadConfigRestoreChapterReadHistoryWithoutConfirm.isEnabled = isChecked
+        }
+
+        bottomViewBinding.sVHReadConfigRestoreChapterReadHistoryWithoutConfirm.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.setIsShowChapterReadHistoryWithoutConfirm(isChecked)
         }
     }
 

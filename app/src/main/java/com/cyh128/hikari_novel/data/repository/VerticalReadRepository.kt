@@ -49,4 +49,10 @@ class VerticalReadRepository @Inject constructor(
     fun setKeepScreenOn(value: Boolean) {
         verticalReadConfig.keepScreenOn = value
     }
+
+    fun getIsShowChapterReadHistoryWithoutConfirm() = verticalReadConfig.isShowChapterReadHistoryWithoutConfirm
+
+    fun setIsShowChapterReadHistoryWithoutConfirm(value: Boolean) {
+        verticalReadConfig.isShowChapterReadHistoryWithoutConfirm = value
+    }
 }

@@ -101,22 +101,26 @@ class ReadFragment : BaseFragment<FragmentVerticalReadBinding>() {
                                 binding.nsvFVRead.scrollTo(0, it.location) //滚动到指定位置
                             } else {
                                 if (viewModel.getIsShowChapterReadHistory()) {
-                                    MaterialAlertDialogBuilder(requireContext())
-                                        .setTitle(R.string.history)
-                                        .setIcon(R.drawable.ic_history)
-                                        .setMessage(R.string.history_restore_tip)
-                                        .setCancelable(false)
-                                        .setNeutralButton(
-                                            R.string.not_restore_and_close_forever
-                                        ) { _, _ ->
-                                            viewModel.setIsShowChapterReadHistory(false)
-                                            (requireActivity() as ReadActivity).setRestoreChapterReadHistoryDisable()
-                                        }
-                                        .setNegativeButton(R.string.not_restore) { _, _ -> }
-                                        .setPositiveButton(R.string.restore_chapter_read_history_with_confirm) { _, _ ->
-                                            binding.nsvFVRead.scrollTo(0, it.location) //滚动到指定位置
-                                        }
-                                        .show()
+                                    if (viewModel.getIsShowChapterReadHistoryWithoutConfirm()) {
+                                        binding.nsvFVRead.scrollTo(0, it.location) //滚动到指定位置
+                                    } else {
+                                        MaterialAlertDialogBuilder(requireContext())
+                                            .setTitle(R.string.history)
+                                            .setIcon(R.drawable.ic_history)
+                                            .setMessage(R.string.history_restore_tip)
+                                            .setCancelable(false)
+                                            .setNeutralButton(
+                                                R.string.not_restore_and_close_forever
+                                            ) { _, _ ->
+                                                viewModel.setIsShowChapterReadHistory(false)
+                                                (requireActivity() as ReadActivity).setRestoreChapterReadHistoryDisable()
+                                            }
+                                            .setNegativeButton(R.string.not_restore) { _, _ -> }
+                                            .setPositiveButton(R.string.restore_chapter_read_history_with_confirm) { _, _ ->
+                                                binding.nsvFVRead.scrollTo(0, it.location) //滚动到指定位置
+                                            }
+                                            .show()
+                                    }
                                 }
                             }
                         }

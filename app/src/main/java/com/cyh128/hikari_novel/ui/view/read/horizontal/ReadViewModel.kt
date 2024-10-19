@@ -87,12 +87,6 @@ class ReadViewModel @Inject constructor(
             }
         }
 
-    fun getIsShowChapterReadHistory() = horizontalReadRepository.getIsShowChapterReadHistory()
-
-    fun setIsShowChapterReadHistory(value: Boolean) {
-        horizontalReadRepository.setIsShowChapterReadHistory(value)
-    }
-
     fun setFontSize(size: Float) {
         horizontalReadRepository.setFontSize(size)
     }
@@ -135,5 +129,17 @@ class ReadViewModel @Inject constructor(
 
     fun setSwitchAnimation(value: Boolean) {
         horizontalReadRepository.setSwitchAnimation(value)
+    }
+
+    fun getIsShowChapterReadHistory() = horizontalReadRepository.getIsShowChapterReadHistory()
+
+    fun setIsShowChapterReadHistory(value: Boolean) {
+        horizontalReadRepository.setIsShowChapterReadHistory(value)
+    }
+
+    fun getIsShowChapterReadHistoryWithoutConfirm() = horizontalReadRepository.getIsShowChapterReadHistoryWithoutConfirm()
+
+    fun setIsShowChapterReadHistoryWithoutConfirm(value: Boolean) {
+        horizontalReadRepository.setIsShowChapterReadHistoryWithoutConfirm(value)
     }
 }

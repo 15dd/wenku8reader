@@ -20,15 +20,21 @@ class VerticalReadConfig @Inject constructor() {
             cursor.encode("line_spacing",value)
         }
 
+    var keepScreenOn: Boolean
+        get() = cursor.decodeBool("keep_screen_on", false)
+        set(value) {
+            cursor.encode("keep_screen_on", value)
+        }
+
     var isShowChapterReadHistory: Boolean
         get() = cursor.decodeBool("is_show_chapter_read_history", true)
         set(value) {
             cursor.encode("is_show_chapter_read_history", value)
         }
 
-    var keepScreenOn: Boolean
-        get() = cursor.decodeBool("keep_screen_on", false)
+    var isShowChapterReadHistoryWithoutConfirm: Boolean
+        get() = cursor.decodeBool("is_show_chapter_read_history_without_confirm", false)
         set(value) {
-            cursor.encode("keep_screen_on", value)
+            cursor.encode("is_show_chapter_read_history_without_confirm", value)
         }
 }

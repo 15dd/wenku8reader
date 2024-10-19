@@ -83,12 +83,6 @@ class ReadViewModel @Inject constructor(
             }
         }
 
-    fun getIsShowChapterReadHistory() = verticalReadRepository.getIsShowChapterReadHistory()
-
-    fun setIsShowChapterReadHistory(value: Boolean) {
-        verticalReadRepository.setIsShowChapterReadHistory(value)
-    }
-
     fun setFontSize(size: Float) {
         viewModelScope.launch {
             verticalReadRepository.setFontSize(size)
@@ -124,4 +118,16 @@ class ReadViewModel @Inject constructor(
     fun getBgColorDay() = readColorRepository.getBgColorDay()
 
     fun getBgColorNight() = readColorRepository.getBgColorNight()
+
+    fun getIsShowChapterReadHistory() = verticalReadRepository.getIsShowChapterReadHistory()
+
+    fun setIsShowChapterReadHistory(value: Boolean) {
+        verticalReadRepository.setIsShowChapterReadHistory(value)
+    }
+
+    fun getIsShowChapterReadHistoryWithoutConfirm() = verticalReadRepository.getIsShowChapterReadHistoryWithoutConfirm()
+
+    fun setIsShowChapterReadHistoryWithoutConfirm(value: Boolean) {
+        verticalReadRepository.setIsShowChapterReadHistoryWithoutConfirm(value)
+    }
 }

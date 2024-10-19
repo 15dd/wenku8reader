@@ -26,13 +26,6 @@ class HorizontalReadRepository @Inject constructor(
 
     suspend fun deleteAll(aid: String) = horizontalReadHistoryDao.deleteAll(aid)
 
-    //获取是否显示当前章节的历史阅读记录
-    fun getIsShowChapterReadHistory() = horizontalReadConfig.isShowChapterReadHistory
-
-    fun setIsShowChapterReadHistory(value: Boolean) {
-        horizontalReadConfig.isShowChapterReadHistory = value
-    }
-
     fun getFontSize() = horizontalReadConfig.fontSize
 
     fun setFontSize(size: Float) {
@@ -67,5 +60,18 @@ class HorizontalReadRepository @Inject constructor(
 
     fun setSwitchAnimation(value: Boolean) {
         horizontalReadConfig.switchAnimation = value
+    }
+
+    //获取是否显示当前章节的历史阅读记录
+    fun getIsShowChapterReadHistory() = horizontalReadConfig.isShowChapterReadHistory
+
+    fun setIsShowChapterReadHistory(value: Boolean) {
+        horizontalReadConfig.isShowChapterReadHistory = value
+    }
+
+    fun getIsShowChapterReadHistoryWithoutConfirm() = horizontalReadConfig.isShowChapterReadHistoryWithoutConfirm
+
+    fun setIsShowChapterReadHistoryWithoutConfirm(value: Boolean) {
+        horizontalReadConfig.isShowChapterReadHistoryWithoutConfirm = value
     }
 }

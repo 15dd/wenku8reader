@@ -49,4 +49,10 @@ class HorizontalReadConfig @Inject constructor() {
         set(value) {
             cursor.encode("is_show_chapter_read_history", value)
         }
+
+    var isShowChapterReadHistoryWithoutConfirm: Boolean
+        get() = cursor.decodeBool("is_show_chapter_read_history_without_confirm", false)
+        set(value) {
+            cursor.encode("is_show_chapter_read_history_without_confirm", value)
+        }
 }

@@ -117,6 +117,9 @@ class ReadActivity : BaseActivity<ActivityVerticalReadBinding>() {
         bottomViewBinding.sVVReadConfigLineSpacing.value = viewModel.getLineSpacing()
         bottomViewBinding.sVVReadConfigKeepScreenOn.isChecked = viewModel.getKeepScreenOn()
 
+        bottomViewBinding.sVVReadConfigRestoreChapterReadHistoryWithoutConfirm.isChecked = viewModel.getIsShowChapterReadHistoryWithoutConfirm()
+        bottomViewBinding.sVVReadConfigRestoreChapterReadHistoryWithoutConfirm.isEnabled = viewModel.getIsShowChapterReadHistory()
+
         if (viewModel.getKeepScreenOn()) window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) //保持屏幕常亮
         else window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
@@ -181,6 +184,11 @@ class ReadActivity : BaseActivity<ActivityVerticalReadBinding>() {
 
         bottomViewBinding.sVVReadConfigRestoreChapterReadHistory.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setIsShowChapterReadHistory(isChecked)
+            bottomViewBinding.sVVReadConfigRestoreChapterReadHistoryWithoutConfirm.isEnabled = isChecked
+        }
+
+        bottomViewBinding.sVVReadConfigRestoreChapterReadHistoryWithoutConfirm.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.setIsShowChapterReadHistoryWithoutConfirm(isChecked)
         }
 
         val activityResultLauncher =
