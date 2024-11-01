@@ -9,14 +9,14 @@ plugins {
 
 android {
     namespace = "com.cyh128.hikari_novel"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.cyh128.hikari_novel"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 241018
-        versionName = "3.1.1"
+        targetSdk = 35
+        versionCode = 241102
+        versionName = "3.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -78,10 +78,10 @@ android {
 
 dependencies {
     //android相关
-    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.13.0-alpha07")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.viewpager2:viewpager2:1.1.0")
 
@@ -103,7 +103,7 @@ dependencies {
 
     //lifecycle
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.6")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
 
     //协程
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC")
