@@ -88,7 +88,6 @@ class ReadFragment : BaseFragment<FragmentVerticalReadBinding>() {
             binding.root.setBackgroundColor(Color.parseColor("#" + viewModel.getBgColorDay()))
         }
 
-
         binding.nsvFVRead.viewTreeObserver.addOnGlobalLayoutListener(
             object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {

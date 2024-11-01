@@ -1,5 +1,6 @@
 package com.cyh128.hikari_novel.util
 
+import android.util.Log
 import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.data.model.BookshelfNovelInfo
 import com.cyh128.hikari_novel.data.model.Chapter
@@ -17,6 +18,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
+import java.net.URL
 
 object Wenku8Parser {
     private const val TAG = "Wenku8Parser"
@@ -405,21 +407,33 @@ object Wenku8Parser {
             homeBlockList.add(HomeBlock(blockTitle, blockList))
         }
 
+        val regex = Regex("^(http|https)://[^\\s/$.?#].[^\\s]*$")
         for (i in 2..3) {
             val b = document.select("div[class=main]")[i]
             val blockList = ArrayList<NovelCover>()
             var blockTitle = b.select("div[class=blocktitle]")[0].text()
             if (i == 3) blockTitle = blockTitle.substringBefore("(")
-            val tempBlock1Content =
-                b.select("div[style=float: left;text-align:center;width: 95px; height:155px;overflow:hidden;]")
+            val tempBlock1Content = b.select("div[style=float: left;text-align:center;width: 95px; height:155px;overflow:hidden;]")
             for (j in tempBlock1Content) {
-                val title = j.getElementsByTag("a")[1].text()
-                var img = j.getElementsByTag("img")[0].attr("src")
-                if (img.substring(0, 5) != "https") {
-                    img = img.replace("http", "https")
+                var title: String
+                var img: String
+                var url: String
+                var aid: String
+                try { //防止因为wenku8官网显示出错导致软件直接crash
+                    title = j.getElementsByTag("a")[1].text()
+                    img = j.getElementsByTag("img")[0].attr("src")
+
+                    if (!img.matches(regex)) throw IllegalArgumentException()
+
+                    if (img.substring(0, 5) != "https") {
+                        img = img.replace("http", "https")
+                    }
+                    url = j.getElementsByTag("a")[0].attr("href")
+
+                    aid = url.substring(url.indexOf("book/") + 5, url.indexOf(".htm"))
+                } catch (e: Exception) {
+                    continue
                 }
-                val url = j.getElementsByTag("a")[0].attr("href")
-                val aid = url.substring(url.indexOf("book/") + 5, url.indexOf(".htm"))
                 blockList.add(NovelCover(title, img, url, aid))
             }
             homeBlockList.add(HomeBlock(blockTitle, blockList))
