@@ -250,5 +250,24 @@
     <string name="heat">熱度</string>
     <string name="rising_rate">上升指數</string>
     <string name="default_tab">冷開機默認Tab</string>
+    <string name="restore_chapter_read_history_without_confirm">直接恢復歷史記錄並且不提醒</string>
+    <string name="switch_animation">翻頁動畫</string>
+    <string name="key_down_switch_chapter">音量鍵翻頁</string>
+    <string name="keep_screen_on">荧幕常亮</string>
+    <string name="progress_text_size">進度提示字體大小</string>
+    <string name="font_size">字體大小</string>
+    <string name="modify">修改</string>
+    <string name="font_color_bg_color">修改字體顏色和背景顏色</string>
+    <string name="more_shelves">更多書架</string>
+    <string name="app_theme">應用主題</string>
+    <string name="dynamic_color">動態取色</string>
+    <string name="green_apple">青蘋果</string>
+    <string name="lavender">薰衣草</string>
+    <string name="midnight_dusk">午夜幽暗</string>
+    <string name="strawberry_daiquiri">草莓黛綺莉</string>
+    <string name="teal_turquoise">青綠</string>
+    <string name="tidal_wave">浪潮</string>
+    <string name="yin_yang">陰陽</string>
+    <string name="yotsuba">四葉草</string>
 
 </resources>

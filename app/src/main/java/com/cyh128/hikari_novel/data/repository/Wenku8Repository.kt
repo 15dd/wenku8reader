@@ -209,16 +209,16 @@ class Wenku8Repository @Inject constructor(
     }
 
     //获取书架
-    suspend fun getBookshelf(): Result<List<BookshelfNovelInfo>> {
+    suspend fun getBookshelf(classId: Int = 0): Result<List<BookshelfNovelInfo>> {
         val requestUrl: String?
         val charset: String?
         when(Lingver.getInstance().getLocale()) {
             Locale.TRADITIONAL_CHINESE -> {
-                requestUrl = "https://${getWenku8Node()}/modules/article/bookcase.php?charset=big5"
+                requestUrl = "https://${getWenku8Node()}/modules/article/bookcase.php?classid=$classId&charset=big5"
                 charset = "BIG5-HKSCS"
             }
             else -> {
-                requestUrl = "https://${getWenku8Node()}/modules/article/bookcase.php"
+                requestUrl = "https://${getWenku8Node()}/modules/article/bookcase.php?classid=$classId"
                 charset = "GBK"
             }
         }

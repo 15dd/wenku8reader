@@ -82,8 +82,7 @@ fun Fragment.getIsInDarkMode() =
 fun String.urlEncode(enc: String? = null): String {
     if (enc != null) return URLEncoder.encode(this, enc)
     return when (Lingver.getInstance().getLocale()) {
-        Locale.SIMPLIFIED_CHINESE -> URLEncoder.encode(this, "GBK")
         Locale.TRADITIONAL_CHINESE -> URLEncoder.encode(this, "BIG5-HKSCS")
-        else -> throw RuntimeException()
+        else -> URLEncoder.encode(this, "GBK")
     }
 }

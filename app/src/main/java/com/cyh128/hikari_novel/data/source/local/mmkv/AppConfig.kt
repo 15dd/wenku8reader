@@ -1,5 +1,6 @@
 package com.cyh128.hikari_novel.data.source.local.mmkv
 
+import com.cyh128.hikari_novel.data.model.AppTheme
 import com.cyh128.hikari_novel.data.model.DefaultTab
 import com.cyh128.hikari_novel.data.model.Language
 import com.cyh128.hikari_novel.data.model.ReaderOrientation
@@ -52,5 +53,11 @@ class AppConfig @Inject constructor() {
         get() = cursor.decodeInt("default_tab", DefaultTab.Home.ordinal)
         set(value) {
             cursor.encode("default_tab", value)
+        }
+
+    var appTheme: Int
+        get() = cursor.decodeInt("app_theme", AppTheme.Dynamic.ordinal)
+        set(value) {
+            cursor.encode("app_theme", value)
         }
 }

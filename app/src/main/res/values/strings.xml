@@ -1,4 +1,6 @@
 <resources>
+    <string name="soft_name" translatable="false">Hikari Novel</string>
+
     <string name="logging">登录中</string>
     <string name="home">首页</string>
     <string name="ranking">排行榜</string>
@@ -263,5 +265,18 @@
     <string name="font_size">字体大小</string>
     <string name="modify">修改</string>
     <string name="font_color_bg_color">字体颜色和背景颜色</string>
+    <string name="more_shelves">更多书架</string>
+    <string name="app_theme">应用主题</string>
+    <string name="dynamic_color">动态取色</string>
+    <string name="green_apple">青苹果</string>
+    <string name="lavender">薰衣草</string>
+    <string name="midnight_dusk">午夜幽暗</string>
+    <string name="strawberry_daiquiri">草莓黛绮莉</string>
+    <string name="tako" translatable="false">tako</string>
+    <string name="teal_turquoise">青绿</string>
+    <string name="tidal_wave">浪潮</string>
+    <string name="yin_yang">阴阳</string>
+    <string name="yotsuba">四叶草</string>
+    <string name="nord" translatable="false">nord</string>
 
 </resources>

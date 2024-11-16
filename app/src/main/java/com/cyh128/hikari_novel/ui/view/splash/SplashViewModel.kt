@@ -68,6 +68,4 @@ class SplashViewModel @Inject constructor(
 
     //设置网页wenku8节点
     fun setWenku8Node(node: String) = wenku8Repository.setWenku8Node(node)
-
-    fun getLanguage() = appRepository.getLanguage()
 }

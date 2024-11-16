@@ -3,11 +3,13 @@ package com.cyh128.hikari_novel.data.repository
 import android.accounts.NetworkErrorException
 import android.content.pm.PackageManager
 import com.cyh128.hikari_novel.HikariApp
+import com.cyh128.hikari_novel.data.model.AppTheme
 import com.cyh128.hikari_novel.data.model.DefaultTab
 import com.cyh128.hikari_novel.data.model.Language
 import com.cyh128.hikari_novel.data.model.ReaderOrientation
 import com.cyh128.hikari_novel.data.source.local.mmkv.AppConfig
 import com.cyh128.hikari_novel.data.source.remote.Network
+import com.cyh128.hikari_novel.util.ThemeHelper
 import com.google.gson.Gson
 import rxhttp.awaitResult
 import javax.inject.Inject
@@ -60,6 +62,12 @@ class AppRepository @Inject constructor(
 
     fun setDefaultTab(defaultTab: DefaultTab) {
         appConfig.defaultTab = defaultTab.ordinal
+    }
+
+    fun getAppTheme() = enumValues<AppTheme>()[appConfig.appTheme]
+
+    fun setAppTheme(appTheme: AppTheme) {
+        appConfig.appTheme = appTheme.ordinal
     }
 
     //检查更新

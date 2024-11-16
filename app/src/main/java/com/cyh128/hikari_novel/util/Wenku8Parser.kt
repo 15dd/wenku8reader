@@ -1,6 +1,5 @@
 package com.cyh128.hikari_novel.util
 
-import android.util.Log
 import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.data.model.BookshelfNovelInfo
 import com.cyh128.hikari_novel.data.model.Chapter
@@ -18,7 +17,6 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
-import java.net.URL
 
 object Wenku8Parser {
     private const val TAG = "Wenku8Parser"

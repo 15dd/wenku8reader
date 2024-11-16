@@ -11,4 +11,10 @@
         app:showAsAction="always|collapseActionView"
         tools:ignore="AlwaysShowAction"/>
 
+<!--    <item-->
+<!--        android:id="@+id/menu_f_bookshelf_more_shelves"-->
+<!--        android:icon="@drawable/ic_shelves"-->
+<!--        android:title="@string/more_shelves"-->
+<!--        app:showAsAction="always" />-->
+
 </menu>

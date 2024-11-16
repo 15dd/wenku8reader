@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fadingEdgeLength="60dp"
+    android:layout_marginBottom="10dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:requiresFadingEdge="horizontal"
+    android:scrollbars="none">
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cg_v_theme_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:singleSelection="true"
+        app:selectionRequired="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/c_v_theme_list_dynamic_color"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dynamic_color" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/c_v_theme_list_green_apple"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/green_apple"
+            android:textColor="?colorOnPrimary"
+            app:checkedIconTint="?colorOnPrimary"
+            app:chipBackgroundColor="@color/greenapple_primary" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/c_v_theme_list_lavender"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lavender"
+            android:textColor="?colorOnPrimary"
+            app:checkedIconTint="?colorOnPrimary"
+            app:chipBackgroundColor="@color/lavender_primary" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/c_v_theme_list_midnightdusk"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/midnight_dusk"
+            android:textColor="?colorOnPrimary"
+            app:checkedIconTint="?colorOnPrimary"
+            app:chipBackgroundColor="@color/midnightdusk_primary" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/c_v_theme_list_nord"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nord"
+            android:textColor="?colorOnPrimary"
+            app:checkedIconTint="?colorOnPrimary"
+            app:chipBackgroundColor="@color/nord_primary" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/c_v_theme_list_strawberry"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/strawberry_daiquiri"
+            android:textColor="?colorOnPrimary"
+            app:checkedIconTint="?colorOnPrimary"
+            app:chipBackgroundColor="@color/strawberry_primary" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/c_v_theme_list_tako"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tako"
+            android:textColor="?colorOnPrimary"
+            app:checkedIconTint="?colorOnPrimary"
+            app:chipBackgroundColor="@color/tako_primary" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/c_v_theme_list_tealturquoise"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/teal_turquoise"
+            android:textColor="?colorOnPrimary"
+            app:checkedIconTint="?colorOnPrimary"
+            app:chipBackgroundColor="@color/tealturquoise_primary" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/c_v_theme_list_tidalwave"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tidal_wave"
+            android:textColor="?colorOnPrimary"
+            app:checkedIconTint="?colorOnPrimary"
+            app:chipBackgroundColor="@color/tidalwave_primary" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/c_v_theme_list_yinyang"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/yin_yang"
+            android:textColor="?colorOnPrimary"
+            app:checkedIconTint="?colorOnPrimary"
+            app:chipBackgroundColor="@color/yinyang_primary" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/c_v_theme_list_yotsuba"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/yotsuba"
+            android:textColor="?colorOnPrimary"
+            app:checkedIconTint="?colorOnPrimary"
+            app:chipBackgroundColor="@color/yotsuba_primary" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+</HorizontalScrollView>

@@ -7,14 +7,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.base.BaseActivity
 import com.cyh128.hikari_novel.data.model.Event
-import com.cyh128.hikari_novel.data.model.Language
 import com.cyh128.hikari_novel.databinding.ActivitySplashBinding
 import com.cyh128.hikari_novel.ui.view.main.MainActivity
 import com.cyh128.hikari_novel.util.launchWithLifecycle
 import com.cyh128.hikari_novel.util.startActivity
-import com.yariksoffice.lingver.Lingver
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Locale
 
 @AndroidEntryPoint
 @SuppressLint("CustomSplashScreen")
@@ -53,12 +50,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                     else -> {}
                 }
             }
-        }
-
-        when (viewModel.getLanguage()) {
-            Language.FOLLOW_SYSTEM -> Lingver.getInstance().setFollowSystemLocale(this)
-            Language.ZH_CN -> Lingver.getInstance().setLocale(this, Locale.SIMPLIFIED_CHINESE)
-            Language.ZH_TW -> Lingver.getInstance().setLocale(this, Locale.TRADITIONAL_CHINESE)
         }
 
         init()
