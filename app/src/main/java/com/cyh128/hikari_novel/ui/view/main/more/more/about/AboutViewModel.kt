@@ -4,10 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.data.repository.AppRepository
+import com.drake.channel.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,17 +14,14 @@ import javax.inject.Inject
 class AboutViewModel @Inject constructor(
     private val appRepository: AppRepository
 ): ViewModel(){
-    private val _eventFlow = MutableSharedFlow<Event>()
-    val eventFlow = _eventFlow.asSharedFlow()
-
     fun checkUpdate() {
         viewModelScope.launch(Dispatchers.IO) {
             appRepository.checkUpdate()
                 .onSuccess {
-                    if (it) _eventFlow.emit(Event.HaveAvailableUpdateEvent)
-                    else _eventFlow.emit(Event.NoAvailableUpdateEvent)
+                    if (it) sendEvent(Event.HaveAvailableUpdateEvent,"event_about_activity")
+                    else sendEvent(Event.NoAvailableUpdateEvent, "event_about_activity")
                 }.onFailure {
-                    _eventFlow.emit(Event.NetWorkErrorEvent(it.message))
+                    sendEvent(Event.NetworkErrorEvent(it.message),"event_about_activity")
                 }
         }
     }

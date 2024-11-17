@@ -5,10 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.data.model.HomeBlock
 import com.cyh128.hikari_novel.data.repository.Wenku8Repository
+import com.drake.channel.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,17 +17,14 @@ class RecommendViewModel @Inject constructor(
 ) : ViewModel() {
     var homeBlockList: List<HomeBlock>? = null
 
-    private val _eventFlow = MutableSharedFlow<Event>()
-    val eventFlow = _eventFlow.asSharedFlow()
-
     fun getData() {
         viewModelScope.launch(Dispatchers.IO) {
             wenku8Repository.getRecommend()
                 .onSuccess { success ->
                     homeBlockList = success
-                    _eventFlow.emit(Event.LoadSuccessEvent)
+                    sendEvent(Event.LoadSuccessEvent, "event_recommend_view_model")
                 }.onFailure { failure ->
-                    _eventFlow.emit(Event.NetWorkErrorEvent(failure.message))
+                    sendEvent(Event.NetworkErrorEvent(failure.message), "event_recommend_view_model")
                 }
         }
     }

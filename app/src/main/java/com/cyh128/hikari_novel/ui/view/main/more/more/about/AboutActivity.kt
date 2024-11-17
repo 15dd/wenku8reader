@@ -6,8 +6,8 @@ import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.base.BaseActivity
 import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.databinding.ActivityAboutBinding
-import com.cyh128.hikari_novel.util.launchWithLifecycle
 import com.cyh128.hikari_novel.util.openUrl
+import com.drake.channel.receiveEvent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,34 +21,32 @@ class AboutActivity : BaseActivity<ActivityAboutBinding>() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.tbAAbout.setNavigationOnClickListener { finish() }
 
-        launchWithLifecycle {
-            viewModel.eventFlow.collect { event ->
-                when (event) {
-                    Event.HaveAvailableUpdateEvent -> {
-                        MaterialAlertDialogBuilder(this@AboutActivity)
-                            .setIcon(R.drawable.ic_release_alert)
-                            .setTitle(R.string.update_available)
-                            .setMessage(R.string.update_available_tip)
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.go_to_download) { _, _ ->
-                                openUrl("https://github.com/15dd/wenku8reader/releases")
-                            }
-                            .setNegativeButton(R.string.cancel) { _, _ -> }
-                            .show()
-                        binding.llAAboutUpdate.isClickable = true
-                    }
-
-                    Event.NoAvailableUpdateEvent -> {
-                        MaterialAlertDialogBuilder(this@AboutActivity)
-                            .setMessage(R.string.you_have_used_in_latest_version)
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.ok) { _, _ -> }
-                            .show()
-                        binding.llAAboutUpdate.isClickable = true
-                    }
-
-                    else -> {}
+        receiveEvent<Event>("event_about_activity") { event ->
+            when (event) {
+                Event.HaveAvailableUpdateEvent -> {
+                    MaterialAlertDialogBuilder(this@AboutActivity)
+                        .setIcon(R.drawable.ic_release_alert)
+                        .setTitle(R.string.update_available)
+                        .setMessage(R.string.update_available_tip)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.go_to_download) { _, _ ->
+                            openUrl("https://github.com/15dd/wenku8reader/releases")
+                        }
+                        .setNegativeButton(R.string.cancel) { _, _ -> }
+                        .show()
+                    binding.llAAboutUpdate.isClickable = true
                 }
+
+                Event.NoAvailableUpdateEvent -> {
+                    MaterialAlertDialogBuilder(this@AboutActivity)
+                        .setMessage(R.string.you_have_used_in_latest_version)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok) { _, _ -> }
+                        .show()
+                    binding.llAAboutUpdate.isClickable = true
+                }
+
+                else -> {}
             }
         }
 

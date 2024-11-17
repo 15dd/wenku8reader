@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.cyh128.hikari_novel.base.BaseBottomSheetDialogFragment
 import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.databinding.FragmentReplyBinding
-import com.cyh128.hikari_novel.util.launchWithLifecycle
+import com.drake.channel.receiveEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,27 +28,25 @@ class ReplyFragment : BaseBottomSheetDialogFragment<FragmentReplyBinding>() {
             }
         }
 
-        launchWithLifecycle {
-            viewModel.eventFlow.collect { event ->
-                when(event) {
-                    Event.LoadSuccessEvent -> {
-                        if (binding.cpiFReply.isShown) {
-                            binding.cpiFReply.hide()
-                            binding.rvFReply.visibility = View.VISIBLE
-                        }
-                        adapter.notifyItemChanged(viewModel.maxNum!!,20)
-                        if (binding.rvFReply.isLoadingMore) binding.rvFReply.loadMoreComplete()
-                        if (!viewModel.haveMore()) binding.rvFReply.loadMoreEnd()
+        receiveEvent<Event>("event_reply_fragment") { event ->
+            when(event) {
+                Event.LoadSuccessEvent -> {
+                    if (binding.cpiFReply.isShown) {
+                        binding.cpiFReply.hide()
+                        binding.rvFReply.visibility = View.VISIBLE
                     }
-                    is Event.NetWorkErrorEvent -> {
-                        if (binding.cpiFReply.isShown) {
-                            binding.cpiFReply.hide()
-                            binding.rvFReply.visibility = View.VISIBLE
-                        }
-                        binding.rvFReply.loadMoreFail()
-                    }
-                    else -> {}
+                    adapter.notifyItemChanged(viewModel.maxNum!!,20)
+                    if (binding.rvFReply.isLoadingMore) binding.rvFReply.loadMoreComplete()
+                    if (!viewModel.haveMore()) binding.rvFReply.loadMoreEnd()
                 }
+                is Event.NetworkErrorEvent -> {
+                    if (binding.cpiFReply.isShown) {
+                        binding.cpiFReply.hide()
+                        binding.rvFReply.visibility = View.VISIBLE
+                    }
+                    binding.rvFReply.loadMoreFail()
+                }
+                else -> {}
             }
         }
 

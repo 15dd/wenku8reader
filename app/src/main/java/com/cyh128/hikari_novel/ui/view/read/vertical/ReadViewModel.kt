@@ -9,12 +9,11 @@ import com.cyh128.hikari_novel.data.repository.ReadColorRepository
 import com.cyh128.hikari_novel.data.repository.VerticalReadRepository
 import com.cyh128.hikari_novel.data.repository.Wenku8Repository
 import com.cyh128.hikari_novel.data.source.local.database.read_history.vertical_read_history.VerticalReadHistoryEntity
+import com.drake.channel.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.properties.Delegates
@@ -25,9 +24,6 @@ class ReadViewModel @Inject constructor(
     private val verticalReadRepository: VerticalReadRepository,
     private val readColorRepository: ReadColorRepository
 ) : ViewModel() {
-    private val _eventFlow = MutableSharedFlow<Event>(replay = 1) //防止collect不到数据
-    val eventFlow = _eventFlow.asSharedFlow()
-
     var curChapterPos by Delegates.notNull<Int>()
     var curVolumePos by Delegates.notNull<Int>()
     var goToLatest = false //是否是上次阅读的章节
@@ -56,9 +52,9 @@ class ReadViewModel @Inject constructor(
                 .onSuccess { success ->
                     curNovelContent = success.content
                     curImages = success.image
-                    _eventFlow.emit(Event.LoadSuccessEvent)
+                    sendEvent(Event.LoadSuccessEvent,"event_vertical_read_activity")
                 }.onFailure { failure ->
-                    _eventFlow.emit(Event.NetWorkErrorEvent(failure.message))
+                    sendEvent(Event.NetworkErrorEvent(failure.message),"event_vertical_read_activity")
                 }
         }
     }
@@ -86,9 +82,7 @@ class ReadViewModel @Inject constructor(
     fun setFontSize(size: Float) {
         viewModelScope.launch {
             verticalReadRepository.setFontSize(size)
-            _eventFlow.emit(
-                Event.ChangeFontSizeEvent(size)
-            )
+            sendEvent(Event.ChangeFontSizeEvent(size),"event_vertical_read_fragment")
         }
     }
 
@@ -97,9 +91,7 @@ class ReadViewModel @Inject constructor(
     fun setLineSpacing(lineSpacing: Float) {
         viewModelScope.launch {
             verticalReadRepository.setLineSpacing(lineSpacing)
-            _eventFlow.emit(
-                Event.ChangeLineSpacingEvent(lineSpacing)
-            )
+            sendEvent(Event.ChangeLineSpacingEvent(lineSpacing),"event_vertical_read_fragment")
         }
     }
 

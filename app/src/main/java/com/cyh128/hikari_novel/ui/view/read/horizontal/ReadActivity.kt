@@ -27,6 +27,7 @@ import com.cyh128.hikari_novel.ui.view.other.PhotoViewActivity
 import com.cyh128.hikari_novel.ui.view.read.SelectColorActivity
 import com.cyh128.hikari_novel.util.getIsInDarkMode
 import com.cyh128.hikari_novel.util.startActivity
+import com.drake.channel.receiveEvent
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.slider.Slider
@@ -60,82 +61,79 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
             viewModel.goToLatest = it.goToLatest
         }
 
-        //不能使用launchWithLifecycle，否则会因为某些操作执行太快，并且没有达到Lifecycle.State.STARTED，导致漏event
-        lifecycleScope.launch {
-            viewModel.eventFlow.collect { event ->
-                when (event) {
-                    Event.LoadSuccessEvent -> {
-                        lifecycle.withStarted {
-                            binding.pvAHRead.content = HorizontalRead(
-                                viewModel.chapterTitle,
-                                viewModel.curNovelContent,
-                                viewModel.curImages
-                            )
-                            supportActionBar?.title = viewModel.chapterTitle
+        receiveEvent<Event>("event_horizontal_read_activity") { event ->
+            when (event) {
+                Event.LoadSuccessEvent -> {
+                    lifecycle.withStarted {
+                        binding.pvAHRead.content = HorizontalRead(
+                            viewModel.chapterTitle,
+                            viewModel.curNovelContent,
+                            viewModel.curImages
+                        )
+                        supportActionBar?.title = viewModel.chapterTitle
 
-                            lifecycleScope.launch {
-                                viewModel.getByCid.take(1).last()?.let {
-                                    if (viewModel.goToLatest) {
-                                        binding.pvAHRead.pageNum = it.location
-                                    } else {
-                                        if (viewModel.getIsShowChapterReadHistory()) {
-                                            if (viewModel.getIsShowChapterReadHistoryWithoutConfirm()) {
-                                                binding.pvAHRead.pageNum = it.location
-                                            } else {
-                                                MaterialAlertDialogBuilder(this@ReadActivity)
-                                                    .setTitle(R.string.history)
-                                                    .setIcon(R.drawable.ic_history)
-                                                    .setMessage(R.string.history_restore_tip)
-                                                    .setCancelable(false)
-                                                    .setNeutralButton(
-                                                        R.string.not_restore_and_close_forever
-                                                    ) { _, _ ->
-                                                        viewModel.setIsShowChapterReadHistory(false)
-                                                        bottomViewBinding.sVHReadConfigRestoreChapterReadHistory.isChecked = false
-                                                    }
-                                                    .setNegativeButton(R.string.not_restore) { _, _ -> }
-                                                    .setPositiveButton(R.string.restore_chapter_read_history_with_confirm) { _, _ ->
-                                                        binding.pvAHRead.pageNum = it.location
-                                                    }
-                                                    .show()
-                                            }
+                        lifecycleScope.launch {
+                            viewModel.getByCid.take(1).last()?.let {
+                                if (viewModel.goToLatest) {
+                                    binding.pvAHRead.pageNum = it.location
+                                } else {
+                                    if (viewModel.getIsShowChapterReadHistory()) {
+                                        if (viewModel.getIsShowChapterReadHistoryWithoutConfirm()) {
+                                            binding.pvAHRead.pageNum = it.location
+                                        } else {
+                                            MaterialAlertDialogBuilder(this@ReadActivity)
+                                                .setTitle(R.string.history)
+                                                .setIcon(R.drawable.ic_history)
+                                                .setMessage(R.string.history_restore_tip)
+                                                .setCancelable(false)
+                                                .setNeutralButton(
+                                                    R.string.not_restore_and_close_forever
+                                                ) { _, _ ->
+                                                    viewModel.setIsShowChapterReadHistory(false)
+                                                    bottomViewBinding.sVHReadConfigRestoreChapterReadHistory.isChecked = false
+                                                }
+                                                .setNegativeButton(R.string.not_restore) { _, _ -> }
+                                                .setPositiveButton(R.string.restore_chapter_read_history_with_confirm) { _, _ ->
+                                                    binding.pvAHRead.pageNum = it.location
+                                                }
+                                                .show()
                                         }
                                     }
                                 }
                             }
-
-                            if (viewModel.curImages.isNotEmpty()) {
-                                Snackbar.make(
-                                    binding.root,
-                                    R.string.have_image_tip,
-                                    Snackbar.LENGTH_INDEFINITE
-                                ).apply {
-                                    setAnchorView(binding.llAHReadBottomBar) //使它出现在bottomAppBar的上面，避免遮挡内容
-                                    setAction(R.string.ok) {}
-                                    show()
-                                }
-                            }
-                            setBottomBarIsEnable(true)
-                            hideBar()
                         }
-                    }
 
-                    is Event.NetWorkErrorEvent -> {
-                        MaterialAlertDialogBuilder(this@ReadActivity)
-                            .setTitle(R.string.network_error)
-                            .setIcon(R.drawable.ic_error)
-                            .setMessage(event.msg)
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.ok) { _, _ -> }
-                            .show()
+                        if (viewModel.curImages.isNotEmpty()) {
+                            Snackbar.make(
+                                binding.root,
+                                R.string.have_image_tip,
+                                Snackbar.LENGTH_INDEFINITE
+                            ).apply {
+                                setAnchorView(binding.llAHReadBottomBar) //使它出现在bottomAppBar的上面，避免遮挡内容
+                                setAction(R.string.ok) {}
+                                show()
+                            }
+                        }
                         setBottomBarIsEnable(true)
+                        hideBar()
                     }
-
-                    else -> {}
                 }
-            }
-        }
 
+                is Event.NetworkErrorEvent -> {
+                    MaterialAlertDialogBuilder(this@ReadActivity)
+                        .setTitle(R.string.network_error)
+                        .setIcon(R.drawable.ic_error)
+                        .setMessage(event.msg)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok) { _, _ -> }
+                        .show()
+                    setBottomBarIsEnable(true)
+                }
+
+                else -> {}
+            }
+
+        }
 
         initView()
         initListener()

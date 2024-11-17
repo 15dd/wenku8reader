@@ -2,6 +2,7 @@ package com.cyh128.hikari_novel.ui.view.main.more.more.setting
 
 import android.content.DialogInterface
 import android.os.Bundle
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.base.BaseActivity
@@ -10,8 +11,6 @@ import com.cyh128.hikari_novel.data.model.DefaultTab
 import com.cyh128.hikari_novel.data.model.Language
 import com.cyh128.hikari_novel.data.model.ReaderOrientation
 import com.cyh128.hikari_novel.databinding.ActivitySettingBinding
-import com.cyh128.hikari_novel.util.ThemeHelper
-import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,6 +23,8 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>() {
         setSupportActionBar(binding.tbASetting)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.tbASetting.setNavigationOnClickListener { finish() }
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         initView()
         initListener()

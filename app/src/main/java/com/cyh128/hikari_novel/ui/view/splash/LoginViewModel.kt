@@ -7,10 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.data.repository.BookshelfRepository
 import com.cyh128.hikari_novel.data.repository.Wenku8Repository
+import com.drake.channel.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,30 +18,25 @@ class LoginViewModel @Inject constructor(
     private val wenku8Repository: Wenku8Repository,
     private val bookshelfRepository: BookshelfRepository
 ) : ViewModel() {
-//    var isUsernameCorrect = false
-//    var isPasswordCorrect = false
     private val _isUsernameCorrect = MutableLiveData<Boolean>()
     val isUsernameCorrect: LiveData<Boolean> = _isUsernameCorrect
 
     private val _isPasswordCorrect = MutableLiveData<Boolean>()
     val isPasswordCorrect: LiveData<Boolean> = _isPasswordCorrect
 
-    private val _eventFlow = MutableSharedFlow<Event>()
-    val eventFlow = _eventFlow.asSharedFlow()
-
     fun login(username: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
             wenku8Repository.login(username, password)
                 .onSuccess { success ->
                     if (success.isCorrect()) {
-                        _eventFlow.emit(Event.LogInSuccessEvent)
+                        sendEvent(Event.LogInSuccessEvent,"event_login_activity")
                     } else {
                         _isUsernameCorrect.postValue(success.isUsernameCorrect)
                         _isPasswordCorrect.postValue(success.isPasswordCorrect)
-                        _eventFlow.emit(Event.LogInFailureEvent)
+                        sendEvent(Event.LogInFailureEvent,"event_login_activity")
                     }
                 }.onFailure { failure ->
-                    _eventFlow.emit(Event.NetWorkErrorEvent(failure.message))
+                    sendEvent(Event.NetworkErrorEvent(failure.message),"event_login_activity")
                 }
         }
     }
@@ -65,7 +59,7 @@ class LoginViewModel @Inject constructor(
             .onSuccess { success ->
                 bookshelfRepository.updateBookshelfList(success)
             }.onFailure { failure ->
-                _eventFlow.emit(Event.NetWorkErrorEvent(failure.message))
+                sendEvent(Event.NetworkErrorEvent(failure.message),"event_login_activity")
             }
     }
 }

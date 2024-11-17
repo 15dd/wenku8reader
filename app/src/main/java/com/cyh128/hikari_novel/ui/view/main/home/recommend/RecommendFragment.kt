@@ -10,8 +10,8 @@ import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.databinding.FragmentRecommendBinding
 import com.cyh128.hikari_novel.ui.view.detail.NovelInfoActivity
 import com.cyh128.hikari_novel.ui.view.main.HomeBlockAdapter
-import com.cyh128.hikari_novel.util.launchWithLifecycle
 import com.cyh128.hikari_novel.util.startActivity
+import com.drake.channel.receiveEvent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,25 +21,23 @@ class RecommendFragment: BaseFragment<FragmentRecommendBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        launchWithLifecycle {
-            viewModel.eventFlow.collect { event ->
-                when(event) {
-                    Event.LoadSuccessEvent -> {
-                        binding.srlFRecommend.isRefreshing = false
-                        showContent()
-                    }
-                    is Event.NetWorkErrorEvent -> {
-                        MaterialAlertDialogBuilder(requireContext())
-                            .setTitle(R.string.network_error)
-                            .setIcon(R.drawable.ic_error)
-                            .setMessage(event.msg)
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.ok) { _, _ -> }
-                            .show()
-                        binding.srlFRecommend.isRefreshing = false
-                    }
-                    else -> {}
+        receiveEvent<Event>("event_recommend_view_model") { event ->
+            when(event) {
+                Event.LoadSuccessEvent -> {
+                    binding.srlFRecommend.isRefreshing = false
+                    showContent()
                 }
+                is Event.NetworkErrorEvent -> {
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(R.string.network_error)
+                        .setIcon(R.drawable.ic_error)
+                        .setMessage(event.msg)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok) { _, _ -> }
+                        .show()
+                    binding.srlFRecommend.isRefreshing = false
+                }
+                else -> {}
             }
         }
 

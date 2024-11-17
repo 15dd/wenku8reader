@@ -2,6 +2,7 @@ package com.cyh128.hikari_novel.ui.view.detail.comment
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cyh128.hikari_novel.base.BaseActivity
@@ -9,7 +10,7 @@ import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.data.model.LoadMode
 import com.cyh128.hikari_novel.databinding.ActivityCommentBinding
 import com.cyh128.hikari_novel.ui.view.detail.comment.reply.ReplyFragment
-import com.cyh128.hikari_novel.util.launchWithLifecycle
+import com.drake.channel.receiveEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,6 +23,8 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.tbAComment.setNavigationOnClickListener { finish() }
 
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         val adapter = CommentListAdapter(
             list = viewModel.list,
             onItemClick = { url ->
@@ -33,25 +36,25 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>() {
             this.adapter = adapter
         }
 
-        launchWithLifecycle {
-            viewModel.eventFlow.collect { event ->
-                when (event) {
-                    Event.LoadSuccessEvent -> {
-                        if (binding.cpiAComment.isShown) {
-                            binding.cpiAComment.hide()
-                            binding.srlAComment.visibility = View.VISIBLE
-                        }
-                        adapter.notifyItemChanged(adapter.itemCount, 20)
-                        if (binding.rvAComment.isLoadingMore) binding.rvAComment.loadMoreComplete()
-                        else if (binding.srlAComment.isRefreshing) binding.srlAComment.isRefreshing = false
+        receiveEvent<Event>("event_comment_activity") { event ->
+            when (event) {
+                Event.LoadSuccessEvent -> {
+                    if (binding.cpiAComment.isShown) {
+                        binding.cpiAComment.hide()
+                        binding.srlAComment.visibility = View.VISIBLE
                     }
-
-                    is Event.NetWorkErrorEvent -> {
-                        binding.rvAComment.loadMoreFail()
-                        if (binding.srlAComment.isRefreshing) binding.srlAComment.isRefreshing = false
-                    }
-                    else -> {}
+                    adapter.notifyItemChanged(adapter.itemCount, 20)
+                    if (binding.rvAComment.isLoadingMore) binding.rvAComment.loadMoreComplete()
+                    else if (binding.srlAComment.isRefreshing) binding.srlAComment.isRefreshing =
+                        false
                 }
+
+                is Event.NetworkErrorEvent -> {
+                    binding.rvAComment.loadMoreFail()
+                    if (binding.srlAComment.isRefreshing) binding.srlAComment.isRefreshing = false
+                }
+
+                else -> {}
             }
         }
 

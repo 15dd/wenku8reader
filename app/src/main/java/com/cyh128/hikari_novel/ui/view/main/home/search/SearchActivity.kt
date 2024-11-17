@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cyh128.hikari_novel.R
@@ -15,7 +16,7 @@ import com.cyh128.hikari_novel.databinding.ActivitySearchBinding
 import com.cyh128.hikari_novel.ui.view.other.EmptyView
 import com.cyh128.hikari_novel.ui.view.other.LoadingView
 import com.cyh128.hikari_novel.ui.view.other.MessageView
-import com.cyh128.hikari_novel.util.launchWithLifecycle
+import com.drake.channel.receiveEvent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,35 +32,35 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.tbASearch.setNavigationOnClickListener { finish() }
 
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         intent.getStringExtra("author")?.let {//如果不为空，则说明是来自NovelInfoActivity的Intent
             binding.cASearchByAuthor.isChecked = true
             binding.tietASearch.setText(it)
             search(it)
         }
 
-        launchWithLifecycle {
-            viewModel.eventFlow.collect { event ->
-                when (event) {
-                    Event.SearchResultEmptyEvent -> showEmptyScreen()
-                    Event.SearchInitSuccessEvent -> showContentScreen()
-                    Event.SearchInitErrorCauseByInFiveSecondEvent -> showMessageScreen(
-                        getString(R.string.in_five_second_tip)
-                    )
+        receiveEvent<Event>("event_search_activity") { event ->
+            when (event) {
+                Event.SearchResultEmptyEvent -> showEmptyScreen()
+                Event.SearchInitSuccessEvent -> showContentScreen()
+                Event.SearchInitErrorCauseByInFiveSecondEvent -> showMessageScreen(
+                    getString(R.string.in_five_second_tip)
+                )
 
-                    is Event.NetWorkErrorEvent -> {
-                        MaterialAlertDialogBuilder(this@SearchActivity)
-                            .setTitle(R.string.network_error)
-                            .setIcon(R.drawable.ic_error)
-                            .setMessage(event.msg)
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.ok) { _, _ -> }
-                            .show()
-                    }
-
-                    Event.RefreshSearchHistoryEvent -> searchHistoryChipAdapter.notifyDataSetChanged()
-
-                    else -> {}
+                is Event.NetworkErrorEvent -> {
+                    MaterialAlertDialogBuilder(this@SearchActivity)
+                        .setTitle(R.string.network_error)
+                        .setIcon(R.drawable.ic_error)
+                        .setMessage(event.msg)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok) { _, _ -> }
+                        .show()
                 }
+
+                Event.RefreshSearchHistoryEvent -> searchHistoryChipAdapter.notifyDataSetChanged()
+
+                else -> {}
             }
         }
 

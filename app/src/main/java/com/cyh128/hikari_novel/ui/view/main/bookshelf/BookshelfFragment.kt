@@ -13,6 +13,7 @@ import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.databinding.FragmentBookshelfBinding
 import com.cyh128.hikari_novel.ui.view.other.EmptyView
 import com.cyh128.hikari_novel.util.launchWithLifecycle
+import com.drake.channel.receiveEvent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,21 +24,19 @@ class BookshelfFragment : BaseFragment<FragmentBookshelfBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        launchWithLifecycle {
-            viewModel.eventFlow.collect { event ->
-                when(event) {
-                    is Event.NetWorkErrorEvent -> {
-                        MaterialAlertDialogBuilder(requireContext())
-                            .setTitle(R.string.network_error)
-                            .setIcon(R.drawable.ic_error)
-                            .setMessage(event.msg)
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.ok) { _, _ -> }
-                            .show()
-                    }
-                    Event.SearchBookshelfFailureEvent -> toEmptyScreen()
-                    else -> {}
+        receiveEvent<Event>("event_bookshelf_fragment") { event ->
+            when(event) {
+                is Event.NetworkErrorEvent -> {
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(R.string.network_error)
+                        .setIcon(R.drawable.ic_error)
+                        .setMessage(event.msg)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok) { _, _ -> }
+                        .show()
                 }
+                Event.SearchBookshelfFailureEvent -> toEmptyScreen()
+                else -> {}
             }
         }
 
@@ -98,15 +97,11 @@ class BookshelfFragment : BaseFragment<FragmentBookshelfBinding>() {
     }
 
     private fun toBookshelfScreen() {
-        val currentFragment = childFragmentManager.findFragmentByTag("bookshelf_content_fragment")
-        if (currentFragment?.isVisible != true) {
-            binding.ablFBookshelf.liftOnScrollTargetViewId = R.id.rv_f_novel_list
-            childFragmentManager.beginTransaction().replace(
-                R.id.fcv_f_bookshelf,
-                BookshelfContentFragment(),
-                "bookshelf_content_fragment"
-            ).commit()
-        }
+        binding.ablFBookshelf.liftOnScrollTargetViewId = R.id.rv_f_novel_list
+        childFragmentManager.beginTransaction().replace(
+            R.id.fcv_f_bookshelf,
+            BookshelfContentFragment(),
+        ).commit()
     }
 
     private fun toEmptyScreen() {

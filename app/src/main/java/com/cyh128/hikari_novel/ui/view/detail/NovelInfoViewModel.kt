@@ -1,6 +1,5 @@
 package com.cyh128.hikari_novel.ui.view.detail
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cyh128.hikari_novel.data.model.BookshelfNovelInfo
@@ -16,10 +15,9 @@ import com.cyh128.hikari_novel.data.repository.VisitHistoryRepository
 import com.cyh128.hikari_novel.data.repository.Wenku8Repository
 import com.cyh128.hikari_novel.data.source.local.database.visit_history.VisitHistoryEntity
 import com.cyh128.hikari_novel.util.TimeUtil
+import com.drake.channel.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
@@ -34,9 +32,6 @@ class NovelInfoViewModel @Inject constructor(
     private val horizontalReadRepository: HorizontalReadRepository,
     private val bookshelfRepository: BookshelfRepository
 ) : ViewModel() {
-    private val _eventFlow = MutableSharedFlow<Event>()
-    val eventFlow = _eventFlow.asSharedFlow()
-
     private val bookshelfList = bookshelfRepository.bookshelfList
 
     lateinit var novelInfo: NovelInfo
@@ -86,7 +81,7 @@ class NovelInfoViewModel @Inject constructor(
         }
     }
 
-    private suspend fun isInBookshelf(list: List<BookshelfNovelInfo>) {
+    private fun isInBookshelf(list: List<BookshelfNovelInfo>) {
         bid = null //bid置空，防止在查不到对应的bid时错误判断此aid已在书架内
         for (i in list) {
             if (i.aid == aid) {
@@ -97,12 +92,10 @@ class NovelInfoViewModel @Inject constructor(
 
         if (bid.isNullOrBlank()) {
             isInBookshelf = false
-            _eventFlow.emit(Event.NotInBookshelfEvent)
-            Log.d("n i v m", "not in bookshelf")
+            sendEvent(Event.NotInBookshelfEvent,"event_novel_info_activity")
         } else {
             isInBookshelf = true
-            _eventFlow.emit(Event.InBookshelfEvent)
-            Log.d("n i v m", "in bookshelf")
+            sendEvent(Event.InBookshelfEvent,"event_novel_info_activity")
         }
     }
 
@@ -113,7 +106,7 @@ class NovelInfoViewModel @Inject constructor(
                     novelInfo = success
                     getChapter()
                 }.onFailure { failure ->
-                    _eventFlow.emit(Event.NetWorkErrorEvent(failure.message))
+                    sendEvent(Event.NetworkErrorEvent(failure.message),"event_novel_info_activity")
                 }
             }
     }
@@ -124,9 +117,9 @@ class NovelInfoViewModel @Inject constructor(
                 novel = Novel(aid, success)
                 addVisitHistory()
                 isInBookshelf(bookshelfList.value)
-                _eventFlow.emit(Event.LoadSuccessEvent)
+                sendEvent(Event.LoadSuccessEvent,"event_novel_info_activity")
             }.onFailure { failure ->
-                _eventFlow.emit(Event.NetWorkErrorEvent(failure.message))
+                sendEvent(Event.NetworkErrorEvent(failure.message),"event_novel_info_activity")
             }
     }
 
@@ -144,18 +137,16 @@ class NovelInfoViewModel @Inject constructor(
     private suspend fun removeNovel() {
         wenku8Repository.removeNovel(bid!!)
             .onFailure { failure ->
-                _eventFlow.emit(Event.NetWorkErrorEvent(failure.message))
+                sendEvent(Event.NetworkErrorEvent(failure.message),"event_novel_info_activity")
             }
     }
 
     private suspend fun addNovel() {
         wenku8Repository.addNovel(aid)
             .onSuccess { success ->
-                if (!success) {
-                    _eventFlow.emit(Event.AddToBookshelfFailure)
-                }
+                if (!success) sendEvent(Event.AddToBookshelfFailure,"event_novel_info_activity")
             }.onFailure { failure ->
-                _eventFlow.emit(Event.NetWorkErrorEvent(failure.message))
+                sendEvent(Event.NetworkErrorEvent(failure.message),"event_novel_info_activity")
             }
     }
 
@@ -163,9 +154,9 @@ class NovelInfoViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             wenku8Repository.novelVote(aid)
                 .onSuccess { success ->
-                    _eventFlow.emit(Event.VoteSuccessEvent(success))
+                    sendEvent(Event.VoteSuccessEvent(success),"event_novel_info_activity")
                 }.onFailure { failure ->
-                    _eventFlow.emit(Event.NetWorkErrorEvent(failure.message))
+                    sendEvent(Event.NetworkErrorEvent(failure.message),"event_novel_info_activity")
                 }
         }
     }
@@ -176,23 +167,18 @@ class NovelInfoViewModel @Inject constructor(
             .onSuccess { success ->
                 bookshelfRepository.updateBookshelfList(success)
             }.onFailure { failure ->
-                _eventFlow.emit(Event.NetWorkErrorEvent(failure.message))
+                sendEvent(Event.NetworkErrorEvent(failure.message),"event_novel_info_activity")
             }
     }
 
     fun addOrRemoveBook() {
         viewModelScope.launch(Dispatchers.IO) {
             if (isInBookshelf) { //在书架中时
-                Log.d("n i v m", "in bookshelf, prepare to remove")
                 removeNovel()
             } else {
-                Log.d("n i v m", "not in bookshelf, prepare to add")
                 addNovel()
             }
-
             refreshBookshelfList() //刷新书架列表
-
-            Log.d("n i v m", "refreshBookshelfList passed")
 
             /*
             获取最新的bookshelfList，不能用bookshelfRepository.bookshelfList.value

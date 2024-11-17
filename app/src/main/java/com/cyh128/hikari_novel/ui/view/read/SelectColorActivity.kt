@@ -2,6 +2,7 @@ package com.cyh128.hikari_novel.ui.view.read
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import com.cyh128.hikari_novel.base.BaseActivity
 import com.cyh128.hikari_novel.databinding.ActivitySelectColorBinding
@@ -21,6 +22,8 @@ class SelectColorActivity : BaseActivity<ActivitySelectColorBinding>() {
         binding.tbASelectColor.setNavigationOnClickListener {
             finish()
         }
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         //初始化界面
         if (getIsInDarkMode()) {

@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.cyh128.hikari_novel.R
@@ -11,9 +12,9 @@ import com.cyh128.hikari_novel.base.BaseActivity
 import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.databinding.ActivityLoginBinding
 import com.cyh128.hikari_novel.ui.view.main.MainActivity
-import com.cyh128.hikari_novel.util.launchWithLifecycle
 import com.cyh128.hikari_novel.util.openUrl
 import com.cyh128.hikari_novel.util.startActivity
+import com.drake.channel.receiveEvent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicatorSpec
 import com.google.android.material.progressindicator.IndeterminateDrawable
@@ -33,6 +34,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         spec = CircularProgressIndicatorSpec(this, null, 0)
         progressIndicatorDrawable = IndeterminateDrawable.createCircularDrawable(this, spec)
 
@@ -45,47 +48,45 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 .show()
         }
 
-        launchWithLifecycle {
-            viewModel.eventFlow.collect { event ->
-                when (event) {
-                    Event.LogInSuccessEvent -> {
-                        viewModel.refreshBookshelfList() //等待书架信息获取完成
-                        Toast.makeText(
-                            this@LoginActivity,
-                            R.string.login_successful,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        if (binding.cbALogin.isChecked) {
-                            viewModel.saveLoginInfo(
-                                binding.tietALoginUsername.text.toString(),
-                                binding.tietALoginPassword.text.toString()
-                            )
-                        }
-                        startActivity<MainActivity> {
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                            putExtra("isLoggedIn", true)
-                        }
+        receiveEvent<Event>("event_login_activity") { event ->
+            when (event) {
+                Event.LogInSuccessEvent -> {
+                    viewModel.refreshBookshelfList() //等待书架信息获取完成
+                    Toast.makeText(
+                        this@LoginActivity,
+                        R.string.login_successful,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    if (binding.cbALogin.isChecked) {
+                        viewModel.saveLoginInfo(
+                            binding.tietALoginUsername.text.toString(),
+                            binding.tietALoginPassword.text.toString()
+                        )
                     }
-
-                    Event.LogInFailureEvent -> {
-                        isEnableLoginButton(true)
-                        clearError()
+                    startActivity<MainActivity> {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        putExtra("isLoggedIn", true)
                     }
-
-                    is Event.NetWorkErrorEvent -> {
-                        MaterialAlertDialogBuilder(this@LoginActivity)
-                            .setTitle(R.string.network_error)
-                            .setIcon(R.drawable.ic_error)
-                            .setTitle(R.string.network_error)
-                            .setMessage(event.msg)
-                            .setPositiveButton(R.string.ok, null)
-                            .show()
-                        isEnableLoginButton(true)
-                    }
-
-                    else -> {}
                 }
+
+                Event.LogInFailureEvent -> {
+                    isEnableLoginButton(true)
+                    clearError()
+                }
+
+                is Event.NetworkErrorEvent -> {
+                    MaterialAlertDialogBuilder(this@LoginActivity)
+                        .setTitle(R.string.network_error)
+                        .setIcon(R.drawable.ic_error)
+                        .setTitle(R.string.network_error)
+                        .setMessage(event.msg)
+                        .setPositiveButton(R.string.ok, null)
+                        .show()
+                    isEnableLoginButton(true)
+                }
+
+                else -> {}
             }
         }
 

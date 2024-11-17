@@ -3,6 +3,7 @@ package com.cyh128.hikari_novel.ui.view.main.more.more.account
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -12,8 +13,8 @@ import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.data.model.UserInfo
 import com.cyh128.hikari_novel.databinding.ActivityAccountBinding
 import com.cyh128.hikari_novel.ui.view.splash.LoginActivity
-import com.cyh128.hikari_novel.util.launchWithLifecycle
 import com.cyh128.hikari_novel.util.startActivity
+import com.drake.channel.receiveEvent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,6 +26,8 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>() {
         setSupportActionBar(binding.tbAAccount)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.tbAAccount.setNavigationOnClickListener { finish() }
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         binding.bAAccount.setOnClickListener {
             viewModel.clearLoginInfo()
@@ -40,57 +43,55 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>() {
             binding.bAAccountSignIn.isEnabled = false
         }
 
-        launchWithLifecycle {
-            viewModel.eventFlow.collect {
-                when(it) {
-                    Event.LoadSuccessEvent -> setView(viewModel.userInfo)
+        receiveEvent<Event>("event_account_activity") { event ->
+            when(event) {
+                Event.LoadSuccessEvent -> setView(viewModel.userInfo)
 
-                    is Event.NetWorkErrorEvent -> {
-                        MaterialAlertDialogBuilder(this@AccountActivity)
-                            .setTitle(R.string.network_error)
-                            .setIcon(R.drawable.ic_error)
-                            .setMessage(it.msg)
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.ok) { _, _ -> }
-                            .show()
-                    }
-
-                    Event.SignInSuccessEvent -> {
-                        binding.bAAccountSignIn.isEnabled = true
-                        viewModel.getUserInfo()
-                        MaterialAlertDialogBuilder(this@AccountActivity)
-                            .setIcon(R.drawable.ic_event_available)
-                            .setTitle(R.string.sign_in_success)
-                            .setMessage(R.string.sign_in_success_msg)
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.ok) { _, _ -> }
-                            .show()
-                    }
-
-                    Event.SignInFailureEvent -> {
-                        binding.bAAccountSignIn.isEnabled = true
-                        MaterialAlertDialogBuilder(this@AccountActivity)
-                            .setIcon(R.drawable.ic_event_available)
-                            .setTitle(R.string.sign_in_failure)
-                            .setMessage(R.string.sign_in_failure_msg)
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.ok) { _, _ -> }
-                            .show()
-                    }
-
-                    Event.TempSignInUnableEvent -> {
-                        binding.bAAccountSignIn.isEnabled = true
-                        MaterialAlertDialogBuilder(this@AccountActivity)
-                            .setIcon(R.drawable.ic_event_available)
-                            .setTitle(R.string.sign_in_failure)
-                            .setMessage(R.string.sign_in_failure_msg2)
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.ok) { _, _ -> }
-                            .show()
-                    }
-
-                    else -> {}
+                is Event.NetworkErrorEvent -> {
+                    MaterialAlertDialogBuilder(this@AccountActivity)
+                        .setTitle(R.string.network_error)
+                        .setIcon(R.drawable.ic_error)
+                        .setMessage(event.msg)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok) { _, _ -> }
+                        .show()
                 }
+
+                Event.SignInSuccessEvent -> {
+                    binding.bAAccountSignIn.isEnabled = true
+                    viewModel.getUserInfo()
+                    MaterialAlertDialogBuilder(this@AccountActivity)
+                        .setIcon(R.drawable.ic_event_available)
+                        .setTitle(R.string.sign_in_success)
+                        .setMessage(R.string.sign_in_success_msg)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok) { _, _ -> }
+                        .show()
+                }
+
+                Event.SignInFailureEvent -> {
+                    binding.bAAccountSignIn.isEnabled = true
+                    MaterialAlertDialogBuilder(this@AccountActivity)
+                        .setIcon(R.drawable.ic_event_available)
+                        .setTitle(R.string.sign_in_failure)
+                        .setMessage(R.string.sign_in_failure_msg)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok) { _, _ -> }
+                        .show()
+                }
+
+                Event.TempSignInUnableEvent -> {
+                    binding.bAAccountSignIn.isEnabled = true
+                    MaterialAlertDialogBuilder(this@AccountActivity)
+                        .setIcon(R.drawable.ic_event_available)
+                        .setTitle(R.string.sign_in_failure)
+                        .setMessage(R.string.sign_in_failure_msg2)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok) { _, _ -> }
+                        .show()
+                }
+
+                else -> {}
             }
         }
 

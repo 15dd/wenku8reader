@@ -34,6 +34,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:paddingLeft="10dp"
+                android:textColor="?colorPrimary"
+                android:textStyle="bold"
                 android:text="@string/common"/>
 
             <LinearLayout
@@ -72,6 +74,13 @@
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                app:dividerInsetStart="20dp"
+                app:dividerInsetEnd="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerColor="?attr/colorSurfaceContainer"/>
 
             <LinearLayout
                 android:id="@+id/ll_a_setting_node"
@@ -112,6 +121,13 @@
                     tools:text="www.wenku8.cc"/>
 
             </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                app:dividerInsetStart="20dp"
+                app:dividerInsetEnd="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerColor="?attr/colorSurfaceContainer"/>
 
             <LinearLayout
                 android:id="@+id/ll_a_setting_app_theme"
@@ -187,6 +203,14 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <com.google.android.material.divider.MaterialDivider
+                app:dividerInsetStart="20dp"
+                app:dividerInsetEnd="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:dividerColor="?attr/colorSurfaceContainer"/>
+
             <LinearLayout
                 android:id="@+id/ll_a_setting_language"
                 android:layout_width="match_parent"
@@ -257,6 +281,14 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <com.google.android.material.divider.MaterialDivider
+                app:dividerInsetStart="20dp"
+                app:dividerInsetEnd="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:dividerColor="?attr/colorSurfaceContainer"/>
+
             <LinearLayout
                 android:id="@+id/ll_a_setting_default_tab"
                 android:layout_width="match_parent"
@@ -297,13 +329,26 @@
 
             </LinearLayout>
 
+            <com.google.android.material.divider.MaterialDivider
+                app:dividerInsetStart="20dp"
+                app:dividerInsetEnd="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerColor="?attr/colorSurfaceContainer"/>
+
+
+
+
 
             <TextView
                 style="@style/TextAppearance.Material3.TitleSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:paddingLeft="10dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="?colorPrimary"
+                android:textStyle="bold"
                 android:text="@string/reader"/>
 
             <LinearLayout
@@ -374,6 +419,14 @@
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.divider.MaterialDivider
+                app:dividerInsetStart="20dp"
+                app:dividerInsetEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerColor="?attr/colorSurfaceContainer"/>
 
         </LinearLayout>
 

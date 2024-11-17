@@ -9,12 +9,11 @@ import com.cyh128.hikari_novel.data.repository.HorizontalReadRepository
 import com.cyh128.hikari_novel.data.repository.ReadColorRepository
 import com.cyh128.hikari_novel.data.repository.Wenku8Repository
 import com.cyh128.hikari_novel.data.source.local.database.read_history.horizontal_read_history.HorizontalReadHistoryEntity
+import com.drake.channel.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.properties.Delegates
@@ -26,9 +25,6 @@ class ReadViewModel @Inject constructor(
     private val readColorRepository: ReadColorRepository,
     private val appRepository: AppRepository
 ) : ViewModel() {
-    private val _eventFlow = MutableSharedFlow<Event>()
-    val eventFlow = _eventFlow.asSharedFlow()
-
     var curChapterPos by Delegates.notNull<Int>()
     var curVolumePos by Delegates.notNull<Int>()
 
@@ -60,9 +56,9 @@ class ReadViewModel @Inject constructor(
                 .onSuccess { success ->
                     curNovelContent = success.content
                     curImages = success.image
-                    _eventFlow.emit(Event.LoadSuccessEvent)
+                    sendEvent(Event.LoadSuccessEvent,"event_horizontal_read_activity")
                 }.onFailure { failure ->
-                    _eventFlow.emit(Event.NetWorkErrorEvent(failure.message))
+                    sendEvent(Event.NetworkErrorEvent(failure.message),"event_horizontal_read_activity")
                 }
         }
     }

@@ -16,8 +16,8 @@ import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.databinding.FragmentVerticalReadBinding
 import com.cyh128.hikari_novel.ui.view.other.PhotoViewActivity
 import com.cyh128.hikari_novel.util.getIsInDarkMode
-import com.cyh128.hikari_novel.util.launchWithLifecycle
 import com.cyh128.hikari_novel.util.startActivity
+import com.drake.channel.receiveEvent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.last
@@ -34,19 +34,17 @@ class ReadFragment : BaseFragment<FragmentVerticalReadBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        launchWithLifecycle {
-            viewModel.eventFlow.collect { event ->
-                when (event) {
-                    is Event.ChangeFontSizeEvent -> {
-                        binding.tvFVRead.textSize = event.value
-                    }
-
-                    is Event.ChangeLineSpacingEvent -> {
-                        binding.tvFVRead.setLineSpacing(event.value, 1f)
-                    }
-
-                    else -> {}
+        receiveEvent<Event>("event_vertical_read_fragment") { event ->
+            when (event) {
+                is Event.ChangeFontSizeEvent -> {
+                    binding.tvFVRead.textSize = event.value
                 }
+
+                is Event.ChangeLineSpacingEvent -> {
+                    binding.tvFVRead.setLineSpacing(event.value, 1f)
+                }
+
+                else -> {}
             }
         }
 

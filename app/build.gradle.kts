@@ -15,8 +15,8 @@ android {
         applicationId = "com.cyh128.hikari_novel"
         minSdk = 24
         targetSdk = 35
-        versionCode = 241102
-        versionName = "3.2.0"
+        versionCode = 241117
+        versionName = "3.3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -86,8 +86,8 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.viewpager2:viewpager2:1.1.0")
 
-    implementation("androidx.navigation:navigation-fragment-ktx:2.8.3")
-    implementation("androidx.navigation:navigation-ui-ktx:2.8.3")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.4")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.4")
 
     //数据库
     implementation("androidx.room:room-ktx:2.6.1")
@@ -149,6 +149,9 @@ dependencies {
 
     //快速切换语言
     implementation("com.github.YarikSOffice:lingver:1.3.0")
+
+    //事件总线
+    implementation("com.github.liangjingkanji:Channel:1.1.5")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")

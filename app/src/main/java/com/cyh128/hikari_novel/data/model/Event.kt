@@ -2,7 +2,7 @@ package com.cyh128.hikari_novel.data.model
 
 sealed class Event {
     data object LoadSuccessEvent: Event() //加载内容成功
-    data class NetWorkErrorEvent(val msg: String?): Event() //网络错误
+    data class NetworkErrorEvent(val msg: String?): Event() //网络错误
     data object SearchBookshelfSuccessEvent: Event() //搜索书架成功
     data object SearchBookshelfFailureEvent: Event() //搜索书架失败，即没有内容
     data class VoteSuccessEvent(val msg: String?): Event() //投票成功

@@ -5,6 +5,7 @@ import android.text.Html
 import android.view.Menu
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +23,7 @@ import com.cyh128.hikari_novel.ui.view.other.PhotoViewActivity
 import com.cyh128.hikari_novel.util.launchWithLifecycle
 import com.cyh128.hikari_novel.util.openUrl
 import com.cyh128.hikari_novel.util.startActivity
+import com.drake.channel.receiveEvent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.last
@@ -41,56 +43,56 @@ class NovelInfoActivity : BaseActivity<ActivityNovelInfoBinding>() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.tbANovelInfo.setNavigationOnClickListener { finish() }
 
-        launchWithLifecycle {
-            viewModel.eventFlow.collect { event ->
-                when (event) {
-                    Event.LoadSuccessEvent -> {
-                        setInfoView()
-                    }
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
-                    Event.AddToBookshelfFailure -> {
-                        MaterialAlertDialogBuilder(this@NovelInfoActivity)
-                            .setIcon(R.drawable.ic_error)
-                            .setTitle(R.string.add_novel_error)
-                            .setMessage(R.string.add_novel_error_msg)
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.ok) { _, _ -> }
-                            .show()
-                    }
-
-                    Event.InBookshelfEvent -> {
-                        setRemoveNovelButton()
-                        binding.bANovelInfoBookshelf.isEnabled = true
-                    }
-
-                    Event.NotInBookshelfEvent -> {
-                        setAddNovelButton()
-                        binding.bANovelInfoBookshelf.isEnabled = true
-                    }
-
-                    is Event.NetWorkErrorEvent -> {
-                        MaterialAlertDialogBuilder(this@NovelInfoActivity)
-                            .setTitle(R.string.network_error)
-                            .setIcon(R.drawable.ic_error)
-                            .setMessage(event.msg)
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.ok) { _, _ -> }
-                            .show()
-                    }
-
-                    is Event.VoteSuccessEvent -> {
-                        MaterialAlertDialogBuilder(this@NovelInfoActivity)
-                            .setIcon(R.drawable.ic_recommend)
-                            .setTitle(R.string.vote)
-                            .setMessage(event.msg)
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.ok) { _, _ -> }
-                            .show()
-                        binding.bANovelInfoVote.isEnabled = true
-                    }
-
-                    else -> {}
+        receiveEvent<Event>("event_novel_info_activity") { event ->
+            when (event) {
+                Event.LoadSuccessEvent -> {
+                    setInfoView()
                 }
+
+                Event.AddToBookshelfFailure -> {
+                    MaterialAlertDialogBuilder(this@NovelInfoActivity)
+                        .setIcon(R.drawable.ic_error)
+                        .setTitle(R.string.add_novel_error)
+                        .setMessage(R.string.add_novel_error_msg)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok) { _, _ -> }
+                        .show()
+                }
+
+                Event.InBookshelfEvent -> {
+                    setRemoveNovelButton()
+                    binding.bANovelInfoBookshelf.isEnabled = true
+                }
+
+                Event.NotInBookshelfEvent -> {
+                    setAddNovelButton()
+                    binding.bANovelInfoBookshelf.isEnabled = true
+                }
+
+                is Event.NetworkErrorEvent -> {
+                    MaterialAlertDialogBuilder(this@NovelInfoActivity)
+                        .setTitle(R.string.network_error)
+                        .setIcon(R.drawable.ic_error)
+                        .setMessage(event.msg)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok) { _, _ -> }
+                        .show()
+                }
+
+                is Event.VoteSuccessEvent -> {
+                    MaterialAlertDialogBuilder(this@NovelInfoActivity)
+                        .setIcon(R.drawable.ic_recommend)
+                        .setTitle(R.string.vote)
+                        .setMessage(event.msg)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok) { _, _ -> }
+                        .show()
+                    binding.bANovelInfoVote.isEnabled = true
+                }
+
+                else -> {}
             }
         }
 

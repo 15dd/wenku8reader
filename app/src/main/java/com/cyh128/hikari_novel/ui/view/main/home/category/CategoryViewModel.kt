@@ -7,10 +7,9 @@ import com.cyh128.hikari_novel.data.model.LoadMode
 import com.cyh128.hikari_novel.data.model.NovelCover
 import com.cyh128.hikari_novel.data.repository.Wenku8Repository
 import com.cyh128.hikari_novel.util.urlEncode
+import com.drake.channel.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,9 +21,6 @@ class CategoryViewModel @Inject constructor(
     private var maxNum: Int? = null //总页数
 
     val pager: MutableList<NovelCover> = mutableListOf()
-
-    private val _eventFlow = MutableSharedFlow<Event>()
-    val eventFlow = _eventFlow.asSharedFlow()
 
     fun getData(loadMode: LoadMode, sort: String, category: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -40,10 +36,10 @@ class CategoryViewModel @Inject constructor(
             ).onSuccess { success ->
                 pager.addAll(success.curPage)
                 maxNum = success.maxNum
-                _eventFlow.emit(Event.LoadSuccessEvent)
+                sendEvent(Event.LoadSuccessEvent,"event_category_content_fragment")
             }.onFailure { failure ->
                 --currentIndex
-                _eventFlow.emit(Event.NetWorkErrorEvent(failure.message))
+                sendEvent(Event.NetworkErrorEvent(failure.message),"event_category_content_fragment")
             }
         }
     }

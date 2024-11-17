@@ -1,7 +1,6 @@
 package com.cyh128.hikari_novel.util
 
 import android.app.Activity
-import android.app.Application
 import androidx.annotation.StyleRes
 import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.data.model.AppTheme

@@ -6,10 +6,9 @@ import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.data.model.LoadMode
 import com.cyh128.hikari_novel.data.model.NovelCover
 import com.cyh128.hikari_novel.data.repository.Wenku8Repository
+import com.drake.channel.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,9 +21,6 @@ class CompletionViewModel @Inject constructor(
 
     val pager: MutableList<NovelCover> = mutableListOf()
 
-    private val _eventFlow = MutableSharedFlow<Event>()
-    val eventFlow = _eventFlow.asSharedFlow()
-
     fun getData(mode: LoadMode) {
         viewModelScope.launch(Dispatchers.IO) {
             if (mode == LoadMode.REFRESH) {
@@ -36,10 +32,10 @@ class CompletionViewModel @Inject constructor(
                 .onSuccess { success ->
                     pager.addAll(success.curPage)
                     maxNum = success.maxNum
-                    _eventFlow.emit(Event.LoadSuccessEvent)
+                    sendEvent(Event.LoadSuccessEvent, "event_completion_fragment")
                 }.onFailure {
                     --currentIndex
-                    _eventFlow.emit(Event.NetWorkErrorEvent(it.message))
+                    sendEvent(Event.NetworkErrorEvent(it.message), "event_completion_fragment")
                 }
         }
     }

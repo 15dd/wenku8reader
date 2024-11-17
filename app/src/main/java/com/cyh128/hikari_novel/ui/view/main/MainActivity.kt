@@ -15,8 +15,8 @@ import com.cyh128.hikari_novel.ui.view.main.bookshelf.BookshelfFragment
 import com.cyh128.hikari_novel.ui.view.main.home.HomeFragment
 import com.cyh128.hikari_novel.ui.view.main.more.MoreFragment
 import com.cyh128.hikari_novel.ui.view.main.visit_history.VisitHistoryFragment
-import com.cyh128.hikari_novel.util.launchWithLifecycle
 import com.cyh128.hikari_novel.util.openUrl
+import com.drake.channel.receiveEvent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.trendyol.medusalib.navigator.MultipleStackNavigator
 import com.trendyol.medusalib.navigator.Navigator
@@ -27,7 +27,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -70,34 +69,32 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        launchWithLifecycle {
-            viewModel.eventFlow.collect { event ->
-                when (event) {
-                    is Event.NetWorkErrorEvent -> {
-                        MaterialAlertDialogBuilder(this@MainActivity)
-                            .setIcon(R.drawable.ic_error)
-                            .setTitle(R.string.check_update_failure)
-                            .setMessage(event.msg)
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.ok) { _, _ -> }
-                            .show()
-                    }
-
-                    Event.HaveAvailableUpdateEvent -> {
-                        MaterialAlertDialogBuilder(this@MainActivity)
-                            .setIcon(R.drawable.ic_release_alert)
-                            .setTitle(R.string.update_available)
-                            .setMessage(R.string.update_available_tip)
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.go_to_download) { _, _ ->
-                                openUrl("https://github.com/15dd/wenku8reader/releases")
-                            }
-                            .setNegativeButton(R.string.cancel) { _, _ -> }
-                            .show()
-                    }
-
-                    else -> {}
+        receiveEvent<Event>("event_main_activity") { event ->
+            when (event) {
+                is Event.NetworkErrorEvent -> {
+                    MaterialAlertDialogBuilder(this@MainActivity)
+                        .setIcon(R.drawable.ic_error)
+                        .setTitle(R.string.check_update_failure)
+                        .setMessage(event.msg)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok) { _, _ -> }
+                        .show()
                 }
+
+                Event.HaveAvailableUpdateEvent -> {
+                    MaterialAlertDialogBuilder(this@MainActivity)
+                        .setIcon(R.drawable.ic_release_alert)
+                        .setTitle(R.string.update_available)
+                        .setMessage(R.string.update_available_tip)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.go_to_download) { _, _ ->
+                            openUrl("https://github.com/15dd/wenku8reader/releases")
+                        }
+                        .setNegativeButton(R.string.cancel) { _, _ -> }
+                        .show()
+                }
+
+                else -> {}
             }
         }
 

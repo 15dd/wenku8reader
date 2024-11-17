@@ -11,10 +11,9 @@ import com.cyh128.hikari_novel.data.repository.SearchHistoryRepository
 import com.cyh128.hikari_novel.data.repository.Wenku8Repository
 import com.cyh128.hikari_novel.data.source.local.database.search_history.SearchHistoryEntity
 import com.cyh128.hikari_novel.util.urlEncode
+import com.drake.channel.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,9 +22,6 @@ class SearchViewModel @Inject constructor(
     private val wenku8Repository: Wenku8Repository,
     private val searchHistoryRepository: SearchHistoryRepository
 ) : ViewModel() {
-    private val _eventFlow = MutableSharedFlow<Event>()
-    val eventFlow = _eventFlow.asSharedFlow()
-
     private var currentIndex: Int = 0
     private var maxNum: Int? = null //总页数
 
@@ -56,25 +52,28 @@ class SearchViewModel @Inject constructor(
                 )
             }.onSuccess { success ->
                 if (success.curPage.isEmpty()) {
-                    _eventFlow.emit(Event.SearchResultEmptyEvent)
+                    sendEvent(Event.SearchResultEmptyEvent, "event_search_activity")
                 } else {
                     pager.addAll(success.curPage)
                     maxNum = success.maxNum
-                    if (isInit) _eventFlow.emit(Event.SearchInitSuccessEvent)
-                    else _eventFlow.emit(Event.LoadSuccessEvent)
+                    if (isInit) sendEvent(Event.SearchInitSuccessEvent,"event_search_activity")
+                    else sendEvent(Event.LoadSuccessEvent,"event_search_content_fragment")
                 }
             }.onFailure { failure ->
                 when (failure) {
                     is InFiveSecondException -> {
                         if (isInit) {
-                            _eventFlow.emit(Event.SearchInitErrorCauseByInFiveSecondEvent)
+                            sendEvent(Event.SearchInitErrorCauseByInFiveSecondEvent,"event_search_activity")
                         } else {
-                            _eventFlow.emit(Event.SearchLoadErrorCauseByInFiveSecondEvent)
+                            sendEvent(Event.SearchLoadErrorCauseByInFiveSecondEvent,"event_search_content_fragment")
                         }
                         --currentIndex
                     }
 
-                    is NetworkException -> _eventFlow.emit(Event.NetWorkErrorEvent(failure.message))
+                    is NetworkException -> {
+                        sendEvent(Event.NetworkErrorEvent(failure.message),"event_search_activity")
+                        sendEvent(Event.NetworkErrorEvent(failure.message),"event_search_content_fragment")
+                    }
                 }
             }
         }
@@ -90,7 +89,7 @@ class SearchViewModel @Inject constructor(
                     historyList.clear()
                     historyList.addAll(it)
                     historyList.reverse()
-                    _eventFlow.emit(Event.RefreshSearchHistoryEvent)
+                    sendEvent(Event.RefreshSearchHistoryEvent,"event_search_activity")
                 }
             }
         }
@@ -110,7 +109,7 @@ class SearchViewModel @Inject constructor(
             searchHistoryRepository.deleteAll()
             historyList.clear()
 
-            _eventFlow.emit(Event.RefreshSearchHistoryEvent)
+            sendEvent(Event.RefreshSearchHistoryEvent,"event_search_activity")
         }
     }
 }

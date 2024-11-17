@@ -8,10 +8,9 @@ import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.data.repository.AppRepository
 import com.cyh128.hikari_novel.data.repository.BookshelfRepository
 import com.cyh128.hikari_novel.data.repository.Wenku8Repository
+import com.drake.channel.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,9 +23,6 @@ class SplashViewModel @Inject constructor(
     private val _loggingInText = MutableLiveData<String>()
     val loggingInText: LiveData<String> = _loggingInText
 
-    private val _eventFlow = MutableSharedFlow<Event>()
-    val eventFlow = _eventFlow.asSharedFlow()
-
     //判断是否处于未登录状态
     fun isNotLoggedIn() = wenku8Repository.username.isNullOrEmpty() || wenku8Repository.password.isNullOrEmpty()
 
@@ -34,9 +30,9 @@ class SplashViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             wenku8Repository.login()
                 .onSuccess {
-                    _eventFlow.emit(Event.LogInSuccessEvent)
+                    sendEvent(Event.LogInSuccessEvent,"event_splash_activity")
                 }.onFailure {
-                    _eventFlow.emit(Event.LogInFailureEvent)
+                    sendEvent(Event.LogInFailureEvent,"event_splash_activity")
                 }
         }
     }
@@ -47,7 +43,7 @@ class SplashViewModel @Inject constructor(
             .onSuccess { success ->
                 bookshelfRepository.updateBookshelfList(success)
             }.onFailure { failure ->
-                _eventFlow.emit(Event.NetWorkErrorEvent(failure.message))
+                sendEvent(Event.NetworkErrorEvent(failure.message),"event_splash_activity")
             }
     }
 

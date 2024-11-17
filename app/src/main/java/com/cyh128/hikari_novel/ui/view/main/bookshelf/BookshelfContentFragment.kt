@@ -9,8 +9,8 @@ import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.databinding.FragmentNovelListBinding
 import com.cyh128.hikari_novel.ui.view.detail.NovelInfoActivity
 import com.cyh128.hikari_novel.ui.view.main.BookshelfListAdapter
-import com.cyh128.hikari_novel.util.launchWithLifecycle
 import com.cyh128.hikari_novel.util.startActivity
+import com.drake.channel.receiveEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,21 +26,16 @@ class BookshelfContentFragment: BaseFragment<FragmentNovelListBinding>() {
             }
         }
 
+        receiveEvent<Event>("event_bookshelf_content_fragment") { event ->
+            if (event == Event.LoadSuccessEvent) {
+                adapter.notifyDataSetChanged()
+                binding.srlFNovelList.isRefreshing = false
+            }
+        }
+
         binding.rvFNovelList.apply {
             layoutManager = GridLayoutManager(context, 3)
             this.adapter = adapter
-        }
-
-        launchWithLifecycle {
-            viewModel.eventFlow.collect { event ->
-                when(event) {
-                    Event.LoadSuccessEvent -> {
-                        adapter.notifyDataSetChanged()
-                        binding.srlFNovelList.isRefreshing = false
-                    }
-                    else -> {}
-                }
-            }
         }
 
         binding.srlFNovelList.setOnRefreshListener {

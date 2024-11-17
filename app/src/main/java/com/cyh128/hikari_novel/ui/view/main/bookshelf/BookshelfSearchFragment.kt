@@ -9,8 +9,8 @@ import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.databinding.FragmentBookshelfSearchBinding
 import com.cyh128.hikari_novel.ui.view.detail.NovelInfoActivity
 import com.cyh128.hikari_novel.ui.view.main.BookshelfListAdapter
-import com.cyh128.hikari_novel.util.launchWithLifecycle
 import com.cyh128.hikari_novel.util.startActivity
+import com.drake.channel.receiveEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,11 +30,9 @@ class BookshelfSearchFragment : BaseFragment<FragmentBookshelfSearchBinding>() {
             layoutManager = GridLayoutManager(requireContext(), 3)
         }
 
-        launchWithLifecycle {
-            viewModel.eventFlow.collect {
-                if (it == Event.SearchBookshelfSuccessEvent) {
-                    bookshelfListAdapter.notifyDataSetChanged()
-                }
+        receiveEvent<Event>("event_bookshelf_search_fragment") { event->
+            if (event == Event.SearchBookshelfSuccessEvent) {
+                bookshelfListAdapter.notifyDataSetChanged()
             }
         }
 

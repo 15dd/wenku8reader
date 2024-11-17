@@ -7,10 +7,9 @@ import com.cyh128.hikari_novel.data.model.SignedInException
 import com.cyh128.hikari_novel.data.model.TempSignInException
 import com.cyh128.hikari_novel.data.model.UserInfo
 import com.cyh128.hikari_novel.data.repository.Wenku8Repository
+import com.drake.channel.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,17 +20,14 @@ class AccountViewModel @Inject constructor(
 ) : ViewModel() {
     lateinit var userInfo: UserInfo
 
-    private val _eventFlow = MutableSharedFlow<Event>()
-    val eventFlow = _eventFlow.asSharedFlow()
-
     fun getUserInfo() {
         viewModelScope.launch(Dispatchers.IO) {
             wenku8Repository.getUserInfo()
                 .onSuccess { success ->
                     userInfo = success
-                    _eventFlow.emit(Event.LoadSuccessEvent)
+                    sendEvent(Event.LoadSuccessEvent,"event_account_activity")
                 }.onFailure { failure ->
-                    _eventFlow.emit(Event.NetWorkErrorEvent(failure.message))
+                    sendEvent(Event.NetworkErrorEvent(failure.message),"event_account_activity")
                 }
         }
     }
@@ -48,8 +44,8 @@ class AccountViewModel @Inject constructor(
                 .onSuccess {
                     signInAfterLoggedIn()
                 }.onFailure { failure ->
-                    if (failure is TempSignInException) _eventFlow.emit(Event.TempSignInUnableEvent)
-                    else _eventFlow.emit(Event.NetWorkErrorEvent(failure.message))
+                    if (failure is TempSignInException) sendEvent(Event.TempSignInUnableEvent,"event_account_activity")
+                    else sendEvent(Event.NetworkErrorEvent(failure.message),"event_account_activity")
                 }
         }
     }
@@ -57,10 +53,10 @@ class AccountViewModel @Inject constructor(
     private suspend fun signInAfterLoggedIn() {
         wenku8Repository.sign()
             .onSuccess {
-                _eventFlow.emit(Event.SignInSuccessEvent)
+                sendEvent(Event.SignInSuccessEvent,"event_account_activity")
             }.onFailure { failure ->
-                if (failure is SignedInException) _eventFlow.emit(Event.SignInFailureEvent)
-                else _eventFlow.emit(Event.NetWorkErrorEvent(failure.message))
+                if (failure is SignedInException) sendEvent(Event.SignInFailureEvent,"event_account_activity")
+                else sendEvent(Event.NetworkErrorEvent(failure.message),"event_account_activity")
             }
     }
 }

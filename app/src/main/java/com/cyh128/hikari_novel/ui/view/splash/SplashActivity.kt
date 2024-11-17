@@ -3,14 +3,15 @@ package com.cyh128.hikari_novel.ui.view.splash
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.base.BaseActivity
 import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.databinding.ActivitySplashBinding
 import com.cyh128.hikari_novel.ui.view.main.MainActivity
-import com.cyh128.hikari_novel.util.launchWithLifecycle
 import com.cyh128.hikari_novel.util.startActivity
+import com.drake.channel.receiveEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,34 +22,34 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        launchWithLifecycle {
-            viewModel.eventFlow.collect { event ->
-                when (event) {
-                    Event.LogInSuccessEvent -> {
-                        viewModel.setLoggingInText(getString(R.string.getting_bookshelf))
-                        //获取书架信息
-                        viewModel.refreshBookshelfList() //等待书架信息获取完成
-                        startActivity<MainActivity> {
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        }
-                        overridePendingTransition(0, 0)
-                    }
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
-                    Event.LogInFailureEvent -> {
-                        startActivity<LoginActivity> {
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                            putExtra("isShowTip", true)
-                        }
+        receiveEvent<Event>("event_splash_activity") { event ->
+            when (event) {
+                Event.LogInSuccessEvent -> {
+                    viewModel.setLoggingInText(getString(R.string.getting_bookshelf))
+                    //获取书架信息
+                    viewModel.refreshBookshelfList() //等待书架信息获取完成
+                    startActivity<MainActivity> {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     }
-
-                    is Event.NetWorkErrorEvent -> {
-                        toErrorScreen(event.msg)
-                    }
-
-                    else -> {}
+                    overridePendingTransition(0, 0)
                 }
+
+                Event.LogInFailureEvent -> {
+                    startActivity<LoginActivity> {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        putExtra("isShowTip", true)
+                    }
+                }
+
+                is Event.NetworkErrorEvent -> {
+                    toErrorScreen(event.msg)
+                }
+
+                else -> {}
             }
         }
 

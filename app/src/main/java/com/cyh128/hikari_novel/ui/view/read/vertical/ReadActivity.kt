@@ -22,6 +22,7 @@ import com.cyh128.hikari_novel.databinding.ViewVerticalReadConfigBinding
 import com.cyh128.hikari_novel.ui.view.other.LoadingView
 import com.cyh128.hikari_novel.ui.view.read.SelectColorActivity
 import com.cyh128.hikari_novel.util.getIsInDarkMode
+import com.drake.channel.receiveEvent
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.Snackbar
@@ -51,32 +52,30 @@ class ReadActivity : BaseActivity<ActivityVerticalReadBinding>() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.tbAVRead.setNavigationOnClickListener { finish() }
 
-        //不能使用launchWithLifecycle，否则会因为某些操作执行太快，并且没有达到Lifecycle.State.STARTED，导致漏event
-        lifecycleScope.launch {
-            viewModel.eventFlow.collect { event ->
-                when (event) {
-                    Event.LoadSuccessEvent -> {
-                        lifecycle.withStarted { //在ui可见的情况下执行，否则先挂起
-                            supportActionBar?.title = viewModel.chapterTitle
-                            showContent()
-                            if (viewModel.curImages.isNotEmpty()) {
-                                Snackbar.make(
-                                    binding.root,
-                                    R.string.have_image_tip,
-                                    Snackbar.LENGTH_INDEFINITE
-                                ).apply {
-                                    setAnchorView(binding.llAVReadBottomBar) //使它出现在bottomAppBar的上面，避免遮挡内容
-                                    setAction(R.string.ok) {}
-                                    show()
-                                }
-                            }
-                            setBottomBarIsEnable(true)
-                            hideBar()
-                        }
-                    }
 
-                    else -> {}
+        receiveEvent<Event>("event_vertical_read_activity") { event ->
+            when (event) {
+                Event.LoadSuccessEvent -> {
+                    lifecycle.withStarted { //在ui可见的情况下执行，否则先挂起
+                        supportActionBar?.title = viewModel.chapterTitle
+                        showContent()
+                        if (viewModel.curImages.isNotEmpty()) {
+                            Snackbar.make(
+                                binding.root,
+                                R.string.have_image_tip,
+                                Snackbar.LENGTH_INDEFINITE
+                            ).apply {
+                                setAnchorView(binding.llAVReadBottomBar) //使它出现在bottomAppBar的上面，避免遮挡内容
+                                setAction(R.string.ok) {}
+                                show()
+                            }
+                        }
+                        setBottomBarIsEnable(true)
+                        hideBar()
+                    }
                 }
+
+                else -> {}
             }
         }
 

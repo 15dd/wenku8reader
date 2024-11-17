@@ -9,7 +9,6 @@ import com.cyh128.hikari_novel.data.model.Language
 import com.cyh128.hikari_novel.data.model.ReaderOrientation
 import com.cyh128.hikari_novel.data.source.local.mmkv.AppConfig
 import com.cyh128.hikari_novel.data.source.remote.Network
-import com.cyh128.hikari_novel.util.ThemeHelper
 import com.google.gson.Gson
 import rxhttp.awaitResult
 import javax.inject.Inject

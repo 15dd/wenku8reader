@@ -6,10 +6,9 @@ import com.cyh128.hikari_novel.data.model.Comment
 import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.data.model.LoadMode
 import com.cyh128.hikari_novel.data.repository.Wenku8Repository
+import com.drake.channel.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,10 +16,6 @@ import javax.inject.Inject
 class CommentViewModel @Inject constructor(
     private val wenku8Repository: Wenku8Repository
 ) : ViewModel() {
-
-    private val _eventFlow = MutableSharedFlow<Event>()
-    val eventFlow = _eventFlow.asSharedFlow()
-
     private var maxNum: Int? = null
     val list = mutableListOf<Comment>()
 
@@ -38,10 +33,10 @@ class CommentViewModel @Inject constructor(
                 .onSuccess { success ->
                     list.addAll(success.list)
                     maxNum = success.maxNum
-                    _eventFlow.emit(Event.LoadSuccessEvent)
+                    sendEvent(Event.LoadSuccessEvent, "event_comment_activity")
                 }.onFailure { failure ->
                     --currentIndex
-                    _eventFlow.emit(Event.NetWorkErrorEvent(failure.message))
+                    sendEvent(Event.NetworkErrorEvent(failure.message), "event_comment_activity")
                 }
         }
     }

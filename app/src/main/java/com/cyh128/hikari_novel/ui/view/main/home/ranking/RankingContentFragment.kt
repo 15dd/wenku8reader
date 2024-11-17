@@ -11,8 +11,8 @@ import com.cyh128.hikari_novel.data.model.LoadMode
 import com.cyh128.hikari_novel.databinding.FragmentNovelListBinding
 import com.cyh128.hikari_novel.ui.view.detail.NovelInfoActivity
 import com.cyh128.hikari_novel.ui.view.main.NovelCoverListAdapter
-import com.cyh128.hikari_novel.util.launchWithLifecycle
 import com.cyh128.hikari_novel.util.startActivity
+import com.drake.channel.receiveEvent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,27 +34,25 @@ class RankingContentFragment: BaseFragment<FragmentNovelListBinding>() {
             this.adapter = adapter
         }
 
-        launchWithLifecycle {
-            viewModel.eventFlow.collect { event ->
-                when(event) {
-                    Event.LoadSuccessEvent -> {
-                        adapter.notifyItemChanged(adapter.itemCount, 20)
-                        if (binding.rvFNovelList.isLoadingMore) binding.rvFNovelList.loadMoreComplete()
-                        binding.srlFNovelList.isRefreshing = false
-                    }
-                    is Event.NetWorkErrorEvent -> {
-                        MaterialAlertDialogBuilder(requireContext())
-                            .setTitle(R.string.network_error)
-                            .setIcon(R.drawable.ic_error)
-                            .setMessage(event.msg)
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.ok) { _, _ -> }
-                            .show()
-                        binding.rvFNovelList.loadMoreFail()
-                        binding.srlFNovelList.isRefreshing = false
-                    }
-                    else -> {}
+        receiveEvent<Event>("event_ranking_view_model") { event ->
+            when(event) {
+                Event.LoadSuccessEvent -> {
+                    adapter.notifyItemChanged(adapter.itemCount, 20)
+                    if (binding.rvFNovelList.isLoadingMore) binding.rvFNovelList.loadMoreComplete()
+                    binding.srlFNovelList.isRefreshing = false
                 }
+                is Event.NetworkErrorEvent -> {
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(R.string.network_error)
+                        .setIcon(R.drawable.ic_error)
+                        .setMessage(event.msg)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok) { _, _ -> }
+                        .show()
+                    binding.rvFNovelList.loadMoreFail()
+                    binding.srlFNovelList.isRefreshing = false
+                }
+                else -> {}
             }
         }
 
