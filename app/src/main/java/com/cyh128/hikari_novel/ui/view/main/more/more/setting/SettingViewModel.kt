@@ -2,6 +2,7 @@ package com.cyh128.hikari_novel.ui.view.main.more.more.setting
 
 import androidx.lifecycle.ViewModel
 import com.cyh128.hikari_novel.data.model.AppTheme
+import com.cyh128.hikari_novel.data.model.DarkMode
 import com.cyh128.hikari_novel.data.model.DefaultTab
 import com.cyh128.hikari_novel.data.model.Language
 import com.cyh128.hikari_novel.data.model.ReaderOrientation
@@ -38,4 +39,8 @@ class SettingViewModel @Inject constructor(
     fun getAppTheme() = appRepository.getAppTheme()
 
     fun setAppTheme(theme: AppTheme) = appRepository.setAppTheme(theme)
+
+    fun getDarkMode() = appRepository.getDarkMode()
+
+    fun setDarkMode(darkMode: DarkMode) = appRepository.setDarkMode(darkMode)
 }

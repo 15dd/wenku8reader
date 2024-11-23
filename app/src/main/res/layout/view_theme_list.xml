@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fadingEdgeLength="60dp"
-    android:layout_marginBottom="10dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    android:requiresFadingEdge="horizontal"
-    android:scrollbars="none">
+    android:padding="20dp">
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/cg_v_theme_list"
@@ -126,4 +121,4 @@
 
     </com.google.android.material.chip.ChipGroup>
 
-</HorizontalScrollView>
+</androidx.core.widget.NestedScrollView>

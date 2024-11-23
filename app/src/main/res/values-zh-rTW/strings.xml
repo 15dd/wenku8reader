@@ -243,7 +243,7 @@
     <string name="simplified_chinese">簡體中文</string>
     <string name="traditional_chinese">繁體中文</string>
     <string name="follow_system">跟隨系統</string>
-    <string name="language_tip">設定完成後需要重啟</string>
+    <string name="need_restart">此項設定完成後需要手動重啓</string>
     <string name="off_shelf">已下架</string>
     <string name="update">更新</string>
     <string name="no_heat_msg">作品熱度：無 ，目前熱度上升指數為：無</string>
@@ -269,5 +269,8 @@
     <string name="tidal_wave">浪潮</string>
     <string name="yin_yang">陰陽</string>
     <string name="yotsuba">四葉草</string>
+    <string name="dark_mode">暗色模式</string>
+    <string name="enable">啟用</string>
+    <string name="disable">禁用</string>
 
 </resources>

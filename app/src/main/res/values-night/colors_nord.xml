@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--https://www.nordtheme.com/docs/colors-and-palettes-->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="nord_primary">#88C0D0</color>
     <color name="nord_onPrimary">#2E3440</color>
     <color name="nord_primaryContainer">#88C0D0</color>
@@ -24,7 +24,7 @@
     <color name="nord_inverseSurface">#D8DEE9</color>
     <color name="nord_inverseOnSurface">#2E3440</color>
     <color name="nord_outline">#6d717b</color>
-    <color name="nord_outlineVariant">#90939a</color>
+    <color name="nord_outlineVariant" tools:ignore="MissingDefaultResource">#90939a</color>
     <color name="nord_onError">#2E3440</color>
     <color name="nord_errorContainer">#BF616A</color>
     <color name="nord_onErrorContainer">#000000</color>

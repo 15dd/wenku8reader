@@ -4,6 +4,7 @@ import android.accounts.NetworkErrorException
 import android.content.pm.PackageManager
 import com.cyh128.hikari_novel.HikariApp
 import com.cyh128.hikari_novel.data.model.AppTheme
+import com.cyh128.hikari_novel.data.model.DarkMode
 import com.cyh128.hikari_novel.data.model.DefaultTab
 import com.cyh128.hikari_novel.data.model.Language
 import com.cyh128.hikari_novel.data.model.ReaderOrientation
@@ -67,6 +68,12 @@ class AppRepository @Inject constructor(
 
     fun setAppTheme(appTheme: AppTheme) {
         appConfig.appTheme = appTheme.ordinal
+    }
+
+    fun getDarkMode() = enumValues<DarkMode>()[appConfig.darkMode]
+
+    fun setDarkMode(darkMode: DarkMode) {
+        appConfig.darkMode = darkMode.ordinal
     }
 
     //检查更新

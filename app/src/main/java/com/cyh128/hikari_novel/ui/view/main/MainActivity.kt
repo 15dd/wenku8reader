@@ -15,6 +15,7 @@ import com.cyh128.hikari_novel.ui.view.main.bookshelf.BookshelfFragment
 import com.cyh128.hikari_novel.ui.view.main.home.HomeFragment
 import com.cyh128.hikari_novel.ui.view.main.more.MoreFragment
 import com.cyh128.hikari_novel.ui.view.main.visit_history.VisitHistoryFragment
+import com.cyh128.hikari_novel.util.Constants
 import com.cyh128.hikari_novel.util.openUrl
 import com.drake.channel.receiveEvent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -124,15 +125,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             }
         }
 
-        //检查软件更新
-        if (viewModel.isAutoUpdate) viewModel.checkUpdate()
-
         //冷启动tab初始化
         when(viewModel.defaultTab) {
             DefaultTab.Home -> navigator.switchTab(0)
             DefaultTab.Bookshelf -> navigator.switchTab(1)
             DefaultTab.History -> navigator.switchTab(2)
             DefaultTab.More -> navigator.switchTab(3)
+        }
+
+        //检查软件更新
+        if (viewModel.isAutoUpdate && !Constants.isUpdateChecked) {
+            viewModel.checkUpdate()
+            Constants.isUpdateChecked = true //防止activity重创以后再次检查更新
         }
     }
 

@@ -25,4 +25,7 @@ sealed class Event {
     
     data object HaveAvailableUpdateEvent: Event() //有更新
     data object NoAvailableUpdateEvent: Event() //无更新
+
+    data object ThemeChangedEvent: Event() //主题颜色改变事件
+    data object LanguageChantedEvent: Event() //语言改变事件
 }

@@ -7,10 +7,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.base.BaseActivity
 import com.cyh128.hikari_novel.data.model.AppTheme
+import com.cyh128.hikari_novel.data.model.DarkMode
 import com.cyh128.hikari_novel.data.model.DefaultTab
 import com.cyh128.hikari_novel.data.model.Language
 import com.cyh128.hikari_novel.data.model.ReaderOrientation
 import com.cyh128.hikari_novel.databinding.ActivitySettingBinding
+import com.cyh128.hikari_novel.databinding.ViewThemeListBinding
+import com.cyh128.hikari_novel.util.LanguageHelper
+import com.cyh128.hikari_novel.util.ThemeHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -54,61 +58,56 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>() {
             Language.ZH_TW -> getString(R.string.traditional_chinese)
         }
 
-        when(viewModel.getAppTheme()) {
+        when (viewModel.getAppTheme()) {
             AppTheme.Dynamic -> {
                 binding.tvASettingAppTheme.text = getString(R.string.dynamic_color)
-                binding.iVThemeList.cVThemeListDynamicColor.isChecked = true
             }
 
             AppTheme.GreenApple -> {
                 binding.tvASettingAppTheme.text = getString(R.string.green_apple)
-                binding.iVThemeList.cVThemeListGreenApple.isChecked = true
             }
 
             AppTheme.Lavender -> {
                 binding.tvASettingAppTheme.text = getString(R.string.lavender)
-                binding.iVThemeList.cVThemeListLavender.isChecked = true
             }
 
             AppTheme.MidnightDusk -> {
                 binding.tvASettingAppTheme.text = getString(R.string.midnight_dusk)
-                binding.iVThemeList.cVThemeListMidnightdusk.isChecked = true
             }
 
             AppTheme.Nord -> {
                 binding.tvASettingAppTheme.text = getString(R.string.nord)
-                binding.iVThemeList.cVThemeListNord.isChecked = true
             }
 
             AppTheme.StrawberryDaiquiri -> {
                 binding.tvASettingAppTheme.text = getString(R.string.strawberry_daiquiri)
-                binding.iVThemeList.cVThemeListStrawberry.isChecked = true
             }
 
             AppTheme.Tako -> {
                 binding.tvASettingAppTheme.text = getString(R.string.tako)
-                binding.iVThemeList.cVThemeListTako.isChecked = true
             }
 
             AppTheme.TealTurquoise -> {
                 binding.tvASettingAppTheme.text = getString(R.string.teal_turquoise)
-                binding.iVThemeList.cVThemeListTealturquoise.isChecked = true
             }
 
             AppTheme.TidalWave -> {
                 binding.tvASettingAppTheme.text = getString(R.string.tidal_wave)
-                binding.iVThemeList.cVThemeListTidalwave.isChecked = true
             }
 
             AppTheme.YinYang -> {
                 binding.tvASettingAppTheme.text = getString(R.string.yin_yang)
-                binding.iVThemeList.cVThemeListYinyang.isChecked = true
             }
 
             AppTheme.Yotsuba -> {
                 binding.tvASettingAppTheme.text = getString(R.string.yotsuba)
-                binding.iVThemeList.cVThemeListYotsuba.isChecked = true
             }
+        }
+
+        binding.tvASettingDarkMode.text = when(viewModel.getDarkMode()) {
+            DarkMode.System -> getString(R.string.follow_system)
+            DarkMode.Enable -> getString(R.string.enable)
+            DarkMode.Disable -> getString(R.string.disable)
         }
     }
 
@@ -198,18 +197,20 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>() {
                     when (which) {
                         0 -> {
                             viewModel.setLanguage(Language.FOLLOW_SYSTEM)
+                            LanguageHelper.setCurrentLanguage(Language.FOLLOW_SYSTEM)
                             binding.tvASettingLanguage.text = getString(R.string.follow_system)
                         }
 
                         1 -> {
                             viewModel.setLanguage(Language.ZH_CN)
+                            LanguageHelper.setCurrentLanguage(Language.ZH_CN)
                             binding.tvASettingLanguage.text = getString(R.string.simplified_chinese)
                         }
 
                         2 -> {
                             viewModel.setLanguage(Language.ZH_TW)
-                            binding.tvASettingLanguage.text =
-                                getString(R.string.traditional_chinese)
+                            LanguageHelper.setCurrentLanguage(Language.ZH_TW)
+                            binding.tvASettingLanguage.text = getString(R.string.traditional_chinese)
                         }
                     }
                     dialog.dismiss()
@@ -264,68 +265,51 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>() {
                 .show()
         }
 
-        binding.iVThemeList.cgVThemeList.setOnCheckedStateChangeListener { group, checkedIds ->
-            if (checkedIds.isNotEmpty()) {
-                val selectedChipId = checkedIds[0]
-                val index = group.indexOfChild(group.findViewById(selectedChipId))
+        binding.llASettingAppTheme.setOnClickListener {
+            ThemeListDialogFragment().show(supportFragmentManager, "theme_list_dialog_fragment")
+        }
 
-                when (index) {
-                    0 -> {
-                        viewModel.setAppTheme(AppTheme.Dynamic)
-                        binding.tvASettingAppTheme.text = getString(R.string.dynamic_color)
+        binding.llASettingDarkMode.setOnClickListener {
+            MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.dark_mode)
+                .setIcon(R.drawable.ic_dark_mode)
+                .setNegativeButton(R.string.cancel, null)
+                .setSingleChoiceItems(
+                    arrayOf(
+                        getString(R.string.follow_system),
+                        getString(R.string.enable),
+                        getString(R.string.disable),
+                    ),
+                    run {
+                        when (viewModel.getDarkMode()) {
+                            DarkMode.System -> return@run 0
+                            DarkMode.Enable -> return@run 1
+                            DarkMode.Disable -> return@run 2
+                        }
                     }
+                ) { dialog: DialogInterface, which: Int ->
+                    when (which) {
+                        0 -> {
+                            viewModel.setDarkMode(DarkMode.System)
+                            ThemeHelper.setDarkMode(DarkMode.System)
+                            binding.tvASettingDarkMode.text = getString(R.string.follow_system)
+                        }
 
-                    1 -> {
-                        viewModel.setAppTheme(AppTheme.GreenApple)
-                        binding.tvASettingAppTheme.text = getString(R.string.green_apple)
-                    }
+                        1 -> {
+                            viewModel.setDarkMode(DarkMode.Enable)
+                            ThemeHelper.setDarkMode(DarkMode.Enable)
+                            binding.tvASettingDarkMode.text = getString(R.string.enable)
+                        }
 
-                    2 -> {
-                        viewModel.setAppTheme(AppTheme.Lavender)
-                        binding.tvASettingAppTheme.text = getString(R.string.lavender)
+                        2 -> {
+                            viewModel.setDarkMode(DarkMode.Disable)
+                            ThemeHelper.setDarkMode(DarkMode.Disable)
+                            binding.tvASettingDarkMode.text = getString(R.string.disable)
+                        }
                     }
-
-                    3 -> {
-                        viewModel.setAppTheme(AppTheme.MidnightDusk)
-                        binding.tvASettingAppTheme.text = getString(R.string.midnight_dusk)
-                    }
-
-                    4 -> {
-                        viewModel.setAppTheme(AppTheme.Nord)
-                        binding.tvASettingAppTheme.text = getString(R.string.nord)
-                    }
-
-                    5 -> {
-                        viewModel.setAppTheme(AppTheme.StrawberryDaiquiri)
-                        binding.tvASettingAppTheme.text = getString(R.string.strawberry_daiquiri)
-                    }
-
-                    6 -> {
-                        viewModel.setAppTheme(AppTheme.Tako)
-                        binding.tvASettingAppTheme.text = getString(R.string.tako)
-                    }
-
-                    7 -> {
-                        viewModel.setAppTheme(AppTheme.TealTurquoise)
-                        binding.tvASettingAppTheme.text = getString(R.string.teal_turquoise)
-                    }
-
-                    8 -> {
-                        viewModel.setAppTheme(AppTheme.TidalWave)
-                        binding.tvASettingAppTheme.text = getString(R.string.tidal_wave)
-                    }
-
-                    9 -> {
-                        viewModel.setAppTheme(AppTheme.YinYang)
-                        binding.tvASettingAppTheme.text = getString(R.string.yin_yang)
-                    }
-
-                    10 -> {
-                        viewModel.setAppTheme(AppTheme.Yotsuba)
-                        binding.tvASettingAppTheme.text = getString(R.string.yotsuba)
-                    }
+                    dialog.dismiss()
                 }
-            }
+                .show()
         }
     }
 }

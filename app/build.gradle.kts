@@ -15,7 +15,7 @@ android {
         applicationId = "com.cyh128.hikari_novel"
         minSdk = 24
         targetSdk = 35
-        versionCode = 241117
+        versionCode = 241123
         versionName = "3.3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -41,7 +41,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             signingConfig = signingConfigs.getByName("signing")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -74,7 +74,6 @@ android {
     ksp {
         arg("room.schemaLocation", "$projectDir/schemas")
     }
-
 }
 
 dependencies {
@@ -141,14 +140,11 @@ dependencies {
     implementation("com.geyifeng.immersionbar:immersionbar:3.2.2")
 
     //hilt依赖注入
-    implementation("com.google.dagger:hilt-android:2.51.1")
+    implementation("com.google.dagger:hilt-android:2.52")
     ksp("com.google.dagger:hilt-android-compiler:2.51")
 
     //json解析
     implementation("com.google.code.gson:gson:2.11.0")
-
-    //快速切换语言
-    implementation("com.github.YarikSOffice:lingver:1.3.0")
 
     //事件总线
     implementation("com.github.liangjingkanji:Channel:1.1.5")

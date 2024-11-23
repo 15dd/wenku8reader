@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.yariksoffice.lingver.Lingver
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -81,7 +80,7 @@ fun Fragment.getIsInDarkMode() =
 
 fun String.urlEncode(enc: String? = null): String {
     if (enc != null) return URLEncoder.encode(this, enc)
-    return when (Lingver.getInstance().getLocale()) {
+    return when (Locale.getDefault()) {
         Locale.TRADITIONAL_CHINESE -> URLEncoder.encode(this, "BIG5-HKSCS")
         else -> URLEncoder.encode(this, "GBK")
     }
