@@ -1,5 +1,6 @@
 package com.cyh128.hikari_novel.ui.view.detail.comment.reply
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.cyh128.hikari_novel.base.BaseBottomSheetDialogFragment
 import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.databinding.FragmentReplyBinding
+import com.cyh128.hikari_novel.ui.view.detail.comment.CommentActivity
 import com.drake.channel.receiveEvent
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -51,5 +53,10 @@ class ReplyFragment : BaseBottomSheetDialogFragment<FragmentReplyBinding>() {
         }
 
         viewModel.getReply(url)
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        (requireActivity() as CommentActivity).setDialogShownFalse()
     }
 }

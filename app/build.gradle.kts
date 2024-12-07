@@ -15,8 +15,8 @@ android {
         applicationId = "com.cyh128.hikari_novel"
         minSdk = 24
         targetSdk = 35
-        versionCode = 241123
-        versionName = "3.3.0"
+        versionCode = 241207
+        versionName = "3.3.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -80,7 +80,7 @@ dependencies {
     //android相关
     implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.13.0-alpha07")
+    implementation("com.google.android.material:material:1.13.0-alpha08")
     implementation("androidx.constraintlayout:constraintlayout:2.2.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.viewpager2:viewpager2:1.1.0")

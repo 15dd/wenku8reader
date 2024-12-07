@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cyh128.hikari_novel.R
@@ -34,13 +35,19 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
+        var isFromOtherActivity = false
+
         intent.getStringExtra("author")?.let {//如果不为空，则说明是来自NovelInfoActivity的Intent
             binding.cASearchByAuthor.isChecked = true
             binding.tietASearch.setText(it)
             search(it)
+            isFromOtherActivity = true
         }
 
         receiveEvent<Event>("event_search_activity") { event ->
+            //防止在重复创建此Activity时，已入栈的的同类型Activity接收到Event
+            if (!lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) return@receiveEvent
+
             when (event) {
                 Event.SearchResultEmptyEvent -> showEmptyScreen()
                 Event.SearchInitSuccessEvent -> showContentScreen()
@@ -82,8 +89,10 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
 
         initListener()
 
-        //弹起键盘
-        showSoftInput()
+        if (!isFromOtherActivity) { //避免直接搜索时弹出输入法挡视线
+            //弹起键盘
+            showSoftInput()
+        }
 
         viewModel.getSearchHistory() //获取搜索历史记录
     }

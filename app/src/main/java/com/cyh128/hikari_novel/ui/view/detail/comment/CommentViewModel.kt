@@ -16,6 +16,8 @@ import javax.inject.Inject
 class CommentViewModel @Inject constructor(
     private val wenku8Repository: Wenku8Repository
 ) : ViewModel() {
+    var isDialogShown = false
+
     private var maxNum: Int? = null
     val list = mutableListOf<Comment>()
 

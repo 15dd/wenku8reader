@@ -72,9 +72,16 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>() {
     }
 
     private fun showReplyFragment(url: String) {
+        //防抖动
+        if (viewModel.isDialogShown) return
         ReplyFragment().apply {
             arguments = Bundle().also { it.putString("url", url) }
             show(supportFragmentManager,"replyFragment")
         }
+        viewModel.isDialogShown = true
+    }
+
+    fun setDialogShownFalse() {
+        viewModel.isDialogShown = false
     }
 }

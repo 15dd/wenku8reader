@@ -74,7 +74,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "BIG5-HKSCS"
             }
             else -> {
-                requestUrl = "https://${getWenku8Node()}/modules/article/toplist.php?sort=$ranking&page=$index"
+                requestUrl = "https://${getWenku8Node()}/modules/article/toplist.php?sort=$ranking&page=$index&charset=gbk"
                 charset = "GBK"
             }
         }
@@ -104,7 +104,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "BIG5-HKSCS"
             }
             else -> {
-                requestUrl = "https://${getWenku8Node()}/modules/article/tags.php?t=$category&v=$sort&page=$index"
+                requestUrl = "https://${getWenku8Node()}/modules/article/tags.php?t=$category&v=$sort&page=$index&charset=gbk"
                 charset = "GBK"
             }
         }
@@ -130,7 +130,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "BIG5-HKSCS" //不能使用普通的big5编码，不然无法显示日文
             }
             else -> {
-                requestUrl = url
+                requestUrl = "$url&charset=gbk"
                 charset = "GBK"
             }
         }
@@ -152,11 +152,11 @@ class Wenku8Repository @Inject constructor(
         val charset: String?
         when(Locale.getDefault()) {
             Locale.TRADITIONAL_CHINESE -> {
-                requestUrl = "$url?charset=big5"
+                requestUrl = "${url}?charset=big5"
                 charset = "BIG5-HKSCS"
             }
             else -> {
-                requestUrl = url
+                requestUrl = "${url}?charset=gbk"
                 charset = "GBK"
             }
         }
@@ -181,7 +181,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "BIG5-HKSCS"
             }
             else -> {
-                requestUrl = "https://${getWenku8Node()}/modules/article/addbookcase.php?bid=$aid"
+                requestUrl = "https://${getWenku8Node()}/modules/article/addbookcase.php?bid=$aid&charset=gbk"
                 charset = "GBK"
             }
         }
@@ -217,7 +217,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "BIG5-HKSCS"
             }
             else -> {
-                requestUrl = "https://${getWenku8Node()}/modules/article/bookcase.php?classid=$classId"
+                requestUrl = "https://${getWenku8Node()}/modules/article/bookcase.php?classid=$classId&charset=gbk"
                 charset = "GBK"
             }
         }
@@ -242,7 +242,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "BIG5-HKSCS"
             }
             else -> {
-                requestUrl = "https://${getWenku8Node()}/modules/article/reviews.php?aid=$aid&page=$index"
+                requestUrl = "https://${getWenku8Node()}/modules/article/reviews.php?aid=$aid&page=$index&charset=gbk"
                 charset = "GBK"
             }
         }
@@ -267,7 +267,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "BIG5-HKSCS"
             }
             else -> {
-                requestUrl = "$url&page=$index"
+                requestUrl = "$url&page=$index&charset=gbk"
                 charset = "GBK"
             }
         }
@@ -291,7 +291,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "BIG5-HKSCS"
             }
             else -> {
-                requestUrl = "https://${getWenku8Node()}/index.php"
+                requestUrl = "https://${getWenku8Node()}/index.php?charset=gbk"
                 charset = "GBK"
             }
         }
@@ -316,7 +316,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "BIG5-HKSCS"
             }
             else -> {
-                requestUrl = "https://${getWenku8Node()}/modules/article/uservote.php?id=$aid"
+                requestUrl = "https://${getWenku8Node()}/modules/article/uservote.php?id=$aid&charset=gbk"
                 charset = "GBK"
             }
         }
@@ -341,7 +341,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "BIG5-HKSCS"
             }
             else -> {
-                requestUrl = "https://${getWenku8Node()}/modules/article/search.php?searchtype=articlename&searchkey=$title&page=$index"
+                requestUrl = "https://${getWenku8Node()}/modules/article/search.php?searchtype=articlename&searchkey=$title&page=$index&charset=gbk"
                 charset = "GBK"
             }
         }
@@ -373,7 +373,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "BIG5-HKSCS"
             }
             else -> {
-                requestUrl = "https://${getWenku8Node()}/modules/article/search.php?searchtype=author&searchkey=$author&page=$index"
+                requestUrl = "https://${getWenku8Node()}/modules/article/search.php?searchtype=author&searchkey=$author&page=$index&charset=gbk"
                 charset = "GBK"
             }
         }
@@ -410,7 +410,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "BIG5-HKSCS"
             }
             else -> {
-                requestUrl = "https://${getWenku8Node()}/userdetail.php"
+                requestUrl = "https://${getWenku8Node()}/userdetail.php?charset=gbk"
                 charset = "GBK"
             }
         }
@@ -435,7 +435,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "BIG5-HKSCS"
             }
             else -> {
-                requestUrl = "https://${getWenku8Node()}/modules/article/articlelist.php?fullflag=1&page=$index"
+                requestUrl = "https://${getWenku8Node()}/modules/article/articlelist.php?fullflag=1&page=$index&charset=gbk"
                 charset = "GBK"
             }
         }

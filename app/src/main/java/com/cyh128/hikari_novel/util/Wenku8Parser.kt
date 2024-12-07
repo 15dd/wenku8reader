@@ -19,8 +19,6 @@ import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
 object Wenku8Parser {
-    private const val TAG = "Wenku8Parser"
-
     fun isInFiveSecond(html: String): Boolean {
         val document = Jsoup.parse(html)
         val a = document.getElementsByClass("blocktitle")
@@ -40,8 +38,8 @@ object Wenku8Parser {
         try {
             val document = Jsoup.parse(html)
             val a = document.getElementById("content")
-            val b = a!!.getElementsByTag("div")[1]
-            val c = b.select("span[style=width:145px;display:inline-block;]")[1]
+            val b = a!!.getElementsByTag("div")[0].select("div[style=margin:0px auto;overflow:hidden;]")
+            val c = b.select("span")[1]
             val bookUrl = c.selectFirst("a")!!.attr("href")
             val t2 = a.getElementsByTag("table").eq(0)
             val title = t2.select("span").eq(0).select("b").eq(0).text()
