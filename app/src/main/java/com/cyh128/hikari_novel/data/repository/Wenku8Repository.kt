@@ -470,11 +470,11 @@ class Wenku8Repository @Inject constructor(
                     ""
                 ) //删除小说内容中的image标签
 
-                val fromLine = 4
-                val toLine = 14
-                content = content.lines()
-                    .filterIndexed { index, _ -> index !in (fromLine - 1) until toLine }
-                    .joinToString("\n")
+//                val fromLine = 4
+//                val toLine = 14
+//                content = content.lines()
+//                    .filterIndexed { index, _ -> index !in (fromLine - 1) until toLine }
+//                    .joinToString("\n")
 
                 return Result.success(ChapterContentResponse(content, image))
             }.onFailure {

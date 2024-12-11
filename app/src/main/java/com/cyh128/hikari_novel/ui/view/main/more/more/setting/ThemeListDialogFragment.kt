@@ -2,7 +2,6 @@ package com.cyh128.hikari_novel.ui.view.main.more.more.setting
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.cyh128.hikari_novel.R

@@ -12,7 +12,6 @@ import com.cyh128.hikari_novel.data.model.DefaultTab
 import com.cyh128.hikari_novel.data.model.Language
 import com.cyh128.hikari_novel.data.model.ReaderOrientation
 import com.cyh128.hikari_novel.databinding.ActivitySettingBinding
-import com.cyh128.hikari_novel.databinding.ViewThemeListBinding
 import com.cyh128.hikari_novel.util.LanguageHelper
 import com.cyh128.hikari_novel.util.ThemeHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

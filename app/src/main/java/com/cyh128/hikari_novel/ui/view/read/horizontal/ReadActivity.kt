@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -275,7 +274,13 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
 
         binding.pvAHRead.onPageChange = object : IPageView.OnPageChange {
             override fun onPageChange(index: Int) {
-                Log.d("r a", "index:$index count:${binding.pvAHRead.maxPageNum}")
+                if (binding.pvAHRead.maxPageNum == 1) {
+                    binding.sAHReadProgress.visibility = View.INVISIBLE
+                    return
+                } else {
+                    binding.sAHReadProgress.visibility = View.VISIBLE
+                }
+
                 binding.sAHReadProgress.valueTo = binding.pvAHRead.maxPageNum.toFloat()
                 binding.sAHReadProgress.value = index.toFloat()
             }
