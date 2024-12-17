@@ -15,8 +15,8 @@ android {
         applicationId = "com.cyh128.hikari_novel"
         minSdk = 24
         targetSdk = 35
-        versionCode = 241211
-        versionName = "3.3.2"
+        versionCode = 241217
+        versionName = "3.3.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

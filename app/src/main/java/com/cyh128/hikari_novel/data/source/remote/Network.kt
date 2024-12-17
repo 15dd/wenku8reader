@@ -16,11 +16,14 @@ class Network @Inject constructor() {
             .add("username", username)
             .add("password", password)
             .add("action", "login")
+            .addHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.70 Safari/537.36")
             .toAwait<ResponseBody>()
             .toAwaitOkResponse()
 
     fun getData(url: String): CallAwait<OkResponse<ResponseBody?>> =
-        RxHttp.get(url).toAwait<ResponseBody>().toAwaitOkResponse()
+        RxHttp.get(url)
+            .addHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.70 Safari/537.36")
+            .toAwait<ResponseBody>().toAwaitOkResponse()
 
     fun getDataFromAppWenku8Com(request: String): CallAwait<String> {
         //val request = "action=book&do=text&aid=2906&cid=117212&t=0"
@@ -29,6 +32,7 @@ class Network @Inject constructor() {
             .add("appver", "1.18")
             .add("request", Base64Helper.encodeBase64(request))
             .add("timetoken", "${System.currentTimeMillis()}")
+            .addHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.70 Safari/537.36")
             .toAwait<String>()
     }
 }

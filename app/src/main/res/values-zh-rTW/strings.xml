@@ -167,7 +167,7 @@
     <string name="sort_by_animated">只看動畫化</string>
     <string name="view_more_completion_novel">查看更多完結輕小說</string>
 
-    <string name="http_code_403">403 服務器拒絕請求\n請檢查網絡ip屬地\nWenku8官方禁止日本ip訪問\n建議使用中國大陸ip訪問</string>
+    <string name="http_code_403">403 服務器拒絕請求\n請檢查網絡ip屬地\n注意：Wenku8官方禁止日本ip訪問</string>
     <string name="http_code_5xx">服務器錯誤，請稍後重試</string>
     <string name="login_failed_tip">如果多次登入失敗，請檢查網絡ip屬地是否為中國大陸</string>
 

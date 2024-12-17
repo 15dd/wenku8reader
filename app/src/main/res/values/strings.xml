@@ -172,7 +172,7 @@
     <string name="sort_by_animated">只看动画化</string>
     <string name="view_more_completion_novel">查看更多完结轻小说</string>
 
-    <string name="http_code_403">403 服务器拒绝请求\n请检查网络ip属地\nWenku8官方禁止日本ip访问</string>
+    <string name="http_code_403">403 服务器拒绝请求\n请检查网络ip属地\n注意：Wenku8官方禁止日本ip访问</string>
     <string name="http_code_5xx">服务器错误，请稍后重试</string>
     <string name="login_failed_tip">如果多次登录失败，请在浏览器中确认能否正常登录wenku8官方网站</string>
 
