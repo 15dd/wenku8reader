@@ -32,7 +32,6 @@ class Network @Inject constructor() {
             .add("appver", "1.18")
             .add("request", Base64Helper.encodeBase64(request))
             .add("timetoken", "${System.currentTimeMillis()}")
-            .addHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.70 Safari/537.36")
             .toAwait<String>()
     }
 }

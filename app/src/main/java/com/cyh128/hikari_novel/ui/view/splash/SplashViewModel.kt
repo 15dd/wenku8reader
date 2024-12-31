@@ -29,10 +29,19 @@ class SplashViewModel @Inject constructor(
     fun login() {
         viewModelScope.launch(Dispatchers.IO) {
             wenku8Repository.login()
-                .onSuccess {
-                    sendEvent(Event.LogInSuccessEvent,"event_splash_activity")
-                }.onFailure {
-                    sendEvent(Event.LogInFailureEvent,"event_splash_activity")
+                .onSuccess { success ->
+                    if (success.isCorrect() && success.isLoginSuccessful) sendEvent(
+                        Event.LogInSuccessEvent,
+                        "event_splash_activity"
+                    ) else if (!success.isCorrect() && !success.isLoginSuccessful) sendEvent(
+                        Event.LogInFailureEvent,
+                        "event_splash_activity"
+                    ) else if (!success.isCorrect()) sendEvent(
+                        Event.AuthFailedEvent,
+                        "event_splash_activity"
+                    ) else sendEvent(Event.LogInFailureEvent, "event_splash_activity")
+                }.onFailure { failure ->
+                    sendEvent(Event.NetworkErrorEvent(failure.message),"event_splash_activity")
                 }
         }
     }
@@ -43,7 +52,7 @@ class SplashViewModel @Inject constructor(
             .onSuccess { success ->
                 bookshelfRepository.updateBookshelfList(success)
             }.onFailure { failure ->
-                sendEvent(Event.NetworkErrorEvent(failure.message),"event_splash_activity")
+                sendEvent(Event.NetworkErrorEvent(failure.message), "event_splash_activity")
             }
     }
 
@@ -59,9 +68,4 @@ class SplashViewModel @Inject constructor(
     //设置首次启动状态
     fun setIsFirstLaunch(isFirstLaunch: Boolean) = appRepository.setIsFirstLaunch(isFirstLaunch)
 
-    //获取网页wenku8节点
-    fun getWenku8Node() = wenku8Repository.getWenku8Node()
-
-    //设置网页wenku8节点
-    fun setWenku8Node(node: String) = wenku8Repository.setWenku8Node(node)
 }

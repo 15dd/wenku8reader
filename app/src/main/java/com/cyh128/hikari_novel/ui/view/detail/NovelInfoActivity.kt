@@ -43,8 +43,6 @@ class NovelInfoActivity : BaseActivity<ActivityNovelInfoBinding>() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.tbANovelInfo.setNavigationOnClickListener { finish() }
 
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-
         receiveEvent<Event>("event_novel_info_activity") { event ->
             when (event) {
                 Event.LoadSuccessEvent -> {

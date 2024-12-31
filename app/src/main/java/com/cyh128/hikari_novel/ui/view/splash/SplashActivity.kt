@@ -10,6 +10,7 @@ import com.cyh128.hikari_novel.base.BaseActivity
 import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.databinding.ActivitySplashBinding
 import com.cyh128.hikari_novel.ui.view.main.MainActivity
+import com.cyh128.hikari_novel.util.ResourceUtil
 import com.cyh128.hikari_novel.util.startActivity
 import com.drake.channel.receiveEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,12 +38,16 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                     overridePendingTransition(0, 0)
                 }
 
-                Event.LogInFailureEvent -> {
+                Event.AuthFailedEvent -> {
                     startActivity<LoginActivity> {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         putExtra("isShowTip", true)
                     }
+                }
+
+                Event.LogInFailureEvent -> {
+                    toErrorScreen(ResourceUtil.getString(R.string.login_failed_tip_2))
                 }
 
                 is Event.NetworkErrorEvent -> {

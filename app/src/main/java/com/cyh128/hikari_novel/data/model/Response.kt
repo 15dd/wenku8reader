@@ -11,10 +11,19 @@ data class ChapterContentResponse(
 )
 
 data class LoginResponse(
-    val isUsernameCorrect: Boolean,
-    val isPasswordCorrect: Boolean
+    var isUsernameCorrect: Boolean,
+    var isPasswordCorrect: Boolean,
+    var isLoginSuccessful: Boolean
 ) {
     fun isCorrect() = isUsernameCorrect && isPasswordCorrect
+
+    companion object {
+        fun empty() = LoginResponse(
+            isUsernameCorrect = false,
+            isPasswordCorrect = false,
+            isLoginSuccessful = false
+        )
+    }
 }
 
 data class CommentResponse(

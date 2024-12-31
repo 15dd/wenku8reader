@@ -12,6 +12,8 @@ import com.cyh128.hikari_novel.base.BaseActivity
 import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.databinding.ActivityLoginBinding
 import com.cyh128.hikari_novel.ui.view.main.MainActivity
+import com.cyh128.hikari_novel.ui.view.main.more.more.setting.SettingActivity
+import com.cyh128.hikari_novel.util.ResourceUtil
 import com.cyh128.hikari_novel.util.openUrl
 import com.cyh128.hikari_novel.util.startActivity
 import com.drake.channel.receiveEvent
@@ -70,16 +72,25 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                     }
                 }
 
-                Event.LogInFailureEvent -> {
+                Event.AuthFailedEvent -> {
                     isEnableLoginButton(true)
                     clearError()
+                }
+
+                Event.LogInFailureEvent -> {
+                    MaterialAlertDialogBuilder(this@LoginActivity)
+                        .setTitle(R.string.login_failure)
+                        .setIcon(R.drawable.ic_error)
+                        .setMessage(ResourceUtil.getString(R.string.login_failed_tip_2))
+                        .setPositiveButton(R.string.ok, null)
+                        .show()
+                    isEnableLoginButton(true)
                 }
 
                 is Event.NetworkErrorEvent -> {
                     MaterialAlertDialogBuilder(this@LoginActivity)
                         .setTitle(R.string.network_error)
                         .setIcon(R.drawable.ic_error)
-                        .setTitle(R.string.network_error)
                         .setMessage(event.msg)
                         .setPositiveButton(R.string.ok, null)
                         .show()
@@ -136,25 +147,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 .show()
         }
 
-        binding.bALoginDomain.setOnClickListener {
-            MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.switch_node)
-                .setIcon(R.drawable.ic_network_node)
-                .setNegativeButton(R.string.cancel, null)
-                .setSingleChoiceItems(
-                    arrayOf("www.wenku8.cc", "www.wenku8.net"),
-                    run {
-                        if (viewModel.getWenku8Node() == "www.wenku8.cc") return@run 0
-                        else return@run 1
-                    }
-                ) { dialog: DialogInterface, which: Int ->
-                    when (which) {
-                        0 -> viewModel.setWenku8Node("www.wenku8.cc")
-                        1 -> viewModel.setWenku8Node("www.wenku8.net")
-                    }
-                    dialog.dismiss()
-                }
-                .show()
+        binding.bALoginSetting.setOnClickListener {
+            startActivity<SettingActivity>()
         }
     }
 

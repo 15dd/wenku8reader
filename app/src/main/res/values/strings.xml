@@ -281,5 +281,7 @@
     <string name="dark_mode">暗色模式</string>
     <string name="enable">启用</string>
     <string name="disable">禁用</string>
+    <string name="login_failed_tip_2">登录失败，请检查网络ip属地</string>
+    <string name="login_failure">登录失败</string>
 
 </resources>

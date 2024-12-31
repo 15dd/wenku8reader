@@ -28,13 +28,15 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             wenku8Repository.login(username, password)
                 .onSuccess { success ->
-                    if (success.isCorrect()) {
+                    if (success.isCorrect() && success.isLoginSuccessful) { //当密码正确时并且网页提示登录成功时
                         sendEvent(Event.LogInSuccessEvent,"event_login_activity")
-                    } else {
+                    } else if (!success.isCorrect() && !success.isLoginSuccessful) { //当密码不正确时并且网页没有提示登录成功时
+                        sendEvent(Event.LogInFailureEvent, "event_login_activity")
+                    } else if (!success.isCorrect()) { //当密码错误时
                         _isUsernameCorrect.postValue(success.isUsernameCorrect)
                         _isPasswordCorrect.postValue(success.isPasswordCorrect)
-                        sendEvent(Event.LogInFailureEvent,"event_login_activity")
-                    }
+                        sendEvent(Event.AuthFailedEvent,"event_login_activity")
+                    } else sendEvent(Event.LogInFailureEvent,"event_login_activity")
                 }.onFailure { failure ->
                     sendEvent(Event.NetworkErrorEvent(failure.message),"event_login_activity")
                 }
@@ -46,12 +48,6 @@ class LoginViewModel @Inject constructor(
         wenku8Repository.username = username
         wenku8Repository.password = password
     }
-
-    //获取网页wenku8节点
-    fun getWenku8Node() = wenku8Repository.getWenku8Node()
-
-    //设置网页wenku8节点
-    fun setWenku8Node(node: String) = wenku8Repository.setWenku8Node(node)
 
     //刷新书架列表
     suspend fun refreshBookshelfList() {

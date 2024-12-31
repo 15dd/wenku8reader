@@ -15,6 +15,7 @@ sealed class Event {
     data object SearchInitErrorCauseByInFiveSecondEvent: Event() //初始化内容页面失败，因为5秒限制
     data object LogInSuccessEvent: Event() //登录成功
     data object LogInFailureEvent: Event() //登录失败
+    data object AuthFailedEvent: Event() //验证失败事件(用户名或者密码错误)
     data object SignInSuccessEvent: Event() //签到成功
     data object SignInFailureEvent: Event() //签到失败
     data object TempSignInUnableEvent: Event() //临时签到不可用事件

@@ -103,7 +103,7 @@ object Wenku8Parser {
     }
 
     //判断用户名和密码是否正确
-    fun isUsernameOrPasswordCorrect(html: String): LoginResponse {
+    fun isUsernameOrPasswordCorrect(html: String, response: LoginResponse) {
         val isUsernameCorrect: Boolean?
         val isPasswordCorrect: Boolean?
 
@@ -123,7 +123,11 @@ object Wenku8Parser {
             } catch (_: Exception) {
             }
         } catch (_: Exception) {
-            return LoginResponse(isUsernameCorrect = true, isPasswordCorrect = true)
+            response.apply {
+                isUsernameCorrect = true
+                isPasswordCorrect = true
+            }
+            return
         }
 
         if (t!!.contains("用户不存在")) {
@@ -139,7 +143,20 @@ object Wenku8Parser {
             isUsernameCorrect = true
             isPasswordCorrect = true
         }
-        return LoginResponse(isUsernameCorrect, isPasswordCorrect)
+        response.apply {
+            this.isUsernameCorrect = isUsernameCorrect
+            this.isPasswordCorrect = isPasswordCorrect
+        }
+    }
+
+    fun isLoginSuccessful(html: String, response: LoginResponse) {
+        val document = Jsoup.parse(html)
+        try {
+            val text = document.getElementsByClass("blocktitle")[0].text()
+            response.isLoginSuccessful = text == "登录成功" || text == "登錄成功"
+        } catch (e: Exception) {
+            response.isLoginSuccessful = false
+        }
     }
 
     fun getNovelInfo(html: String): NovelInfo {

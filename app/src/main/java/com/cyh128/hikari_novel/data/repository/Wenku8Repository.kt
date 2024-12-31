@@ -55,8 +55,10 @@ class Wenku8Repository @Inject constructor(
                     return Result.failure(NetworkException(HttpCodeParser.parser(body.code())))
                 } else {
                     val html = String(body.body()!!.bytes(), Charset.forName("GBK"))
-                    val checkResult = Wenku8Parser.isUsernameOrPasswordCorrect(html)
-                    return Result.success(checkResult)
+                    val response = LoginResponse.empty()
+                    Wenku8Parser.isUsernameOrPasswordCorrect(html, response)
+                    Wenku8Parser.isLoginSuccessful(html, response)
+                    return Result.success(response)
                 }
             }.onFailure {
                 return Result.failure(NetworkException(it.message))
