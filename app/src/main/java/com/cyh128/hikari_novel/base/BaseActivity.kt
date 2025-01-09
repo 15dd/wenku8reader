@@ -36,7 +36,6 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         val intent = Intent(this, this::class.java)
         startActivity(intent)
         finish()
-        overridePendingTransition(0, 0) //TODO 去掉切换动画
     }
 
 }

@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
-    <!-- TODO material design 3自适应颜色图标 https://blog.csdn.net/minping9101/article/details/129436383 -->
     <application
         android:name=".HikariApp"
         android:allowBackup="true"

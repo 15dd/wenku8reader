@@ -4,8 +4,13 @@ import android.os.Bundle
 import android.text.Html
 import android.view.Menu
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.view.WindowCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.marginLeft
+import androidx.core.view.marginRight
+import androidx.core.view.marginTop
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +27,7 @@ import com.cyh128.hikari_novel.ui.view.main.home.search.SearchActivity
 import com.cyh128.hikari_novel.ui.view.other.PhotoViewActivity
 import com.cyh128.hikari_novel.util.launchWithLifecycle
 import com.cyh128.hikari_novel.util.openUrl
+import com.cyh128.hikari_novel.util.setMargin
 import com.cyh128.hikari_novel.util.startActivity
 import com.drake.channel.receiveEvent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -30,13 +36,28 @@ import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 
+
 @AndroidEntryPoint
 class NovelInfoActivity : BaseActivity<ActivityNovelInfoBinding>() {
     private val viewModel by lazy { ViewModelProvider(this)[NovelInfoViewModel::class.java] }
     private var chapterAdapter: NovelChapterListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
+
         super.onCreate(savedInstanceState)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.ervANovelInfo) { v, insets ->
+            val navigationBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            v.setPadding(navigationBars.left, navigationBars.top, navigationBars.right, navigationBars.bottom)
+            insets
+        }//edgeToEdge
+        ViewCompat.setOnApplyWindowInsetsListener(binding.fabANovelInfo) { v, insets ->
+            val navigationBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            v.setMargin(v.marginLeft, v.marginTop, v.marginRight, navigationBars.bottom)
+            insets
+        }//edgeToEdge
+
         viewModel.aid = intent.getStringExtra("aid")!!
 
         setSupportActionBar(binding.tbANovelInfo)
@@ -105,7 +126,11 @@ class NovelInfoActivity : BaseActivity<ActivityNovelInfoBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        chapterAdapter = null
+
+        //防止内存泄漏
+        binding.ervANovelInfo.adapter = null
+        binding.ervANovelInfo.setOnApplyWindowInsetsListener(null)
+        binding.fabANovelInfo.setOnApplyWindowInsetsListener(null)
     }
 
     private fun setInfoView() { //设置小说信息
@@ -170,7 +195,7 @@ class NovelInfoActivity : BaseActivity<ActivityNovelInfoBinding>() {
             }
 
             chapterAdapter = NovelChapterListAdapter(
-                viewModelStoreOwner = this@NovelInfoActivity,
+                viewModel = this@NovelInfoActivity.viewModel,
                 novel = viewModel.novel,
                 onItemClick = { volumePos: Int, chapterPos: Int ->
                     if (viewModel.readOrientation == ReaderOrientation.Vertical) {

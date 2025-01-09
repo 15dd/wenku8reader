@@ -4,29 +4,40 @@ import android.animation.ObjectAnimator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
-import androidx.lifecycle.viewModelScope
 import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.data.model.Novel
 import com.cyh128.hikari_novel.databinding.ItemChapterCcssBinding
 import com.cyh128.hikari_novel.databinding.ItemChapterVcssBinding
 import com.cyh128.hikari_novel.util.ResourceUtil
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pokercc.android.expandablerecyclerview.ExpandableAdapter
 
 class NovelChapterListAdapter(
-    private val viewModelStoreOwner: ViewModelStoreOwner,
+    private var viewModel: NovelInfoViewModel,
     private val novel: Novel,
     private val onItemClick: (volume: Int, chapter: Int) -> Unit,
     private val onLongClick: (cid: String) -> Unit
 ) : ExpandableAdapter<ExpandableAdapter.ViewHolder>() {
-    private val viewModel by lazy { ViewModelProvider(viewModelStoreOwner)[NovelInfoViewModel::class.java] }
+    internal class GroupViewHolder(val binding: ItemChapterVcssBinding) : ViewHolder(binding.root) {
+        val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
-    internal class GroupViewHolder(val binding: ItemChapterVcssBinding) : ViewHolder(binding.root)
-    internal class ChildViewHolder(val binding: ItemChapterCcssBinding) : ViewHolder(binding.root)
+        fun clean() {
+            scope.cancel() // 取消所有协程
+        }
+    }
+
+    internal class ChildViewHolder(val binding: ItemChapterCcssBinding) : ViewHolder(binding.root) {
+        val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
+        fun clean() {
+            scope.cancel() // 取消所有协程
+        }
+    }
 
     override fun getChildCount(groupPosition: Int): Int = novel.volume[groupPosition].chapters.size
 
@@ -87,7 +98,7 @@ class NovelChapterListAdapter(
                 .start()
         }
 
-        viewModel.viewModelScope.launch(Dispatchers.IO) {
+        holder.scope.launch(Dispatchers.IO) {
             viewModel.getReadHistoryByVolume(groupPosition).collect {
                 withContext(Dispatchers.Main) {
                     if (it.isNullOrEmpty()) {
@@ -137,7 +148,7 @@ class NovelChapterListAdapter(
             true
         }
 
-        viewModel.viewModelScope.launch(Dispatchers.IO) {
+        holder.scope.launch(Dispatchers.IO) {
             viewModel.getReadHistoryByCid(novel.volume[groupPosition].chapters[childPosition].cid).collect {
                 withContext(Dispatchers.Main) {
                     if (it == null) {
@@ -163,4 +174,14 @@ class NovelChapterListAdapter(
             }
         }
     }
+
+    override fun onViewDetachedFromWindow(holder: ViewHolder) {
+        //终止协程，防止内存泄漏
+        when (holder) {
+            is GroupViewHolder -> holder.clean()
+            is ChildViewHolder -> holder.clean()
+        }
+        super.onViewDetachedFromWindow(holder)
+    }
+
 }

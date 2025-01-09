@@ -3,7 +3,10 @@ package com.cyh128.hikari_novel.util
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -83,5 +86,11 @@ fun String.urlEncode(enc: String? = null): String {
     return when (Locale.getDefault()) {
         Locale.TRADITIONAL_CHINESE -> URLEncoder.encode(this, "BIG5-HKSCS")
         else -> URLEncoder.encode(this, "GBK")
+    }
+}
+
+fun View.setMargin(left: Int, top: Int, right: Int, bottom: Int) {
+    this.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+        setMargins(left, top, right, bottom)
     }
 }
