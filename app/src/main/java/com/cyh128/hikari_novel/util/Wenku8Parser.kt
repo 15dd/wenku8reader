@@ -102,10 +102,11 @@ object Wenku8Parser {
         return pageCount
     }
 
-    //判断用户名和密码是否正确
-    fun isUsernameOrPasswordCorrect(html: String, response: LoginResponse) {
-        val isUsernameCorrect: Boolean?
-        val isPasswordCorrect: Boolean?
+    //判断登录信息是否正确
+    fun isLoginInfoCorrect(html: String, response: LoginResponse) {
+        val isUsernameCorrect: Boolean
+        val isPasswordCorrect: Boolean
+        val isCheckcodeCorrect: Boolean
 
         val document: Document = Jsoup.parse(html)
 
@@ -126,26 +127,36 @@ object Wenku8Parser {
             response.apply {
                 isUsernameCorrect = true
                 isPasswordCorrect = true
+                isCheckcodeCorrect = true
             }
             return
         }
 
-        if (t!!.contains("用户不存在")) {
+        if (t!!.contains("用户不存在") || t.contains("用戶不存在")) {
             isUsernameCorrect = false
             isPasswordCorrect = true
-        } else if (t.contains("密码错误")) {
+            isCheckcodeCorrect = true
+        } else if (t.contains("密码错误") || t.contains("密碼錯誤")) {
             isUsernameCorrect = true
             isPasswordCorrect = false
-        } else if (t.contains("用户登录")) {
+            isCheckcodeCorrect = true
+        } else if (t.contains("用户登录") || t.contains("用戶登錄")) {
             isUsernameCorrect = false
             isPasswordCorrect = false
+            isCheckcodeCorrect = true
+        } else if (t.contains("校验码错误") || t.contains("校驗碼錯誤")) {
+            isUsernameCorrect = true
+            isPasswordCorrect = true
+            isCheckcodeCorrect = false
         } else {
             isUsernameCorrect = true
             isPasswordCorrect = true
+            isCheckcodeCorrect = true
         }
         response.apply {
             this.isUsernameCorrect = isUsernameCorrect
             this.isPasswordCorrect = isPasswordCorrect
+            this.isCodeCorrect = isCheckcodeCorrect
         }
     }
 

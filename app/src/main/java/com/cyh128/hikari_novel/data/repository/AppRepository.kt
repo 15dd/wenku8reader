@@ -78,7 +78,7 @@ class AppRepository @Inject constructor(
 
     //检查更新
     suspend fun checkUpdate(): Result<Boolean> {
-        network.getData("https://api.github.com/repos/15dd/wenku8reader/releases/latest")
+        network.getDataWithoutCookie("https://api.github.com/repos/15dd/wenku8reader/releases/latest")
             .awaitResult {
                 it.body()?.let { data ->
                     val result = Gson().fromJson(data.string(), Map::class.java)

@@ -11,16 +11,32 @@ import javax.inject.Singleton
 
 @Singleton
 class Network @Inject constructor() {
-    fun login(url: String, username: String, password: String): CallAwait<OkResponse<ResponseBody?>> =
-        RxHttp.postForm(url)
+
+    fun login(
+        url: String,
+        username: String,
+        password: String,
+        checkcode: String,
+        usecookie: String
+    ): CallAwait<OkResponse<ResponseBody?>> {
+        return RxHttp.postForm(url)
             .add("username", username)
             .add("password", password)
+            .add("checkcode", checkcode)
+            .add("usecookie", usecookie)
             .add("action", "login")
             .addHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.70 Safari/537.36")
             .toAwait<ResponseBody>()
             .toAwaitOkResponse()
+    }
 
-    fun getData(url: String): CallAwait<OkResponse<ResponseBody?>> =
+    fun getData(url: String, cookie: String): CallAwait<OkResponse<ResponseBody?>> =
+        RxHttp.get(url)
+            .addHeader("cookie", cookie)
+            .addHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.70 Safari/537.36")
+            .toAwait<ResponseBody>().toAwaitOkResponse()
+
+    fun getDataWithoutCookie(url: String): CallAwait<OkResponse<ResponseBody?>> =
         RxHttp.get(url)
             .addHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.70 Safari/537.36")
             .toAwait<ResponseBody>().toAwaitOkResponse()

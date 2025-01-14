@@ -67,4 +67,11 @@
         <item>@string/size</item>
         <item>@string/animated</item>
     </string-array>
+
+    <string-array name="valid_period">
+        <item>@string/only_once</item>
+        <item>@string/one_day</item>
+        <item>@string/one_month</item>
+        <item>@string/one_year</item>
+    </string-array>
 </resources>

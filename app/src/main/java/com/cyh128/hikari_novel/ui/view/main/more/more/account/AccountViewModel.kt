@@ -36,6 +36,8 @@ class AccountViewModel @Inject constructor(
     fun clearLoginInfo() {
         wenku8Repository.username = null
         wenku8Repository.password = null
+        wenku8Repository.expDate = null
+        wenku8Repository.cookie = null
     }
 
     fun signIn() {

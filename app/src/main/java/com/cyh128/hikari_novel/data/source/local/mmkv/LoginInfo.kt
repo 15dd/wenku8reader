@@ -19,4 +19,19 @@ class LoginInfo @Inject constructor() {
         set(value) {
             cursor.encode("password",value)
         }
+
+    var cookie: String?
+        get() = cursor.decodeString("cookie")
+        set(value) {
+            cursor.encode("cookie",value)
+        }
+
+    //毫秒级时间戳
+    var expDate: Long?
+        get() = cursor.decodeLong("exp_date")
+        set(value) {
+            if (value != null) {
+                cursor.encode("exp_date",value)
+            }
+        }
 }

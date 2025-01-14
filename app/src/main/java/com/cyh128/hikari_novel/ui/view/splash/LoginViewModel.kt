@@ -1,5 +1,6 @@
 package com.cyh128.hikari_novel.ui.view.splash
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,10 @@ import com.drake.channel.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import rxhttp.RxHttpPlugins
+import rxhttp.wrapper.cookie.ICookieJar
+import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,18 +29,24 @@ class LoginViewModel @Inject constructor(
     private val _isPasswordCorrect = MutableLiveData<Boolean>()
     val isPasswordCorrect: LiveData<Boolean> = _isPasswordCorrect
 
-    fun login(username: String, password: String) {
+    private val _isCodeCorrect = MutableLiveData<Boolean>()
+    val isCodeCorrect: LiveData<Boolean> = _isCodeCorrect
+
+    fun login(username: String, password: String, checkcode: String, usecookie: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            wenku8Repository.login(username, password)
+            wenku8Repository.login(username, password, checkcode, usecookie)
                 .onSuccess { success ->
                     if (success.isCorrect() && success.isLoginSuccessful) { //当密码正确时并且网页提示登录成功时
                         sendEvent(Event.LogInSuccessEvent,"event_login_activity")
-                    } else if (!success.isCorrect() && !success.isLoginSuccessful) { //当密码不正确时并且网页没有提示登录成功时
-                        sendEvent(Event.LogInFailureEvent, "event_login_activity")
                     } else if (!success.isCorrect()) { //当密码错误时
-                        _isUsernameCorrect.postValue(success.isUsernameCorrect)
-                        _isPasswordCorrect.postValue(success.isPasswordCorrect)
-                        sendEvent(Event.AuthFailedEvent,"event_login_activity")
+                        if (!success.isUsernameCorrect && !success.isPasswordCorrect) {
+                            sendEvent(Event.LogInFailureEvent,"event_login_activity")
+                        } else {
+                            _isUsernameCorrect.postValue(success.isUsernameCorrect)
+                            _isPasswordCorrect.postValue(success.isPasswordCorrect)
+                            _isCodeCorrect.postValue(success.isCodeCorrect)
+                            sendEvent(Event.AuthFailedEvent,"event_login_activity")
+                        }
                     } else sendEvent(Event.LogInFailureEvent,"event_login_activity")
                 }.onFailure { failure ->
                     sendEvent(Event.NetworkErrorEvent(failure.message),"event_login_activity")
@@ -57,5 +68,26 @@ class LoginViewModel @Inject constructor(
             }.onFailure { failure ->
                 sendEvent(Event.NetworkErrorEvent(failure.message),"event_login_activity")
             }
+    }
+
+    //算出时间戳
+    fun calculateTimestampFromSeconds(seconds: Long): Long {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.SECOND, seconds.toInt())
+        return calendar.timeInMillis / 1000
+    }
+
+    fun getWenku8Node() = wenku8Repository.getWenku8Node()
+
+    fun getCookie(): String {
+        var cookie = ""
+        val iCookieJar = RxHttpPlugins.getOkHttpClient().cookieJar as ICookieJar
+        val httpUrl = "https://${getWenku8Node()}".toHttpUrlOrNull()
+        val cookies = iCookieJar.loadCookie(httpUrl)
+        cookies.forEach {
+            Log.d("l_v_m","name:${it.name} value:${it.value}")
+            cookie += it.name + "=" + it.value + ";"
+        }
+        return cookie
     }
 }

@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.base.BaseActivity
 import com.cyh128.hikari_novel.data.model.Event
@@ -25,6 +26,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity<ActivityLoginBinding>() {
@@ -53,18 +55,18 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         receiveEvent<Event>("event_login_activity") { event ->
             when (event) {
                 Event.LogInSuccessEvent -> {
+                    viewModel.saveLoginInfo(
+                        binding.tietALoginUsername.text.toString(),
+                        binding.tietALoginPassword.text.toString(),
+                    )
+
                     viewModel.refreshBookshelfList() //等待书架信息获取完成
                     Toast.makeText(
                         this@LoginActivity,
                         R.string.login_successful,
                         Toast.LENGTH_SHORT
                     ).show()
-                    if (binding.cbALogin.isChecked) {
-                        viewModel.saveLoginInfo(
-                            binding.tietALoginUsername.text.toString(),
-                            binding.tietALoginPassword.text.toString()
-                        )
-                    }
+
                     startActivity<MainActivity> {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -101,7 +103,15 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             }
         }
 
+        initView()
         initListener()
+    }
+
+    private fun initView() {
+        getCheckcode()
+        binding.ivALoginCheckcode.setOnClickListener {
+            getCheckcode()
+        }
     }
 
     private fun initListener() {
@@ -113,11 +123,28 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             if (!it) binding.tfALoginPassword.error = getString(R.string.password_error)
         }
 
+        viewModel.isCodeCorrect.observe(this) {
+            if (!it) {
+                binding.tfALoginCheckcode.error = getString(R.string.check_code_error)
+                getCheckcode()
+            }
+        }
+
         //登录按钮执行
         binding.bALoginLogin.setOnClickListener {
             isEnableLoginButton(false)
             val username = binding.tietALoginUsername.text.toString()
             val password = binding.tietALoginPassword.text.toString()
+            val checkcode = binding.tietALoginCheckcode.text.toString()
+            val usecookie = binding.actALogin.text.let {
+                when (it.toString()) {
+                    getString(R.string.only_once) -> "0"
+                    getString(R.string.one_day) -> "86400"
+                    getString(R.string.one_month) -> "2592000"
+                    getString(R.string.one_year) -> "315360000"
+                    else -> ""
+                }
+            }
             if (username.isEmpty()) {
                 binding.tfALoginUsername.error = getString(R.string.not_null)
                 clearError()
@@ -128,8 +155,18 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 clearError()
                 isEnableLoginButton(true)
                 return@setOnClickListener
+            } else if (checkcode.isEmpty()) {
+                binding.tfALoginCheckcode.error = getString(R.string.not_null)
+                clearError()
+                isEnableLoginButton(true)
+                return@setOnClickListener
+            } else if (usecookie.isEmpty()) {
+                binding.tfALoginUsecookie.error = getString(R.string.not_null)
+                clearError()
+                isEnableLoginButton(true)
+                return@setOnClickListener
             }
-            viewModel.login(username, password)
+            viewModel.login(username, password, checkcode, usecookie)
         }
 
         //注册功能
@@ -142,7 +179,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 .setPositiveButton(
                     R.string.go_to_register
                 ) { _: DialogInterface?, _: Int ->
-                    openUrl("https://www.wenku8.cc/register.php")
+                    openUrl("https://${viewModel.getWenku8Node()}/register.php")
                 }
                 .show()
         }
@@ -174,8 +211,16 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 delay(2000)
                 binding.tfALoginUsername.error = null
                 binding.tfALoginPassword.error = null
+                binding.tfALoginCheckcode.error = null
+                binding.tfALoginUsecookie.error = null
             }
         }
+    }
+
+    private fun getCheckcode() {
+        Glide.with(binding.ivALoginCheckcode)
+            .load("https://${viewModel.getWenku8Node()}/checkcode.php?rand=${Math.random()}")
+            .into(binding.ivALoginCheckcode)
     }
 
     override fun onDestroy() {

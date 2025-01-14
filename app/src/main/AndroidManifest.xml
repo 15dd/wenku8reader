@@ -20,7 +20,8 @@
 
         <activity
             android:name=".ui.view.splash.SplashActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -30,33 +31,57 @@
 
         <activity
             android:name=".ui.view.splash.LoginActivity"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.view.main.more.more.account.AccountActivity"/>
+        <activity
+            android:name=".ui.view.main.more.more.account.AccountActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.view.main.more.more.about.AboutActivity"/>
+        <activity
+            android:name=".ui.view.main.more.more.about.AboutActivity"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ui.view.main.MainActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.view.detail.NovelInfoActivity"/>
+        <activity
+            android:name=".ui.view.detail.NovelInfoActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.view.other.CrashActivity"/>
+        <activity
+            android:name=".ui.view.other.CrashActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.view.detail.comment.CommentActivity"/>
+        <activity
+            android:name=".ui.view.detail.comment.CommentActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.view.main.more.more.setting.SettingActivity" />
+        <activity
+            android:name=".ui.view.main.more.more.setting.SettingActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.view.other.PhotoViewActivity"/>
+        <activity
+            android:name=".ui.view.other.PhotoViewActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.view.main.home.search.SearchActivity"/>
+        <activity
+            android:name=".ui.view.main.home.search.SearchActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.view.read.vertical.ReadActivity"/>
+        <activity
+            android:name=".ui.view.read.vertical.ReadActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.view.read.horizontal.ReadActivity"/>
+        <activity
+            android:name=".ui.view.read.horizontal.ReadActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.view.read.SelectColorActivity"/>
+        <activity
+            android:name=".ui.view.read.SelectColorActivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 

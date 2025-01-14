@@ -15,20 +15,20 @@ android {
         applicationId = "com.cyh128.hikari_novel"
         minSdk = 24
         targetSdk = 35
-        versionCode = 250109
-        versionName = "3.5.0"
+        versionCode = 250115
+        versionName = "3.6.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-//    splits {
-//        abi {
-//            isEnable = true
-//            isUniversalApk = true
-//            reset()
-//            include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
-//        }
-//    }
+    splits {
+        abi {
+            isEnable = true
+            isUniversalApk = true
+            reset()
+            include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+        }
+    }
 
     signingConfigs {
         create("signing") {
@@ -105,8 +105,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
 
     //协程
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1")
 
     //html解析
     implementation("org.jsoup:jsoup:1.18.1")
@@ -118,10 +118,13 @@ dependencies {
     implementation("com.trendyol:medusa:0.12.1")
 
     //持久化存储
-    implementation("com.tencent:mmkv:2.0.2")
+    //请勿修改此版本，否则app会不支持32位设备
+    //noinspection GradleDependency
+    implementation("com.tencent:mmkv:1.3.11")
 
     //图片加载
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.github.bumptech.glide:okhttp3-integration:4.16.0")
 
     //refresh layout
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")

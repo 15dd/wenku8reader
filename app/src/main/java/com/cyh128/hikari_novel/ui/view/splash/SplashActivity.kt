@@ -3,8 +3,10 @@ package com.cyh128.hikari_novel.ui.view.splash
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.base.BaseActivity
 import com.cyh128.hikari_novel.data.model.Event
@@ -14,6 +16,7 @@ import com.cyh128.hikari_novel.util.ResourceUtil
 import com.cyh128.hikari_novel.util.startActivity
 import com.drake.channel.receiveEvent
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 @SuppressLint("CustomSplashScreen")
@@ -27,17 +30,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
         receiveEvent<Event>("event_splash_activity") { event ->
             when (event) {
-                Event.LogInSuccessEvent -> {
-                    viewModel.setLoggingInText(getString(R.string.getting_bookshelf))
-                    //获取书架信息
-                    viewModel.refreshBookshelfList() //等待书架信息获取完成
-                    startActivity<MainActivity> {
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    }
-                    overridePendingTransition(0, 0)
-                }
-
                 Event.AuthFailedEvent -> {
                     startActivity<LoginActivity> {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -72,12 +64,19 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
-            overridePendingTransition(0, 0)
-            return
+        } else {
+            Log.d("s_a","${viewModel.getCookie()}")
+            toLoggingInScreen()
+            lifecycleScope.launch {
+                viewModel.setLoggingInText(getString(R.string.getting_bookshelf))
+                //获取书架信息
+                viewModel.refreshBookshelfList() //等待书架信息获取完成
+                startActivity<MainActivity> {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                }
+            }
         }
-
-        toLoggingInScreen()
-        viewModel.login()
     }
 
     private fun toErrorScreen(msg: String?) {

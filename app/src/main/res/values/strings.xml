@@ -27,6 +27,7 @@
     <string name="confirm">确定</string>
     <string name="username_error">用户名错误</string>
     <string name="password_error">密码错误</string>
+    <string name="check_code_error">验证码错误</string>
     <string name="not_null">不能为空</string>
     <string name="novel_detail">小说详情</string>
     <string name="continue_from_history">继续阅读</string>
@@ -283,5 +284,10 @@
     <string name="disable">禁用</string>
     <string name="login_failed_tip_2">登录失败，请检查网络ip属地</string>
     <string name="login_failure">登录失败</string>
-
+    <string name="valid_period">有效期</string>
+    <string name="check_code">验证码</string>
+    <string name="only_once">仅一次</string>
+    <string name="one_day">一天</string>
+    <string name="one_month">一个月</string>
+    <string name="one_year">一年</string>
 </resources>

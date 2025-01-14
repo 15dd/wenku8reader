@@ -10,9 +10,9 @@ import com.cyh128.hikari_novel.data.repository.BookshelfRepository
 import com.cyh128.hikari_novel.data.repository.Wenku8Repository
 import com.drake.channel.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
@@ -23,28 +23,20 @@ class SplashViewModel @Inject constructor(
     private val _loggingInText = MutableLiveData<String>()
     val loggingInText: LiveData<String> = _loggingInText
 
-    //判断是否处于未登录状态
-    fun isNotLoggedIn() = wenku8Repository.username.isNullOrEmpty() || wenku8Repository.password.isNullOrEmpty()
+    fun getCookie() = wenku8Repository.cookie
 
-    fun login() {
-        viewModelScope.launch(Dispatchers.IO) {
-            wenku8Repository.login()
-                .onSuccess { success ->
-                    if (success.isCorrect() && success.isLoginSuccessful) sendEvent(
-                        Event.LogInSuccessEvent,
-                        "event_splash_activity"
-                    ) else if (!success.isCorrect() && !success.isLoginSuccessful) sendEvent(
-                        Event.LogInFailureEvent,
-                        "event_splash_activity"
-                    ) else if (!success.isCorrect()) sendEvent(
-                        Event.AuthFailedEvent,
-                        "event_splash_activity"
-                    ) else sendEvent(Event.LogInFailureEvent, "event_splash_activity")
-                }.onFailure { failure ->
-                    sendEvent(Event.NetworkErrorEvent(failure.message),"event_splash_activity")
-                }
+    //判断是否处于未登录状态
+    fun isNotLoggedIn(): Boolean =
+         wenku8Repository.username.isNullOrEmpty() ||
+         wenku8Repository.password.isNullOrEmpty() ||
+         wenku8Repository.cookie.isNullOrEmpty() ||
+         wenku8Repository.expDate.let {
+            if (it == null) {
+                true
+            } else {
+                it <= System.currentTimeMillis()
+            }
         }
-    }
 
     //刷新书架列表
     suspend fun refreshBookshelfList() {

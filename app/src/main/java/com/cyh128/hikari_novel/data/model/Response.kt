@@ -13,14 +13,16 @@ data class ChapterContentResponse(
 data class LoginResponse(
     var isUsernameCorrect: Boolean,
     var isPasswordCorrect: Boolean,
+    var isCodeCorrect: Boolean,
     var isLoginSuccessful: Boolean
 ) {
-    fun isCorrect() = isUsernameCorrect && isPasswordCorrect
+    fun isCorrect() = isUsernameCorrect && isPasswordCorrect && isCodeCorrect
 
     companion object {
         fun empty() = LoginResponse(
             isUsernameCorrect = false,
             isPasswordCorrect = false,
+            isCodeCorrect = false,
             isLoginSuccessful = false
         )
     }

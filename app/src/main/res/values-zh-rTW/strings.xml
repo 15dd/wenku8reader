@@ -25,6 +25,7 @@
     <string name="confirm">確定</string>
     <string name="username_error">使用者名稱錯誤</string>
     <string name="password_error">密碼錯誤</string>
+    <string name="check_code_error">驗證碼錯誤</string>
     <string name="not_null">不能為空</string>
     <string name="novel_detail">小說詳情</string>
     <string name="continue_from_history">繼續閱讀</string>
@@ -274,5 +275,11 @@
     <string name="disable">禁用</string>
     <string name="login_failed_tip_2">登入失敗，請檢查網絡ip屬地</string>
     <string name="login_failure">登入失敗</string>
+    <string name="valid_period">有效期</string>
+    <string name="check_code">驗證碼</string>
+    <string name="only_once">僅一次</string>
+    <string name="one_day">一天</string>
+    <string name="one_month">一個月</string>
+    <string name="one_year">一年</string>
 
 </resources>
