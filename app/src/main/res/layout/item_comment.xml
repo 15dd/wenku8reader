@@ -16,15 +16,32 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_i_comment_username"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            style="@style/TextAppearance.Material3.TitleLarge"
-            tools:text="username" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_i_comment_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                style="@style/TextAppearance.Material3.TitleLarge"
+                tools:text="username" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:drawableRightCompat="@drawable/ic_keyboard_arrow_right" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_i_comment_comment"

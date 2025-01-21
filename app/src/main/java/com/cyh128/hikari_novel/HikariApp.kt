@@ -7,7 +7,7 @@ import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
 import com.bumptech.glide.load.model.GlideUrl
 import com.cyh128.hikari_novel.data.repository.AppRepository
 import com.cyh128.hikari_novel.data.repository.Wenku8Repository
-import com.cyh128.hikari_novel.ui.view.other.CrashActivity
+import com.cyh128.hikari_novel.ui.other.CrashActivity
 import com.cyh128.hikari_novel.util.LanguageHelper
 import com.cyh128.hikari_novel.util.ThemeHelper
 import com.developer.crashx.config.CrashConfig

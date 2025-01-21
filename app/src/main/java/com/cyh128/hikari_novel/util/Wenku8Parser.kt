@@ -120,7 +120,7 @@ object Wenku8Parser {
             }
             try {
                 a = document.getElementById("content")
-                t = a.select("caption")[0].text()
+                t = a!!.select("caption")[0].text()
             } catch (_: Exception) {
             }
         } catch (_: Exception) {
