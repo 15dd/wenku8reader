@@ -22,10 +22,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicatorSpec
 import com.google.android.material.progressindicator.IndeterminateDrawable
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 
 
 @AndroidEntryPoint
@@ -60,7 +62,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                         binding.tietALoginPassword.text.toString(),
                     )
 
-                    viewModel.refreshBookshelfList() //等待书架信息获取完成
+//                    viewModel.refreshBookshelfList() //等待书架信息获取完成
+                    viewModel.getAllBookshelf()
+
                     Toast.makeText(
                         this@LoginActivity,
                         R.string.login_successful,
@@ -109,9 +113,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
     private fun initView() {
         getCheckcode()
-        binding.ivALoginCheckcode.setOnClickListener {
-            getCheckcode()
-        }
     }
 
     private fun initListener() {
@@ -128,6 +129,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 binding.tfALoginCheckcode.error = getString(R.string.check_code_error)
                 getCheckcode()
             }
+        }
+
+        binding.ivALoginCheckcode.setOnClickListener {
+            getCheckcode()
         }
 
         //登录按钮执行

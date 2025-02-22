@@ -39,6 +39,49 @@
                 android:text="@string/common"/>
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:srcCompat="@drawable/ic_update"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="20dp"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:text="@string/auto_check_update"/>
+
+                </LinearLayout>
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/s_a_setting_auto_update"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerThickness="1dp"
+                app:dividerColor="?attr/colorSurfaceContainer"/>
+
+            <LinearLayout
                 android:id="@+id/ll_a_setting_language"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -78,42 +121,42 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:gravity="center"
-                android:paddingRight="20dp"
-                android:paddingLeft="20dp"
-                android:orientation="horizontal">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    app:srcCompat="@drawable/ic_update"/>
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                app:cardCornerRadius="8dp">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="20dp"
-                    android:orientation="vertical"
-                    android:gravity="center_vertical">
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_warning"/>
 
                     <TextView
+                        android:layout_marginLeft="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:text="@string/auto_check_update"/>
+                        android:gravity="center_vertical"
+                        android:text="@string/need_restart"/>
 
                 </LinearLayout>
 
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/s_a_setting_auto_update"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+            </com.google.android.material.card.MaterialCardView>
 
-            </LinearLayout>
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerThickness="1dp"
+                app:dividerColor="?attr/colorSurfaceContainer"/>
 
             <LinearLayout
                 android:id="@+id/ll_a_setting_node"
@@ -186,6 +229,12 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerThickness="1dp"
+                app:dividerColor="?attr/colorSurfaceContainer"/>
+
             <LinearLayout
                 android:id="@+id/ll_a_setting_dark_mode"
                 android:layout_width="match_parent"
@@ -225,6 +274,12 @@
                     tools:text="跟随系统"/>
 
             </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerThickness="1dp"
+                app:dividerColor="?attr/colorSurfaceContainer"/>
 
             <LinearLayout
                 android:id="@+id/ll_a_setting_app_theme"
@@ -266,6 +321,12 @@
 
             </LinearLayout>
 
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerThickness="1dp"
+                app:dividerColor="?attr/colorSurfaceContainer"/>
+
             <LinearLayout
                 android:id="@+id/ll_a_setting_default_tab"
                 android:layout_width="match_parent"
@@ -305,7 +366,6 @@
                     tools:text="首页"/>
 
             </LinearLayout>
-
 
 
 

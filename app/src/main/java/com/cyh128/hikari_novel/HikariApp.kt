@@ -16,11 +16,13 @@ import dagger.hilt.android.HiltAndroidApp
 import okhttp3.Cookie
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Protocol
 import okhttp3.Response
 import rxhttp.RxHttpPlugins
 import rxhttp.wrapper.cookie.CookieStore
 import java.io.InputStream
 import java.text.SimpleDateFormat
+import java.util.Collections
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
@@ -55,6 +57,7 @@ class HikariApp : Application() {
             .addInterceptor(CookieInterceptor())
             .cookieJar(CookieStore()) //保存cookie
             .hostnameVerifier { _: String?, _: SSLSession? -> true }
+//            .protocols(Collections.singletonList(Protocol.HTTP_1_1))
             .build()
 
         Glide.get(this).registry

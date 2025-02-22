@@ -23,7 +23,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.vpFHome.adapter = object : FragmentStateAdapter(childFragmentManager, lifecycle) {
-            override fun getItemCount(): Int = 4
+            override fun getItemCount(): Int = tabTexts.size
             override fun createFragment(position: Int): Fragment = when(position) {
                 0 -> RecommendFragment()
                 1 -> CategoryFragment()

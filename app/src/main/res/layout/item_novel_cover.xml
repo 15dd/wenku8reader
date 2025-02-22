@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground"
-    android:baselineAligned="false">
+    app:cardCornerRadius="4dp"
+    app:cardElevation="0dp"
+    app:strokeWidth="0dp"
+    android:layout_margin="5dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:checkable="true">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
         android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="5dp">
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical">
 
         <FrameLayout
             android:layout_width="wrap_content"
@@ -24,13 +28,15 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 app:cardCornerRadius="4dp"
-                app:cardElevation="0dp">
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp">
 
                 <ImageView
                     android:id="@+id/iv_i_novel_cover"
                     android:layout_width="112dp"
                     android:layout_height="160dp"
                     android:scaleType="centerCrop"
+                    android:layout_marginTop="5dp"
                     tools:ignore="ContentDescription" />
 
             </com.google.android.material.card.MaterialCardView>
@@ -49,4 +55,4 @@
 
     </LinearLayout>
 
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

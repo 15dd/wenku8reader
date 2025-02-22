@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/abl_f_home"
         android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:menu="@menu/menu_frag_home"
-            app:title="@string/home"/>
+            app:title="@string/home" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tl_f_home"

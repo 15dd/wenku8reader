@@ -21,6 +21,9 @@ sealed class Event {
     data object TempSignInUnableEvent: Event() //临时签到不可用事件
     data object RefreshSearchHistoryEvent: Event() //刷新搜索记录事件
 
+    data object RemoveNovelFromListSuccessEvent: Event() //从书架批量删除小说成功事件
+    data object MoveNovelFromListSuccessEvent: Event() //从书架批量移动小说成功事件
+
     data class ChangeLineSpacingEvent(val value: Float): Event() //修改行距事件
     data class ChangeFontSizeEvent(val value: Float): Event() //修改字体大小事件
     

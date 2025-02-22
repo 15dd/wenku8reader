@@ -7,6 +7,7 @@
     android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/abl_a_novel_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true">
@@ -26,280 +27,24 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nsv_a_novel_info"
+    <androidx.fragment.app.FragmentContainerView
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:id="@+id/fcv_a_novel_info"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:visibility="visible">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    app:cardCornerRadius="4dp"
-                    app:cardElevation="0dp">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/iv_a_novel_info"
-                        android:layout_width="120dp"
-                        android:layout_height="170dp"
-                        android:foreground="?selectableItemBackground"
-                        android:scaleType="centerCrop" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_a_novel_info_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginBottom="10dp"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        tools:text="title" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/ic_person" />
-
-                        <TextView
-                            android:id="@+id/tv_a_novel_info_author"
-                            style="@style/TextAppearance.Material3.BodyMedium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="?attr/colorPrimary"
-                            android:textStyle="bold"
-                            tools:text="author" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:id="@+id/iv_a_novel_info_status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/ic_schedule" />
-
-                        <TextView
-                            android:id="@+id/tv_a_novel_info_status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:text="status" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/ic_update" />
-
-                        <TextView
-                            android:id="@+id/tv_a_novel_info_fin_update"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:text="finUpdate" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:id="@+id/iv_a_novel_info_anim"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/ic_live_tv" />
-
-                        <TextView
-                            android:id="@+id/tv_a_novel_info_is_animated"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:text="isAnimated" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/ic_heat" />
-
-                        <TextView
-                            android:id="@+id/tv_a_novel_info_heat"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:text="heat" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/ic_trending" />
-
-                        <TextView
-                            android:id="@+id/tv_a_novel_info_trending"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:text="treanding" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="10dp"
-                android:orientation="horizontal">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/b_a_novel_info_bookshelf"
-                    style="@style/Widget.Material3.Button.TextButton.Icon"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/add_to_bookshelf"
-                    android:textSize="12sp"
-                    app:icon="@drawable/ic_outline_favorite"
-                    app:iconGravity="textTop"
-                    app:iconSize="24dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/b_a_novel_info_vote"
-                    style="@style/Widget.Material3.Button.TextButton.Icon"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/recommend_this_novel"
-                    android:textSize="12sp"
-                    app:icon="@drawable/ic_recommend"
-                    app:iconGravity="textTop"
-                    app:iconSize="24dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/b_a_novel_info_comment"
-                    style="@style/Widget.Material3.Button.TextButton.Icon"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/comment_area"
-                    android:textSize="12sp"
-                    app:icon="@drawable/ic_comment"
-                    app:iconGravity="textTop"
-                    app:iconSize="24dp" />
-
-            </LinearLayout>
-
-            <com.ctetin.expandabletextviewlibrary.ExpandableTextView
-                android:id="@+id/etv_a_novel_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
-                android:textSize="14sp"
-                app:ep_max_line="3"
-                app:ep_need_animation="true"
-                app:ep_need_contract="true" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_a_novel_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
-                android:fadingEdgeLength="60dp"
-                android:requiresFadingEdge="horizontal" />
-
-            <pokercc.android.expandablerecyclerview.ExpandableRecyclerView
-                android:id="@+id/erv_a_novel_info"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:nestedScrollingEnabled="false" />
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
+        android:layout_height="match_parent"/>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/fab_a_novel_info"
+        android:id="@+id/fab_f_novel_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
         android:contentDescription="@null"
         android:text="@string/continue_from_history"
-        android:visibility="invisible"
         app:icon="@drawable/ic_play"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
-        tools:visibility="visible" />
+        app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior"
+        android:visibility="invisible"
+        tools:visibility="visible"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

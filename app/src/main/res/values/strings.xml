@@ -290,4 +290,19 @@
     <string name="one_day">一天</string>
     <string name="one_month">一个月</string>
     <string name="one_year">一年</string>
+
+    <string name="default_bookshelf">默认书架</string>
+    <string name="first_bookshelf">第一组书架</string>
+    <string name="second_bookshelf">第二组书架</string>
+    <string name="third_bookshelf">第三组书架</string>
+    <string name="fourth_bookshelf">第四组书架</string>
+    <string name="fifth_bookshelf">第五组书架</string>
+    <string name="move_to_other_bookshelf">移动到其它书架</string>
+    <string name="task_completed">操作完成</string>
+    <string name="move_to_other_bookshelf_completed">已移动至其它书架</string>
+    <string name="delete_from_bookshelf_completed">已从书架中删除</string>
+    <string name="select_all">选择全部</string>
+    <string name="deselect">取消全选</string>
+    <string name="remove_from_bookshelf">移出书架</string>
+    <string name="sync">同步</string>
 </resources>

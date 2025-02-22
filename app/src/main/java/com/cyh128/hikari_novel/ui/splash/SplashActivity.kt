@@ -48,6 +48,14 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
         receiveEvent<Event>("event_splash_activity") { event ->
             when (event) {
+                Event.LoadSuccessEvent -> {
+                    startActivity<MainActivity> {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    }
+                    overridePendingTransition(0, 0)
+                }
+
                 Event.AuthFailedEvent -> {
                     startActivity<LoginActivity> {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -92,12 +100,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             lifecycleScope.launch {
                 viewModel.setLoggingInText(getString(R.string.getting_bookshelf))
                 //获取书架信息
-                viewModel.refreshBookshelfList() //等待书架信息获取完成
-                startActivity<MainActivity> {
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                }
-                overridePendingTransition(0, 0)
+                viewModel.getAllBookshelf()
             }
         }
     }

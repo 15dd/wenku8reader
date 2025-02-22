@@ -20,17 +20,20 @@ class BookshelfSearchFragment : BaseFragment<FragmentBookshelfSearchBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val bookshelfListAdapter = BookshelfListAdapter(viewModel.searchList) { aid ->
-            startActivity<NovelInfoActivity> {
-                putExtra("aid", aid)
+        val bookshelfListAdapter = BookshelfListAdapter(
+            viewModel.searchList,
+            onItemClick = { aid ->
+                startActivity<NovelInfoActivity> {
+                    putExtra("aid", aid)
+                }
             }
-        }
+        )
         binding.rvFBookshelfSearch.apply {
             adapter = bookshelfListAdapter
             layoutManager = GridLayoutManager(requireContext(), 3)
         }
 
-        receiveEvent<Event>("event_bookshelf_search_fragment") { event->
+        receiveEvent<Event>("event_bookshelf_search_fragment") { event ->
             if (event == Event.SearchBookshelfSuccessEvent) {
                 bookshelfListAdapter.notifyDataSetChanged()
             }

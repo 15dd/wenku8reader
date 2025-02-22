@@ -2,6 +2,7 @@ package com.cyh128.hikari_novel.data.di
 
 import android.content.Context
 import androidx.room.Room
+import com.cyh128.hikari_novel.data.source.local.database.bookshelf.BookshelfDatabase
 import com.cyh128.hikari_novel.data.source.local.database.read_history.horizontal_read_history.HorizontalReadHistoryDatabase
 import com.cyh128.hikari_novel.data.source.local.database.read_history.vertical_read_history.VerticalReadHistoryDatabase
 import com.cyh128.hikari_novel.data.source.local.database.search_history.SearchHistoryDatabase
@@ -70,4 +71,17 @@ object DatabaseModule {
 
     @Provides
     fun visitHistoryDao(database: VisitHistoryDatabase) = database.visitHistoryDao()
+
+    @Provides
+    @Singleton
+    fun bookshelfDatabase(@ApplicationContext context: Context): BookshelfDatabase {
+        return Room.databaseBuilder(
+            context,
+            BookshelfDatabase::class.java,
+            "bookshelf"  //名称不要修改，否则数据会丢失
+        ).build()
+    }
+
+    @Provides
+    fun bookshelfDao(database: BookshelfDatabase) = database.bookshelfDao()
 }

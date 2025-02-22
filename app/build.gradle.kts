@@ -79,12 +79,12 @@ dependencies {
     //android相关
     implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.13.0-alpha09")
+    implementation("com.google.android.material:material:1.13.0-alpha10")
     implementation("androidx.constraintlayout:constraintlayout:2.2.0")
     implementation("androidx.recyclerview:recyclerview:1.4.0")
     implementation("androidx.viewpager2:viewpager2:1.1.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.8.5")
-    implementation("androidx.navigation:navigation-ui-ktx:2.8.5")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.6")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.6")
 
     //数据库
     implementation("androidx.room:room-ktx:2.6.1")
@@ -141,8 +141,8 @@ dependencies {
     implementation("com.geyifeng.immersionbar:immersionbar:3.2.2")
 
     //hilt依赖注入
-    implementation("com.google.dagger:hilt-android:2.52")
-    ksp("com.google.dagger:hilt-android-compiler:2.51")
+    implementation("com.google.dagger:hilt-android:2.55")
+    ksp("com.google.dagger:hilt-android-compiler:2.55")
 
     //json解析
     implementation("com.google.code.gson:gson:2.11.0")

@@ -4,12 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
+        android:id="@+id/menu_f_bookshelf_sync"
+        android:icon="@drawable/ic_sync"
+        android:title="@string/sync"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/menu_f_bookshelf_search"
         android:icon="@drawable/ic_search"
         android:title="@string/search"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="always|collapseActionView"
-        tools:ignore="AlwaysShowAction"/>
+        app:showAsAction="always"/>
 
 <!--    <item-->
 <!--        android:id="@+id/menu_f_bookshelf_more_shelves"-->

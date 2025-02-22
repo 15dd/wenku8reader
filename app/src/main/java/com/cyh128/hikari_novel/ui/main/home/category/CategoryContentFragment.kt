@@ -11,6 +11,7 @@ import com.cyh128.hikari_novel.data.model.LoadMode
 import com.cyh128.hikari_novel.databinding.FragmentNovelListBinding
 import com.cyh128.hikari_novel.ui.detail.NovelInfoActivity
 import com.cyh128.hikari_novel.ui.main.NovelCoverListAdapter
+import com.cyh128.hikari_novel.ui.main.home.HomeFragment
 import com.cyh128.hikari_novel.util.startActivity
 import com.drake.channel.receiveEvent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

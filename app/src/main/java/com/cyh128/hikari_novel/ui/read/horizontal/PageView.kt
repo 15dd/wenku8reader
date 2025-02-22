@@ -15,6 +15,27 @@ import com.cyh128.hikari_novel.data.model.HorizontalRead
 import kotlin.math.abs
 import kotlin.reflect.KProperty
 
+/*
+ * Copyright 2018 ya-b
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * This file includes code from NetNovelReader under the Apache License, Version 2.0.
+ * The original source can be found at: https://github.com/ya-b/NetNovelReader/
+ *
+ * Modified by 15dd on 2024 - 增加了图片支持，删除了用不到的函数以及变量，优化了手势检测，优化了分页算法
+ */
+
 class PageView : ViewFlipper, IPageView {
     override var pageNum: Int by InvalidateAfterSet(1)                  //页数
     override var backgroundcolor: Int by InvalidateAfterSet(Color.WHITE)    //背景颜色

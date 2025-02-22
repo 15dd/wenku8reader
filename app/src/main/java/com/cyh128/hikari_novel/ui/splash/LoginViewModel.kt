@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.data.repository.BookshelfRepository
 import com.cyh128.hikari_novel.data.repository.Wenku8Repository
+import com.cyh128.hikari_novel.data.source.local.database.bookshelf.BookshelfEntity
 import com.drake.channel.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -60,34 +61,117 @@ class LoginViewModel @Inject constructor(
         wenku8Repository.password = password
     }
 
-    //刷新书架列表
-    suspend fun refreshBookshelfList() {
-        wenku8Repository.getBookshelf()
-            .onSuccess { success ->
-                bookshelfRepository.updateBookshelfList(success)
+    suspend fun getAllBookshelf() {
+        bookshelfRepository.deleteAll()
+
+        wenku8Repository.getBookshelf(0)
+            .onSuccess { it0 ->
+                bookshelfRepository.addAll(
+                    it0.list.map { info ->
+                        BookshelfEntity(
+                            aid = info.aid,
+                            bid = info.bid,
+                            detailUrl = info.detailUrl,
+                            title = info.title,
+                            img = info.img,
+                            classId = 0
+                        )
+                    }
+                )
+                wenku8Repository.getBookshelf(1)
+                    .onSuccess { it1 ->
+                        bookshelfRepository.addAll(
+                            it1.list.map { info ->
+                                BookshelfEntity(
+                                    aid = info.aid,
+                                    bid = info.bid,
+                                    detailUrl = info.detailUrl,
+                                    title = info.title,
+                                    img = info.img,
+                                    classId = 1
+                                )
+                            }
+                        )
+                        wenku8Repository.getBookshelf(2)
+                            .onSuccess { it2 ->
+                                bookshelfRepository.addAll(
+                                    it2.list.map { info ->
+                                        BookshelfEntity(
+                                            aid = info.aid,
+                                            bid = info.bid,
+                                            detailUrl = info.detailUrl,
+                                            title = info.title,
+                                            img = info.img,
+                                            classId = 2
+                                        )
+                                    }
+                                )
+                                wenku8Repository.getBookshelf(3)
+                                    .onSuccess { it3 ->
+                                        bookshelfRepository.addAll(
+                                            it3.list.map { info ->
+                                                BookshelfEntity(
+                                                    aid = info.aid,
+                                                    bid = info.bid,
+                                                    detailUrl = info.detailUrl,
+                                                    title = info.title,
+                                                    img = info.img,
+                                                    classId = 3
+                                                )
+                                            }
+                                        )
+                                        wenku8Repository.getBookshelf(4)
+                                            .onSuccess { it4 ->
+                                                bookshelfRepository.addAll(
+                                                    it4.list.map { info ->
+                                                        BookshelfEntity(
+                                                            aid = info.aid,
+                                                            bid = info.bid,
+                                                            detailUrl = info.detailUrl,
+                                                            title = info.title,
+                                                            img = info.img,
+                                                            classId = 4
+                                                        )
+                                                    }
+                                                )
+                                                wenku8Repository.getBookshelf(5)
+                                                    .onSuccess { it5 ->
+                                                        bookshelfRepository.addAll(
+                                                            it5.list.map { info ->
+                                                                BookshelfEntity(
+                                                                    aid = info.aid,
+                                                                    bid = info.bid,
+                                                                    detailUrl = info.detailUrl,
+                                                                    title = info.title,
+                                                                    img = info.img,
+                                                                    classId = 5
+                                                                )
+                                                            }
+                                                        )
+
+                                                        bookshelfRepository.setMaxCollection(it5.maxNum)
+
+                                                        sendEvent(Event.LoadSuccessEvent, "event_splash_activity")
+
+                                                    }.onFailure { failure ->
+                                                        sendEvent(Event.NetworkErrorEvent(failure.message), "event_splash_activity")
+                                                    }
+                                            }.onFailure { failure ->
+                                                sendEvent(Event.NetworkErrorEvent(failure.message), "event_splash_activity")
+                                            }
+                                    }.onFailure { failure ->
+                                        sendEvent(Event.NetworkErrorEvent(failure.message), "event_splash_activity")
+                                    }
+                            }.onFailure { failure ->
+                                sendEvent(Event.NetworkErrorEvent(failure.message), "event_splash_activity")
+                            }
+                    }.onFailure { failure ->
+                        sendEvent(Event.NetworkErrorEvent(failure.message), "event_splash_activity")
+                    }
             }.onFailure { failure ->
-                sendEvent(Event.NetworkErrorEvent(failure.message),"event_login_activity")
+                sendEvent(Event.NetworkErrorEvent(failure.message), "event_splash_activity")
             }
     }
 
-    //算出时间戳
-    fun calculateTimestampFromSeconds(seconds: Long): Long {
-        val calendar = Calendar.getInstance()
-        calendar.add(Calendar.SECOND, seconds.toInt())
-        return calendar.timeInMillis / 1000
-    }
-
     fun getWenku8Node() = wenku8Repository.getWenku8Node()
-
-    fun getCookie(): String {
-        var cookie = ""
-        val iCookieJar = RxHttpPlugins.getOkHttpClient().cookieJar as ICookieJar
-        val httpUrl = "https://${getWenku8Node()}".toHttpUrlOrNull()
-        val cookies = iCookieJar.loadCookie(httpUrl)
-        cookies.forEach {
-            Log.d("l_v_m","name:${it.name} value:${it.value}")
-            cookie += it.name + "=" + it.value + ";"
-        }
-        return cookie
-    }
 }

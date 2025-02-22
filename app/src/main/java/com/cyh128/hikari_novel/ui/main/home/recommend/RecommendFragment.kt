@@ -10,6 +10,7 @@ import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.databinding.FragmentRecommendBinding
 import com.cyh128.hikari_novel.ui.detail.NovelInfoActivity
 import com.cyh128.hikari_novel.ui.main.HomeBlockAdapter
+import com.cyh128.hikari_novel.ui.main.home.HomeFragment
 import com.cyh128.hikari_novel.util.startActivity
 import com.drake.channel.receiveEvent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

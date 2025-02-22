@@ -1,6 +1,7 @@
 package com.cyh128.hikari_novel.data.repository
 
 import android.util.Log
+import com.cyh128.hikari_novel.data.model.Bookshelf
 import com.cyh128.hikari_novel.data.model.BookshelfNovelInfo
 import com.cyh128.hikari_novel.data.model.ChapterContentResponse
 import com.cyh128.hikari_novel.data.model.CommentResponse
@@ -22,6 +23,7 @@ import com.cyh128.hikari_novel.util.HttpCodeParser
 import com.cyh128.hikari_novel.util.Wenku8Parser
 import com.cyh128.hikari_novel.util.urlEncode
 import rxhttp.awaitResult
+import rxhttp.wrapper.entity.KeyValuePair
 import java.nio.charset.Charset
 import java.util.Locale
 import javax.inject.Inject
@@ -94,7 +96,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "GBK"
             }
         }
-        network.getData(requestUrl, cookie!!)
+        network.get(requestUrl, cookie!!)
             .awaitResult { body ->
                 val html = String(body.body()!!.bytes(), Charset.forName(charset))
                 val list = Wenku8Parser.parseToList(html, getWenku8Node())
@@ -124,7 +126,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "GBK"
             }
         }
-        network.getData(requestUrl, cookie!!)
+        network.get(requestUrl, cookie!!)
             .awaitResult { body ->
                 val html = String(body.body()!!.bytes(), Charset.forName(charset))
                 val list = Wenku8Parser.parseToList(html, getWenku8Node())
@@ -150,7 +152,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "GBK"
             }
         }
-        network.getData(requestUrl, cookie!!)
+        network.get(requestUrl, cookie!!)
             .awaitResult { body ->
                 //val html = String(body.body()!!.bytes(), Charset.forName(charset))
                 val html = String(body.body()!!.bytes(), Charset.forName(charset))
@@ -176,7 +178,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "GBK"
             }
         }
-        network.getData(requestUrl, cookie!!)
+        network.get(requestUrl, cookie!!)
             .awaitResult { body ->
                 val html = String(body.body()!!.bytes(), Charset.forName(charset))
                 val result = Wenku8Parser.getChapter(html)
@@ -201,7 +203,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "GBK"
             }
         }
-        network.getData(requestUrl, cookie!!)
+        network.get(requestUrl, cookie!!)
             .awaitResult { body ->
                 val html = String(body.body()!!.bytes(), Charset.forName(charset))
                 val result = Wenku8Parser.addNovel(html)
@@ -212,9 +214,45 @@ class Wenku8Repository @Inject constructor(
         throw RuntimeException()
     }
 
-    //移除书库
+    //移出书库
     suspend fun removeNovel(bid: String): Result<Any?> {
-        network.getData("https://${getWenku8Node()}/modules/article/bookcase.php?delid=$bid", cookie!!)
+        network.get("https://${getWenku8Node()}/modules/article/bookcase.php?delid=$bid", cookie!!)
+            .awaitResult {
+                return Result.success(null)
+            }.onFailure {
+                return Result.failure(NetworkException(it.message))
+            }
+        throw RuntimeException()
+    }
+
+    //从列表移出书库
+    suspend fun removeNovelFromList(list: List<String>, classId: Int): Result<Any?> {
+        val pairs = mutableListOf<KeyValuePair>()
+        list.forEach { pairs.add(KeyValuePair("checkid[]", it, false)) }
+        pairs.add(KeyValuePair("classlist", classId, false))
+        pairs.add(KeyValuePair("checkall","checkall", false))
+        pairs.add(KeyValuePair("newclassid", -1, false))
+        pairs.add(KeyValuePair("classid", classId, false))
+
+        network.post("https://${getWenku8Node()}/modules/article/bookcase.php", cookie!!, pairs)
+            .awaitResult {
+                return Result.success(null)
+            }.onFailure {
+                return Result.failure(NetworkException(it.message))
+            }
+        throw RuntimeException()
+    }
+
+    //移动到其它书架
+    suspend fun moveNovelToOther(list: List<String>, classId: Int, newClassId: Int): Result<Any?> {
+        val pairs = mutableListOf<KeyValuePair>()
+        list.forEach { pairs.add(KeyValuePair("checkid[]", it, false)) }
+        pairs.add(KeyValuePair("classlist", classId, false))
+        pairs.add(KeyValuePair("checkall","checkall", false))
+        pairs.add(KeyValuePair("newclassid", newClassId, false))
+        pairs.add(KeyValuePair("classid", classId, false))
+
+        network.post("https://${getWenku8Node()}/modules/article/bookcase.php", cookie!!, pairs)
             .awaitResult {
                 return Result.success(null)
             }.onFailure {
@@ -224,7 +262,7 @@ class Wenku8Repository @Inject constructor(
     }
 
     //获取书架
-    suspend fun getBookshelf(classId: Int = 0): Result<List<BookshelfNovelInfo>> {
+    suspend fun getBookshelf(classId: Int = 0): Result<Bookshelf> {
         val requestUrl: String?
         val charset: String?
         when(Locale.getDefault()) {
@@ -237,11 +275,11 @@ class Wenku8Repository @Inject constructor(
                 charset = "GBK"
             }
         }
-        network.getData(requestUrl, cookie!!)
+        network.get(requestUrl, cookie!!)
             .awaitResult { body ->
                 val html = String(body.body()!!.bytes(), Charset.forName(charset))
-                val result = Wenku8Parser.getBookshelf(html)
-                return Result.success(result)
+                val res = Wenku8Parser.getBookshelf(html)
+                return Result.success(res)
             }.onFailure {
                 return Result.failure(NetworkException(it.message))
             }
@@ -262,7 +300,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "GBK"
             }
         }
-        network.getData(requestUrl, cookie!!)
+        network.get(requestUrl, cookie!!)
             .awaitResult { body ->
                 val html = String(body.body()!!.bytes(), Charset.forName(charset))
                 val result = Wenku8Parser.getComment(html)
@@ -287,7 +325,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "GBK"
             }
         }
-        network.getData(requestUrl, cookie!!)
+        network.get(requestUrl, cookie!!)
             .awaitResult { body ->
                 val html = String(body.body()!!.bytes(), Charset.forName(charset))
                 val result = Wenku8Parser.getReply(html)
@@ -311,7 +349,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "GBK"
             }
         }
-        network.getData(requestUrl, cookie!!)
+        network.get(requestUrl, cookie!!)
             .awaitResult { body ->
                 val html = String(body.body()!!.bytes(), Charset.forName(charset))
                 val result = Wenku8Parser.getRecommend(html)
@@ -336,7 +374,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "GBK"
             }
         }
-        network.getData(requestUrl, cookie!!)
+        network.get(requestUrl, cookie!!)
             .awaitResult { body ->
                 val html = String(body.body()!!.bytes(), Charset.forName(charset))
                 val result = Wenku8Parser.novelVote(html)
@@ -361,7 +399,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "GBK"
             }
         }
-        network.getData(requestUrl, cookie!!)
+        network.get(requestUrl, cookie!!)
             .awaitResult { body ->
                 val html = String(body.body()!!.bytes(), Charset.forName(charset))
                 if (Wenku8Parser.isInFiveSecond(html)) {
@@ -393,7 +431,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "GBK"
             }
         }
-        network.getData(requestUrl, cookie!!)
+        network.get(requestUrl, cookie!!)
             .awaitResult { body ->
                 val html = String(body.body()!!.bytes(), Charset.forName(charset))
                 if (Wenku8Parser.isInFiveSecond(html)) {
@@ -430,7 +468,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "GBK"
             }
         }
-        network.getData(requestUrl, cookie!!)
+        network.get(requestUrl, cookie!!)
             .awaitResult { body ->
                 val html = String(body.body()!!.bytes(), Charset.forName(charset))
                 val result = Wenku8Parser.getUserInfo(html)
@@ -455,7 +493,7 @@ class Wenku8Repository @Inject constructor(
                 charset = "GBK"
             }
         }
-        network.getData(requestUrl, cookie!!)
+        network.get(requestUrl, cookie!!)
             .awaitResult { body ->
                 val html = String(body.body()!!.bytes(), Charset.forName(charset))
                 val result = Wenku8Parser.parseToList(html, getWenku8Node())
@@ -477,7 +515,7 @@ class Wenku8Repository @Inject constructor(
             Locale.TRADITIONAL_CHINESE -> "action=book&do=text&aid=$aid&cid=$cid&t=1"
             else -> "action=book&do=text&aid=$aid&cid=$cid&t=0"
         }
-        network.getDataFromAppWenku8Com(requestUrl)
+        network.getFromAppWenku8Com(requestUrl)
             .awaitResult {
                 val image = Wenku8Parser.getImageFromContent(it)
                 var content = it
@@ -503,7 +541,7 @@ class Wenku8Repository @Inject constructor(
 
     //在wenku8.com上签到
     suspend fun sign(): Result<Any?> {
-        network.getDataFromAppWenku8Com("action=block&do=sign")
+        network.getFromAppWenku8Com("action=block&do=sign")
             .awaitResult {
                 return when (it.trim()) {
                     "9" -> Result.failure(SignedInException())
@@ -520,7 +558,7 @@ class Wenku8Repository @Inject constructor(
         if (username == null || password == null) return Result.failure(TempSignInException())
         val un = username!!.urlEncode("utf-8")
         val pw = password!!.urlEncode("utf-8")
-        network.getDataFromAppWenku8Com("action=login&username=$un&password=$pw")
+        network.getFromAppWenku8Com("action=login&username=$un&password=$pw")
             .awaitResult {
                 return Result.success(null)
             }.onFailure {
