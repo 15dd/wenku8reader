@@ -13,6 +13,7 @@ import com.cyh128.hikari_novel.data.model.NovelCover
 import com.cyh128.hikari_novel.data.model.NovelInfo
 import com.cyh128.hikari_novel.data.model.Reply
 import com.cyh128.hikari_novel.data.model.ReplyResponse
+import com.cyh128.hikari_novel.data.model.SimpleNovelCover
 import com.cyh128.hikari_novel.data.model.UserInfo
 import com.cyh128.hikari_novel.data.model.Volume
 import org.jsoup.Jsoup
@@ -91,6 +92,26 @@ object Wenku8Parser {
             )
         }
         return result
+    }
+
+    fun parseOtherBookshelfToList(html: String): List<SimpleNovelCover> {
+        val list = mutableListOf<SimpleNovelCover>()
+
+        val document = Jsoup.parse(html)
+
+        val content = document.getElementById("centerm")!!
+        val tr = content.getElementsByTag("tr")
+        var aid: String
+        var title: String
+        tr.forEachIndexed { index, element ->
+            if (index == 0) return@forEachIndexed
+
+            title = element.getElementsByTag("a")[0].text()
+            aid = element.getElementsByTag("a")[1].attr("href").substringAfter("bid=")
+            list.add(SimpleNovelCover(title,aid))
+        }
+
+        return list
     }
 
     //获取总页数
@@ -330,6 +351,7 @@ object Wenku8Parser {
             val content = d.select("td")[0].select("a").text()
             val viewAndReplyCount = d.select("td")[1].text()
             val userName = d.select("td")[2].select("a").text()
+            val uid = d.select("td")[2].select("a").attr("href").substringAfter("uid=")
             val time = d.select("td")[3].text()
             tempC.add(
                 Comment(
@@ -338,6 +360,7 @@ object Wenku8Parser {
                     viewAndReplyCount.substring(viewAndReplyCount.indexOf("/") + 1),
                     viewAndReplyCount.substring(0, viewAndReplyCount.indexOf("/")),
                     userName,
+                    uid,
                     TimeUtil.dateToText1(time)
                 )
             )
@@ -367,12 +390,15 @@ object Wenku8Parser {
                 break
             }
             val userName = c.select("td")[0].selectFirst("a")!!.text()
+            val uid = c.select("td")[0].selectFirst("a")!!.attr("href").substringAfter("uid=")
             val time = c.select("td")[1].select("div")[1].text().apply {
                 substring(0, this.indexOf("|") - 1)
             }
             val content = c.select("td")[1].select("div")[2].text()
 
-            tempR.add(Reply(content, userName, TimeUtil.dateToText1(time)))
+            tempR.add(
+                Reply(content, userName, uid, TimeUtil.dateToText1(time))
+            )
         }
         replyResponse.curPage.addAll(tempR)
         replyResponse.maxNum = pageCount.toInt()

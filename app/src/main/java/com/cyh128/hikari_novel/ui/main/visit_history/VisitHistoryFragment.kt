@@ -30,18 +30,15 @@ class VisitHistoryFragment : BaseFragment<FragmentVisitHistoryBinding>() {
 
         launchWithLifecycle {
             viewModel.visitHistoryFlow.collect {
-                if (it.isNullOrEmpty()) {
-                    showEmptyScreen()
-                }
-                else {
-                    showContentScreen()
-                }
+                if (it.isNullOrEmpty()) showEmptyScreen()
+                else showContentScreen()
             }
         }
     }
 
     private fun showContentScreen() {
-        val currentFragment = childFragmentManager.findFragmentByTag("visit_history_content_fragment")
+        val currentFragment =
+            childFragmentManager.findFragmentByTag("visit_history_content_fragment")
         if (currentFragment?.isVisible != true) {
             binding.ablFVisitHistory.liftOnScrollTargetViewId = R.id.rv_f_novel_list
             childFragmentManager.beginTransaction().replace(

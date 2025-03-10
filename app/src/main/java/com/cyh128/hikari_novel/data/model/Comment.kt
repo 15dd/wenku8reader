@@ -6,11 +6,13 @@ data class Comment(
     val viewCount: String,
     val replyCount: String,
     val userName: String,
+    val uid: String,
     val time: String
 )
 
 data class Reply(
     val content: String,
     val userName: String,
+    val uid: String,
     val time: String
 )

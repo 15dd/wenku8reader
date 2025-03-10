@@ -69,6 +69,7 @@
 
         <activity
             android:name=".ui.main.home.search.SearchActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
             android:screenOrientation="portrait"/>
 
         <activity
@@ -82,6 +83,13 @@
         <activity
             android:name=".ui.read.SelectColorActivity"
             android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.main.bookshelf.search.BookshelfSearchActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.detail.user_bookshelf.UserBookshelfActivity"/>
 
     </application>
 

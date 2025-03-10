@@ -1,6 +1,5 @@
 package com.cyh128.hikari_novel.ui.splash
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,10 +12,6 @@ import com.drake.channel.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
-import rxhttp.RxHttpPlugins
-import rxhttp.wrapper.cookie.ICookieJar
-import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
@@ -66,7 +61,7 @@ class LoginViewModel @Inject constructor(
 
         wenku8Repository.getBookshelf(0)
             .onSuccess { it0 ->
-                bookshelfRepository.addAll(
+                bookshelfRepository.upsertAll(
                     it0.list.map { info ->
                         BookshelfEntity(
                             aid = info.aid,
@@ -80,7 +75,7 @@ class LoginViewModel @Inject constructor(
                 )
                 wenku8Repository.getBookshelf(1)
                     .onSuccess { it1 ->
-                        bookshelfRepository.addAll(
+                        bookshelfRepository.upsertAll(
                             it1.list.map { info ->
                                 BookshelfEntity(
                                     aid = info.aid,
@@ -94,7 +89,7 @@ class LoginViewModel @Inject constructor(
                         )
                         wenku8Repository.getBookshelf(2)
                             .onSuccess { it2 ->
-                                bookshelfRepository.addAll(
+                                bookshelfRepository.upsertAll(
                                     it2.list.map { info ->
                                         BookshelfEntity(
                                             aid = info.aid,
@@ -108,7 +103,7 @@ class LoginViewModel @Inject constructor(
                                 )
                                 wenku8Repository.getBookshelf(3)
                                     .onSuccess { it3 ->
-                                        bookshelfRepository.addAll(
+                                        bookshelfRepository.upsertAll(
                                             it3.list.map { info ->
                                                 BookshelfEntity(
                                                     aid = info.aid,
@@ -122,7 +117,7 @@ class LoginViewModel @Inject constructor(
                                         )
                                         wenku8Repository.getBookshelf(4)
                                             .onSuccess { it4 ->
-                                                bookshelfRepository.addAll(
+                                                bookshelfRepository.upsertAll(
                                                     it4.list.map { info ->
                                                         BookshelfEntity(
                                                             aid = info.aid,
@@ -136,7 +131,7 @@ class LoginViewModel @Inject constructor(
                                                 )
                                                 wenku8Repository.getBookshelf(5)
                                                     .onSuccess { it5 ->
-                                                        bookshelfRepository.addAll(
+                                                        bookshelfRepository.upsertAll(
                                                             it5.list.map { info ->
                                                                 BookshelfEntity(
                                                                     aid = info.aid,
@@ -150,26 +145,23 @@ class LoginViewModel @Inject constructor(
                                                         )
 
                                                         bookshelfRepository.setMaxCollection(it5.maxNum)
-
-                                                        sendEvent(Event.LoadSuccessEvent, "event_splash_activity")
-
                                                     }.onFailure { failure ->
-                                                        sendEvent(Event.NetworkErrorEvent(failure.message), "event_splash_activity")
+                                                        sendEvent(Event.NetworkErrorEvent(failure.message), "event_login_activity")
                                                     }
                                             }.onFailure { failure ->
-                                                sendEvent(Event.NetworkErrorEvent(failure.message), "event_splash_activity")
+                                                sendEvent(Event.NetworkErrorEvent(failure.message), "event_login_activity")
                                             }
                                     }.onFailure { failure ->
-                                        sendEvent(Event.NetworkErrorEvent(failure.message), "event_splash_activity")
+                                        sendEvent(Event.NetworkErrorEvent(failure.message), "event_login_activity")
                                     }
                             }.onFailure { failure ->
-                                sendEvent(Event.NetworkErrorEvent(failure.message), "event_splash_activity")
+                                sendEvent(Event.NetworkErrorEvent(failure.message), "event_login_activity")
                             }
                     }.onFailure { failure ->
-                        sendEvent(Event.NetworkErrorEvent(failure.message), "event_splash_activity")
+                        sendEvent(Event.NetworkErrorEvent(failure.message), "event_login_activity")
                     }
             }.onFailure { failure ->
-                sendEvent(Event.NetworkErrorEvent(failure.message), "event_splash_activity")
+                sendEvent(Event.NetworkErrorEvent(failure.message), "event_login_activity")
             }
     }
 

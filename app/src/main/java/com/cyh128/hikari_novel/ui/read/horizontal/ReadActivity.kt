@@ -22,7 +22,6 @@ import com.cyh128.hikari_novel.data.model.HorizontalRead
 import com.cyh128.hikari_novel.data.model.ReadParcel
 import com.cyh128.hikari_novel.databinding.ActivityHorizontalReadBinding
 import com.cyh128.hikari_novel.databinding.ViewHorizontalReadConfigBinding
-import com.cyh128.hikari_novel.ui.other.PhotoViewActivity
 import com.cyh128.hikari_novel.ui.read.SelectColorActivity
 import com.cyh128.hikari_novel.util.getIsInDarkMode
 import com.cyh128.hikari_novel.util.startActivity

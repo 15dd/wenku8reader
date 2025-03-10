@@ -9,6 +9,8 @@ import com.cyh128.hikari_novel.base.BaseBottomSheetDialogFragment
 import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.databinding.FragmentReplyBinding
 import com.cyh128.hikari_novel.ui.detail.comment.CommentActivity
+import com.cyh128.hikari_novel.ui.detail.user_bookshelf.UserBookshelfActivity
+import com.cyh128.hikari_novel.util.startActivity
 import com.drake.channel.receiveEvent
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,7 +21,14 @@ class ReplyFragment : BaseBottomSheetDialogFragment<FragmentReplyBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val url = requireArguments().getString("url")!!
-        val adapter = ReplyListAdapter(viewModel.pager)
+        val adapter = ReplyListAdapter(
+            list = viewModel.pager,
+            onUsernameClick = { uid ->
+                startActivity<UserBookshelfActivity> {
+                    putExtra("uid", uid)
+                }
+            }
+        )
 
         binding.rvFReply.apply {
             layoutManager = LinearLayoutManager(requireContext())

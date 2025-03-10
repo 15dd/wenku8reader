@@ -9,7 +9,8 @@ import com.cyh128.hikari_novel.databinding.ItemReplyBinding
 import com.cyh128.hikari_novel.util.ResourceUtil
 
 class ReplyListAdapter(
-    private val list: List<Reply>
+    private val list: List<Reply>,
+    private val onUsernameClick: (uid: String) -> Unit
 ) : RecyclerView.Adapter<ReplyListAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemReplyBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -34,6 +35,9 @@ class ReplyListAdapter(
             tvIReplyFloor.text = (position + 1).let {
                 if (it == 1) return@let ResourceUtil.getString(R.string.content)
                 else return@let "${it}${ResourceUtil.getString(R.string.floors)}"
+            }
+            cvIReplyUsername.setOnClickListener {
+                onUsernameClick(item.uid)
             }
         }
     }

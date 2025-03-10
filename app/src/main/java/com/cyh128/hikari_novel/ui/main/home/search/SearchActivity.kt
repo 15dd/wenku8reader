@@ -4,9 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.enableEdgeToEdge
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,19 +27,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
     private val viewModel by lazy { ViewModelProvider(this)[SearchViewModel::class.java] }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.fcvASearch) { v, insets ->
-            val navigationBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
-            v.setPadding(
-                navigationBars.left,
-                navigationBars.top,
-                navigationBars.right,
-                navigationBars.bottom
-            )
-            insets
-        }//edgeToEdge
 
         setSupportActionBar(binding.tbASearch)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

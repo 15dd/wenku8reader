@@ -14,6 +14,9 @@ interface BookshelfDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertAll(list: List<BookshelfEntity>)
 
+    @Query("UPDATE bookshelf SET classid = (:newClassId) WHERE aid = (:aid)")
+    suspend fun updateClassId(aid: String, newClassId: Int)
+
     @Query("DELETE FROM bookshelf WHERE aid = (:aid)")
     suspend fun delete(aid: String)
 

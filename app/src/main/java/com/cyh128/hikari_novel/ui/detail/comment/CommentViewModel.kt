@@ -44,5 +44,4 @@ class CommentViewModel @Inject constructor(
     }
 
     fun haveMore() = maxNum == null || currentIndex < maxNum!!
-
 }

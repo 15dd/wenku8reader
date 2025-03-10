@@ -1,10 +1,7 @@
 package com.cyh128.hikari_novel.ui.detail.comment
 
 import android.os.Bundle
-import android.view.View
-import androidx.activity.enableEdgeToEdge
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cyh128.hikari_novel.base.BaseActivity
@@ -12,6 +9,8 @@ import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.data.model.LoadMode
 import com.cyh128.hikari_novel.databinding.ActivityCommentBinding
 import com.cyh128.hikari_novel.ui.detail.comment.reply.ReplyFragment
+import com.cyh128.hikari_novel.ui.detail.user_bookshelf.UserBookshelfActivity
+import com.cyh128.hikari_novel.util.startActivity
 import com.drake.channel.receiveEvent
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,19 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class CommentActivity : BaseActivity<ActivityCommentBinding>() {
     private val viewModel by lazy { ViewModelProvider(this)[CommentViewModel::class.java] }
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.srlAComment) { v, insets ->
-            val navigationBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
-            v.setPadding(
-                navigationBars.left,
-                navigationBars.top,
-                navigationBars.right,
-                navigationBars.bottom
-            )
-            insets
-        }//edgeToEdge
 
         setSupportActionBar(binding.tbAComment)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -41,6 +28,11 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>() {
             list = viewModel.list,
             onItemClick = { url ->
                 showReplyFragment(url)
+            },
+            onUsernameClick = { uid ->
+                startActivity<UserBookshelfActivity> {
+                    putExtra("uid", uid)
+                }
             }
         )
         binding.rvAComment.apply {
@@ -51,17 +43,14 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>() {
         receiveEvent<Event>("event_comment_activity") { event ->
             when (event) {
                 Event.LoadSuccessEvent -> {
-                    if (binding.cpiAComment.isShown) {
-                        binding.cpiAComment.hide()
-                        binding.srlAComment.visibility = View.VISIBLE
-                    }
+                    binding.srlAComment.isRefreshing = false
                     adapter.notifyItemChanged(adapter.itemCount, 20)
                     if (binding.rvAComment.isLoadingMore) binding.rvAComment.loadMoreComplete()
-                    else if (binding.srlAComment.isRefreshing) binding.srlAComment.isRefreshing =
-                        false
+                    else if (binding.srlAComment.isRefreshing) binding.srlAComment.isRefreshing = false
                 }
 
                 is Event.NetworkErrorEvent -> {
+                    binding.srlAComment.isRefreshing = false
                     binding.rvAComment.loadMoreFail()
                     if (binding.srlAComment.isRefreshing) binding.srlAComment.isRefreshing = false
                 }
@@ -81,6 +70,8 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>() {
 
         viewModel.aid = intent.getStringExtra("aid")!!
         viewModel.getComment(LoadMode.REFRESH)
+
+        binding.srlAComment.isRefreshing = true
     }
 
     private fun showReplyFragment(url: String) {

@@ -18,7 +18,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         LanguageHelper.initLanguage()
         ThemeHelper.initActivityThemeAndDarkMode(this)
 
-        receiveEvent<Event>("event_theme_changed", "event_language_changed") {
+        receiveEvent<Event>("event_theme_changed") {
             recreateActivity()
         }
 

@@ -12,6 +12,7 @@ import com.cyh128.hikari_novel.data.repository.HorizontalReadRepository
 import com.cyh128.hikari_novel.data.repository.VerticalReadRepository
 import com.cyh128.hikari_novel.data.repository.VisitHistoryRepository
 import com.cyh128.hikari_novel.data.repository.Wenku8Repository
+import com.cyh128.hikari_novel.data.source.local.database.bookshelf.BookshelfEntity
 import com.cyh128.hikari_novel.data.source.local.database.visit_history.VisitHistoryEntity
 import com.cyh128.hikari_novel.util.TimeUtil
 import com.drake.channel.sendEvent
@@ -38,19 +39,19 @@ class NovelInfoViewModel @Inject constructor(
 
     val readOrientation = appRepository.getReaderOrientation()
 
-    fun getReadHistoryByCid(cid: String) = if (readOrientation == ReaderOrientation.Vertical) {
+    fun getReadHistoryByCidFlow(cid: String) = if (readOrientation == ReaderOrientation.Vertical) {
         verticalReadRepository.getByCid(cid)
     } else {
         horizontalReadRepository.getByCid(cid)
     }
 
-    fun getReadHistoryByVolume(volume: Int) = if (readOrientation == ReaderOrientation.Vertical) {
+    fun getReadHistoryByVolumeFlow(volume: Int) = if (readOrientation == ReaderOrientation.Vertical) {
         verticalReadRepository.getByVolume(aid, volume)
     } else {
         horizontalReadRepository.getByVolume(aid, volume)
     }
 
-    fun getLatestReadHistory() = if (readOrientation == ReaderOrientation.Vertical) {
+    fun getLatestReadHistoryFlow() = if (readOrientation == ReaderOrientation.Vertical) {
         verticalReadRepository.getLatestChapter(aid)
     } else {
         horizontalReadRepository.getLatestChapter(aid)
@@ -76,13 +77,16 @@ class NovelInfoViewModel @Inject constructor(
         }
     }
 
-    private fun isInBookshelf() {
+    fun isInBookshelf() {
         viewModelScope.launch(Dispatchers.IO) {
-            if (bookshelfRepository.getByAid(aid) == null) {
+            val result = bookshelfRepository.getByAid(aid)
+            if (result == null) {
                 isInBookshelf = false
+                bid = null
                 sendEvent(Event.NotInBookshelfEvent,"event_novel_info_content_fragment")
             } else {
                 isInBookshelf = true
+                bid = result.bid
                 sendEvent(Event.InBookshelfEvent,"event_novel_info_content_fragment")
             }
         }
@@ -125,7 +129,9 @@ class NovelInfoViewModel @Inject constructor(
 
     private suspend fun removeNovel() {
         wenku8Repository.removeNovel(bid!!)
-            .onFailure { failure ->
+            .onSuccess {
+                bookshelfRepository.delete(aid)
+            }.onFailure { failure ->
                 sendEvent(Event.NetworkErrorEvent(failure.message),"event_novel_info_activity")
             }
     }
@@ -134,6 +140,24 @@ class NovelInfoViewModel @Inject constructor(
         wenku8Repository.addNovel(aid)
             .onSuccess { success ->
                 if (!success) sendEvent(Event.AddToBookshelfFailure,"event_novel_info_content_fragment")
+                else {
+                    wenku8Repository.getBookshelf(0)
+                        .onSuccess { bookshelf ->
+                            val bnl = bookshelf.list.find { it.aid == aid }
+                            bookshelfRepository.upsert(
+                                BookshelfEntity(
+                                    aid = bnl!!.aid,
+                                    bid = bnl.bid,
+                                    detailUrl = bnl.detailUrl,
+                                    title = bnl.title,
+                                    img = bnl.img,
+                                    classId = 0
+                                )
+                            )
+                        }.onFailure { failure ->
+                            sendEvent(Event.NetworkErrorEvent(failure.message),"event_novel_info_activity")
+                        }
+                }
             }.onFailure { failure ->
                 sendEvent(Event.NetworkErrorEvent(failure.message),"event_novel_info_activity")
             }

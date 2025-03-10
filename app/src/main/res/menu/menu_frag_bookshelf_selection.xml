@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_f_bookshelf_select_all"
+        android:icon="@drawable/ic_select_all"
+        android:title="@string/select_all"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menu_f_bookshelf_deselect"
+        android:icon="@drawable/ic_deselect"
+        android:title="@string/deselect"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menu_f_bookshelf_move"
+        android:icon="@drawable/ic_drive_file_move"
+        android:title="@string/move_to_other_bookshelf"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menu_f_bookshelf_remove"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/remove_from_bookshelf"
+        app:showAsAction="always"/>
+</menu>

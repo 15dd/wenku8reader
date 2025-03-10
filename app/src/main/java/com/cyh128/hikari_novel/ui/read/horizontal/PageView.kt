@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.text.TextPaint
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.widget.ViewFlipper
 import androidx.core.view.size

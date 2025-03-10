@@ -1,44 +1,27 @@
 package com.cyh128.hikari_novel.ui.detail
 
 import android.os.Bundle
-import android.text.Html
 import android.view.Menu
 import android.view.View
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.marginLeft
-import androidx.core.view.marginRight
-import androidx.core.view.marginTop
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.base.BaseActivity
 import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.data.model.ReadParcel
 import com.cyh128.hikari_novel.data.model.ReaderOrientation
 import com.cyh128.hikari_novel.databinding.ActivityNovelInfoBinding
-import com.cyh128.hikari_novel.ui.detail.comment.CommentActivity
-import com.cyh128.hikari_novel.ui.main.bookshelf.BookshelfContentFragment
-import com.cyh128.hikari_novel.ui.main.home.search.SearchActivity
-import com.cyh128.hikari_novel.ui.other.PhotoViewActivity
-import com.cyh128.hikari_novel.util.launchWithLifecycle
 import com.cyh128.hikari_novel.util.openUrl
-import com.cyh128.hikari_novel.util.setMargin
 import com.cyh128.hikari_novel.util.startActivity
 import com.drake.channel.receiveEvent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.last
-import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 @AndroidEntryPoint
@@ -55,10 +38,15 @@ class NovelInfoActivity : BaseActivity<ActivityNovelInfoBinding>() {
         binding.tbANovelInfo.setNavigationOnClickListener { finish() }
 
         receiveEvent<Event>("event_novel_info_activity") { event ->
+            //防止在重复创建此Activity时，已入栈的的同类型Activity接收到Event
+            if (!lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) return@receiveEvent
+
             when (event) {
                 Event.LoadSuccessEvent -> {
                     binding.lpiANovelInfo.hide()
-                    binding.fabFNovelInfo.visibility = View.VISIBLE
+                    viewModel.getLatestReadHistoryFlow().onEach {
+                        binding.fabFNovelInfo.visibility = if (it == null) View.INVISIBLE else View.VISIBLE
+                    }.launchIn(lifecycleScope)
                     toNovelInfoContentScreen()
                 }
 
@@ -113,7 +101,7 @@ class NovelInfoActivity : BaseActivity<ActivityNovelInfoBinding>() {
         binding.fabFNovelInfo.setOnClickListener {
             lifecycleScope.launch {
                 if (viewModel.readOrientation == ReaderOrientation.Vertical) {
-                    viewModel.getLatestReadHistory().take(1).last()?.let { data ->
+                    viewModel.getLatestReadHistoryFlow().first()?.let { data ->
                         startActivity<com.cyh128.hikari_novel.ui.read.vertical.ReadActivity> {
                             putExtra(
                                 "data",
@@ -122,7 +110,7 @@ class NovelInfoActivity : BaseActivity<ActivityNovelInfoBinding>() {
                         }
                     }
                 } else {
-                    viewModel.getLatestReadHistory().take(1).last()?.let { data ->
+                    viewModel.getLatestReadHistoryFlow().first()?.let { data ->
                         startActivity<com.cyh128.hikari_novel.ui.read.horizontal.ReadActivity> {
                             putExtra(
                                 "data",

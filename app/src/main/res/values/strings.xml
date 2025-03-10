@@ -305,4 +305,11 @@
     <string name="deselect">取消全选</string>
     <string name="remove_from_bookshelf">移出书架</string>
     <string name="sync">同步</string>
+    <string name="bookshelf_show">当前书架有 %1$d 本书，你总共收藏了 %2$d 本书\n你最多收藏 %3$d 本书</string>
+    <string name="sync_tip">正在同步书架中，请勿退出</string>
+    <string name="sync_completed">同步完成</string>
+    <string name="bookshelf_of_the_others">TA的书架</string>
+    <string name="search_bookshelf">搜索书架</string>
+    <string name="edit_bookshelf">编辑书架</string>
+    <string name="user_bookshelf_no_content">TA没有收藏任何小说哦</string>
 </resources>

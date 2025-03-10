@@ -14,7 +14,6 @@ import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.base.BaseFragment
 import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.databinding.FragmentVerticalReadBinding
-import com.cyh128.hikari_novel.ui.other.PhotoViewActivity
 import com.cyh128.hikari_novel.util.getIsInDarkMode
 import com.cyh128.hikari_novel.util.startActivity
 import com.drake.channel.receiveEvent

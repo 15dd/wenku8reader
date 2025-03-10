@@ -2,7 +2,6 @@ package com.cyh128.hikari_novel.data.repository
 
 import android.util.Log
 import com.cyh128.hikari_novel.data.model.Bookshelf
-import com.cyh128.hikari_novel.data.model.BookshelfNovelInfo
 import com.cyh128.hikari_novel.data.model.ChapterContentResponse
 import com.cyh128.hikari_novel.data.model.CommentResponse
 import com.cyh128.hikari_novel.data.model.HomeBlock
@@ -13,6 +12,7 @@ import com.cyh128.hikari_novel.data.model.NovelCoverResponse
 import com.cyh128.hikari_novel.data.model.NovelInfo
 import com.cyh128.hikari_novel.data.model.ReplyResponse
 import com.cyh128.hikari_novel.data.model.SignedInException
+import com.cyh128.hikari_novel.data.model.SimpleNovelCover
 import com.cyh128.hikari_novel.data.model.TempSignInException
 import com.cyh128.hikari_novel.data.model.UserInfo
 import com.cyh128.hikari_novel.data.model.Volume
@@ -279,6 +279,30 @@ class Wenku8Repository @Inject constructor(
             .awaitResult { body ->
                 val html = String(body.body()!!.bytes(), Charset.forName(charset))
                 val res = Wenku8Parser.getBookshelf(html)
+                return Result.success(res)
+            }.onFailure {
+                return Result.failure(NetworkException(it.message))
+            }
+        throw RuntimeException()
+    }
+
+    suspend fun getBookshelfFromUser(uid: String): Result<List<SimpleNovelCover>> {
+        val requestUrl: String?
+        val charset: String?
+        when(Locale.getDefault()) {
+            Locale.TRADITIONAL_CHINESE -> {
+                requestUrl = "https://${getWenku8Node()}/userpage.php?uid=$uid&charset=big5"
+                charset = "BIG5-HKSCS"
+            }
+            else -> {
+                requestUrl = "https://${getWenku8Node()}/userpage.php?uid=$uid&charset=gbk"
+                charset = "GBK"
+            }
+        }
+        network.get(requestUrl, cookie!!)
+            .awaitResult { body ->
+                val html = String(body.body()!!.bytes(), Charset.forName(charset))
+                val res = Wenku8Parser.parseOtherBookshelfToList(html)
                 return Result.success(res)
             }.onFailure {
                 return Result.failure(NetworkException(it.message))

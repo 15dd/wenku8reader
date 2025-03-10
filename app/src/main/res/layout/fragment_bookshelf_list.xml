@@ -1,95 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/srl_f_bookshelf_list"
+    <me.jingbin.library.ByRecyclerView
+        android:id="@+id/rv_f_bookshelf_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_f_bookshelf_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                style="@style/TextAppearance.Material3.BodySmall"
-                android:padding="6dp"
-                tools:text="1/10/100"/>
-
-            <me.jingbin.library.ByRecyclerView
-                android:id="@+id/rv_f_bookshelf_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:listitem="@layout/item_novel_cover" />
-
-        </LinearLayout>
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <com.google.android.material.floatingtoolbar.FloatingToolbarLayout
-        android:id="@+id/ftl_f_bookshelf_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_margin="16dp">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
-
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Widget.Material3.Button.IconButton"
-                android:tooltipText="@string/select_all"
-                app:icon="@drawable/ic_select_all"
-                tools:ignore="UnusedAttribute" />
-
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Widget.Material3.Button.IconButton"
-                android:tooltipText="@string/deselect"
-                app:icon="@drawable/ic_deselect"
-                tools:ignore="UnusedAttribute" />
-
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Widget.Material3.Button.IconButton"
-                android:tooltipText="@string/move_to_other_bookshelf"
-                app:icon="@drawable/ic_drive_file_move"
-                tools:ignore="UnusedAttribute" />
-
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Widget.Material3.Button.IconButton"
-                android:tooltipText="@string/remove_from_bookshelf"
-                app:icon="@drawable/ic_delete"
-                tools:ignore="UnusedAttribute" />
-
-            <com.google.android.material.button.MaterialButton
-                android:layout_marginLeft="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Widget.Material3.Button.IconButton.Filled"
-                android:tooltipText="@string/cancel"
-                app:icon="@drawable/ic_close"
-                tools:ignore="UnusedAttribute" />
-
-        </LinearLayout>
-
-    </com.google.android.material.floatingtoolbar.FloatingToolbarLayout>
+        android:layout_height="match_parent"
+        tools:listitem="@layout/item_novel_cover" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

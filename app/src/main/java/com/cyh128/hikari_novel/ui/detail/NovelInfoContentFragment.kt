@@ -21,11 +21,10 @@ import com.cyh128.hikari_novel.ui.other.PhotoViewActivity
 import com.cyh128.hikari_novel.util.startActivity
 import com.drake.channel.receiveEvent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
-class NovelInfoContentFragment: BaseFragment<FragmentNovelInfoContentBinding>() {
+class NovelInfoContentFragment : BaseFragment<FragmentNovelInfoContentBinding>() {
     private val viewModel by lazy { ViewModelProvider(requireActivity())[NovelInfoViewModel::class.java] }
 
     private var chapterAdapter: NovelChapterListAdapter? = null
@@ -70,6 +69,7 @@ class NovelInfoContentFragment: BaseFragment<FragmentNovelInfoContentBinding>() 
             }
         }
 
+        viewModel.isInBookshelf()
         initView()
         initListener()
     }
@@ -166,65 +166,52 @@ class NovelInfoContentFragment: BaseFragment<FragmentNovelInfoContentBinding>() 
                         .show()
                 },
                 onGroupItemChangeListener = { group, binding ->
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        viewModel.getReadHistoryByVolume(group).collect {
-                            withContext(Dispatchers.Main) {
-                                if (it.isNullOrEmpty()) {
-                                    binding.tvIChapterVcssCompleted.text = getString(R.string.unread)
-                                    binding.tvIChapterVcss.isEnabled = true
-                                    binding.tvIChapterVcssCompleted.isEnabled = true
-                                } else if (it.size == viewModel.novel.volume[group].chapters.size) {
-                                    var isAllRead = false
-                                    it.forEach { entity ->
-                                        isAllRead = entity.progressPercent == 100
-                                    }
-                                    if (isAllRead) {
-                                        binding.tvIChapterVcssCompleted.text =
-                                            getString(R.string.completed_reading)
-                                        binding.tvIChapterVcss.isEnabled = false
-                                        binding.tvIChapterVcssCompleted.isEnabled = false
-                                    } else {
-                                        binding.tvIChapterVcssCompleted.text =
-                                            getString(R.string.partly_completed_reading)
-                                        binding.tvIChapterVcss.isEnabled = true
-                                        binding.tvIChapterVcssCompleted.isEnabled = true
-                                    }
-                                } else {
-                                    binding.tvIChapterVcssCompleted.text = getString(R.string.partly_completed_reading)
-                                    binding.tvIChapterVcss.isEnabled = true
-                                    binding.tvIChapterVcssCompleted.isEnabled = true
-                                }
+                    viewModel.getReadHistoryByVolumeFlow(group).onEach {
+                        if (it.isNullOrEmpty()) {
+                            binding.tvIChapterVcssCompleted.text = getString(R.string.unread)
+                            binding.tvIChapterVcss.isEnabled = true
+                            binding.tvIChapterVcssCompleted.isEnabled = true
+                        } else if (it.size == viewModel.novel.volume[group].chapters.size) {
+                            var isAllRead = false
+                            it.forEach { entity -> isAllRead = entity.progressPercent == 100 }
+                            if (isAllRead) {
+                                binding.tvIChapterVcssCompleted.text = getString(R.string.completed_reading)
+                                binding.tvIChapterVcss.isEnabled = false
+                                binding.tvIChapterVcssCompleted.isEnabled = false
+                            } else {
+                                binding.tvIChapterVcssCompleted.text = getString(R.string.partly_completed_reading)
+                                binding.tvIChapterVcss.isEnabled = true
+                                binding.tvIChapterVcssCompleted.isEnabled = true
                             }
+                        } else {
+                            binding.tvIChapterVcssCompleted.text = getString(R.string.partly_completed_reading)
+                            binding.tvIChapterVcss.isEnabled = true
+                            binding.tvIChapterVcssCompleted.isEnabled = true
                         }
-                    }
+                    }.launchIn(lifecycleScope)
                 },
                 onChildItemChangeListener = { group, child, binding ->
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        viewModel.getReadHistoryByCid(viewModel.novel.volume[group].chapters[child].cid)
-                            .collect {
-                                withContext(Dispatchers.Main) {
-                                    if (it == null) {
-                                        binding.tvIChapterCcssCompleted.text = getString(R.string.unread)
-                                        binding.tvIChapterCcss.isEnabled = true
-                                        binding.tvIChapterCcssCompleted.isEnabled = true
+                    viewModel.getReadHistoryByCidFlow(viewModel.novel.volume[group].chapters[child].cid).onEach {
+                        if (it == null) {
+                            binding.tvIChapterCcssCompleted.text = getString(R.string.unread)
+                            binding.tvIChapterCcss.isEnabled = true
+                            binding.tvIChapterCcssCompleted.isEnabled = true
 
-                                        binding.tvIChapterCcssLatest.text = null
-                                        return@withContext
-                                    } else if (it.progressPercent == 100) {
-                                        binding.tvIChapterCcssCompleted.text = getString(R.string.completed_reading)
-                                        binding.tvIChapterCcss.isEnabled = false
-                                        binding.tvIChapterCcssCompleted.isEnabled = false
-                                    } else {
-                                        binding.tvIChapterCcssCompleted.text = "${it.progressPercent}%"
-                                        binding.tvIChapterCcss.isEnabled = true
-                                        binding.tvIChapterCcssCompleted.isEnabled = true
-                                    }
+                            binding.tvIChapterCcssLatest.text = null
+                            return@onEach
+                        } else if (it.progressPercent == 100) {
+                            binding.tvIChapterCcssCompleted.text = getString(R.string.completed_reading)
+                            binding.tvIChapterCcss.isEnabled = false
+                            binding.tvIChapterCcssCompleted.isEnabled = false
+                        } else {
+                            binding.tvIChapterCcssCompleted.text = "${it.progressPercent}%"
+                            binding.tvIChapterCcss.isEnabled = true
+                            binding.tvIChapterCcssCompleted.isEnabled = true
+                        }
 
-                                    if (it.isLatest) binding.tvIChapterCcssLatest.text = getString(R.string.last_read)
-                                    else binding.tvIChapterCcssLatest.text = null
-                                }
-                            }
-                    }
+                        if (it.isLatest) binding.tvIChapterCcssLatest.text = getString(R.string.last_read)
+                        else binding.tvIChapterCcssLatest.text = null
+                    }.launchIn(lifecycleScope)
                 }
             )
 

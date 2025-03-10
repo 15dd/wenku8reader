@@ -8,7 +8,8 @@ import com.cyh128.hikari_novel.databinding.ItemCommentBinding
 
 class CommentListAdapter(
     val list: List<Comment>,
-    val onItemClick: (replyUrl: String) -> Unit
+    val onItemClick: (replyUrl: String) -> Unit,
+    val onUsernameClick: (uid: String) -> Unit
 ) : RecyclerView.Adapter<CommentListAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,6 +32,9 @@ class CommentListAdapter(
             tvICommentReplyCount.text = item.replyCount
             tvICommentComment.text = item.content
             tvICommentTime.text = item.time
+            cvICommentUsername.setOnClickListener {
+                onUsernameClick(item.uid)
+            }
             root.setOnClickListener {
                 onItemClick(item.replyUrl)
             }

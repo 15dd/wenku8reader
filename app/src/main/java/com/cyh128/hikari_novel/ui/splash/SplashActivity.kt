@@ -7,7 +7,6 @@ import android.util.Log
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.base.BaseActivity
 import com.cyh128.hikari_novel.data.model.Event
@@ -19,7 +18,7 @@ import com.trendyol.medusalib.navigator.MultipleStackNavigator
 import com.trendyol.medusalib.navigator.NavigatorConfiguration
 import com.trendyol.medusalib.navigator.transaction.NavigatorTransaction
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 @SuppressLint("CustomSplashScreen")
@@ -42,26 +41,20 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         navigator.initialize(savedInstanceState)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         receiveEvent<Event>("event_splash_activity") { event ->
             when (event) {
-                Event.LoadSuccessEvent -> {
-                    startActivity<MainActivity> {
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    }
-                    overridePendingTransition(0, 0)
-                }
-
                 Event.AuthFailedEvent -> {
                     startActivity<LoginActivity> {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         putExtra("isShowTip", true)
                     }
+                    overridePendingTransition(0,0)
                 }
 
                 Event.LogInFailureEvent -> {
@@ -94,14 +87,15 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
+            overridePendingTransition(0,0)
         } else {
             Log.d("s_a", "${viewModel.getCookie()}")
-            startFragment<LoggingInFragment>()
-            lifecycleScope.launch {
-                viewModel.setLoggingInText(getString(R.string.getting_bookshelf))
-                //获取书架信息
-                viewModel.getAllBookshelf()
+
+            startActivity<MainActivity> {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
+            overridePendingTransition(0,0)
         }
     }
 

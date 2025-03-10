@@ -4,24 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="5dp"
     app:cardCornerRadius="4dp"
     app:cardElevation="0dp"
-    app:strokeWidth="0dp"
-    android:layout_margin="5dp"
-    android:clickable="true"
-    android:focusable="true"
-    android:checkable="true">
+    app:strokeWidth="0dp">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_gravity="center_horizontal"
-        android:orientation="vertical">
+        android:layout_gravity="center_horizontal">
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
@@ -35,24 +33,46 @@
                     android:id="@+id/iv_i_novel_cover"
                     android:layout_width="112dp"
                     android:layout_height="160dp"
-                    android:scaleType="centerCrop"
                     android:layout_marginTop="5dp"
+                    android:scaleType="centerCrop"
                     tools:ignore="ContentDescription" />
 
             </com.google.android.material.card.MaterialCardView>
 
-        </FrameLayout>
+            <TextView
+                android:id="@+id/tv_i_novel_cover"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="5dp"
+                android:singleLine="true"
+                android:textSize="13sp"
+                tools:text="title" />
 
-        <TextView
-            android:id="@+id/tv_i_novel_cover"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:padding="5dp"
-            android:singleLine="true"
-            android:textSize="13sp"
-            tools:text="title" />
+        </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_i_novel_cover_checked"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:alpha="0.7"
+            android:background="?attr/colorSurfaceContainerHigh"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="invisible"
+            tools:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/iv_i_novel_cover_checked"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_check_circle_fill"
+            app:tint="?attr/colorPrimary"
+            android:visibility="invisible"
+            tools:visibility="visible"/>
+
+    </FrameLayout>
 
 </com.google.android.material.card.MaterialCardView>

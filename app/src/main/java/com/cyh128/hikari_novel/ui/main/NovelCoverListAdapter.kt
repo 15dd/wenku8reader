@@ -1,6 +1,7 @@
 package com.cyh128.hikari_novel.ui.main
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -49,6 +50,7 @@ class NovelCoverListAdapter(
 class BookshelfListAdapter(
     private var list: List<BookshelfNovelInfo>,
     private val onItemClick: (aid: String) -> Unit,
+    private val onSelected: (count: Int) -> Unit,
     private val onMultiSelectModeChange: (Boolean) -> Unit = {} //多选模式状态变化回调
 ) : RecyclerView.Adapter<BookshelfListAdapter.ViewHolder>() {
 
@@ -79,13 +81,17 @@ class BookshelfListAdapter(
 
             tvINovelCover.text = item.title
 
-            if (isMultiSelectMode) root.isChecked = item.isSelected
-            else root.isChecked = false
+            if (isMultiSelectMode) {
+                setChecked(item.isSelected, this)
+                onSelected(getSelectedList().size)
+            }
+            else setChecked(false, this)
 
             root.setOnClickListener {
                 if (isMultiSelectMode) {
                     item.isSelected = !item.isSelected
-                    root.isChecked = item.isSelected
+                    setChecked(item.isSelected, this)
+                    onSelected(getSelectedList().size)
                 } else {
                     onItemClick(item.aid)
                 }
@@ -93,11 +99,10 @@ class BookshelfListAdapter(
 
             root.setOnLongClickListener {
                 if (!isMultiSelectMode) {
-                    isMultiSelectMode = true
                     item.isSelected = true
-                    root.isChecked = true
-                    onMultiSelectModeChange(true)
-                    notifyDataSetChanged()
+                    setChecked(true, this)
+                    setMultiSelectMode(true)
+                    onSelected(getSelectedList().size)
                 }
                 true
             }
@@ -124,6 +129,16 @@ class BookshelfListAdapter(
     fun getSelectedList(): List<BookshelfNovelInfo> = list.filter { it.isSelected }
 
     fun getMultiSelectMode() = isMultiSelectMode
+
+    private fun setChecked(value: Boolean, binding: ItemNovelCoverBinding) {
+        if (value) {
+            binding.ivINovelCoverChecked.visibility = View.VISIBLE
+            binding.llINovelCoverChecked.visibility = View.VISIBLE
+        } else {
+            binding.ivINovelCoverChecked.visibility = View.INVISIBLE
+            binding.llINovelCoverChecked.visibility = View.INVISIBLE
+        }
+    }
 }
 
 class HomeBlockAdapter(

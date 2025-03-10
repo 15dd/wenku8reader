@@ -6,3 +6,8 @@ data class NovelCover(
     val detailUrl: String,
     val aid: String
 )
+
+data class SimpleNovelCover(
+    val title: String,
+    val aid: String
+)

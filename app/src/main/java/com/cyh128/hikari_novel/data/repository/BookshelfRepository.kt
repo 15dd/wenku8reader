@@ -11,9 +11,11 @@ class BookshelfRepository @Inject constructor(
     private val bookshelfInfo: BookshelfInfo,
     private val bookshelfDao: BookshelfDao
 ) {
-    suspend fun add(bookshelfEntity: BookshelfEntity) = bookshelfDao.upsert(bookshelfEntity)
+    suspend fun upsert(bookshelfEntity: BookshelfEntity) = bookshelfDao.upsert(bookshelfEntity)
 
-    suspend fun addAll(list: List<BookshelfEntity>) = bookshelfDao.upsertAll(list)
+    suspend fun upsertAll(list: List<BookshelfEntity>) = bookshelfDao.upsertAll(list)
+
+    suspend fun updateClassId(aid: String, newClassId: Int) = bookshelfDao.updateClassId(aid, newClassId)
 
     suspend fun delete(aid: String) = bookshelfDao.delete(aid)
 

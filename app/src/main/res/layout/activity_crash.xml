@@ -12,7 +12,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="130dp"
-        android:src="@drawable/ic_logo_header"
+        android:src="@drawable/logo_header"
         android:contentDescription="@null"/>
 
     <TextView

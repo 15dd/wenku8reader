@@ -1,5 +1,6 @@
 package com.cyh128.hikari_novel.util
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
@@ -22,6 +23,15 @@ inline fun <reified T: AppCompatActivity> AppCompatActivity.startActivity(
 ) {
     startActivity(
         Intent(this, T::class.java).apply(configIntent)
+    )
+}
+
+inline fun <reified T: AppCompatActivity> AppCompatActivity.startActivityWithoutAnimation(
+    configIntent: Intent.() -> Unit = {}
+) {
+    startActivity(
+        Intent(this, T::class.java).apply(configIntent),
+        ActivityOptions.makeCustomAnimation(this, 0, 0).toBundle()
     )
 }
 

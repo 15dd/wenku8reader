@@ -24,7 +24,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 app:cardCornerRadius="4dp"
-                app:cardElevation="0dp">
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_f_novel_info_content"

@@ -3,8 +3,6 @@ package com.cyh128.hikari_novel.data.model
 sealed class Event {
     data object LoadSuccessEvent: Event() //加载内容成功
     data class NetworkErrorEvent(val msg: String?): Event() //网络错误
-    data object SearchBookshelfSuccessEvent: Event() //搜索书架成功
-    data object SearchBookshelfFailureEvent: Event() //搜索书架失败，即没有内容
     data class VoteSuccessEvent(val msg: String?): Event() //投票成功
     data object InBookshelfEvent: Event() //此书在书架中
     data object NotInBookshelfEvent: Event() //此书不在书架中
@@ -21,8 +19,12 @@ sealed class Event {
     data object TempSignInUnableEvent: Event() //临时签到不可用事件
     data object RefreshSearchHistoryEvent: Event() //刷新搜索记录事件
 
-    data object RemoveNovelFromListSuccessEvent: Event() //从书架批量删除小说成功事件
-    data object MoveNovelFromListSuccessEvent: Event() //从书架批量移动小说成功事件
+    data object RemoveNovelFromListEvent: Event() //从书架批量删除小说事件
+    data object MoveNovelFromListEvent: Event() //从书架批量移动小说事件
+    data object SelectAllEvent: Event() //选择全部书籍事件
+    data object DeselectEvent: Event() //取消选择书籍事件
+    data object ExitSelectionModeEvent: Event() //退出多选模式事件
+    data object EditBookshelfEvent: Event() //编辑书架事件
 
     data class ChangeLineSpacingEvent(val value: Float): Event() //修改行距事件
     data class ChangeFontSizeEvent(val value: Float): Event() //修改字体大小事件

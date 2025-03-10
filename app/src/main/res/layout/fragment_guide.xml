@@ -25,7 +25,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="160dp"
-                android:src="@drawable/ic_logo_header"
+                android:src="@drawable/logo_header"
                 tools:ignore="ContentDescription" />
 
             <TextView
