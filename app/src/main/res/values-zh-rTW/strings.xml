@@ -34,7 +34,6 @@
     <string name="comment_area">評論區</string>
     <string name="open_in_browser">在瀏覽器中打開</string>
     <string name="recommend_this_novel">推薦本書</string>
-    <string name="github">Github</string>
     <string name="telegram">Telegram群組</string>
     <string name="comment">評論</string>
     <string name="report_to_developer">向開發者報告錯誤</string>
@@ -303,5 +302,6 @@
     <string name="search_bookshelf">搜索書架</string>
     <string name="edit_bookshelf">編輯書架</string>
     <string name="user_bookshelf_no_content">TA沒有收藏任何小說哦</string>
+    <string name="network_error_msg">"加載失敗，請檢查網絡環境，並確認wenku8是否能正常訪問 "</string>
 
 </resources>

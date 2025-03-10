@@ -1,6 +1,7 @@
 package com.cyh128.hikari_novel.data.repository
 
 import android.util.Log
+import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.data.model.Bookshelf
 import com.cyh128.hikari_novel.data.model.ChapterContentResponse
 import com.cyh128.hikari_novel.data.model.CommentResponse
@@ -20,6 +21,7 @@ import com.cyh128.hikari_novel.data.source.local.mmkv.AppConfig
 import com.cyh128.hikari_novel.data.source.local.mmkv.LoginInfo
 import com.cyh128.hikari_novel.data.source.remote.Network
 import com.cyh128.hikari_novel.util.HttpCodeParser
+import com.cyh128.hikari_novel.util.ResourceUtil
 import com.cyh128.hikari_novel.util.Wenku8Parser
 import com.cyh128.hikari_novel.util.urlEncode
 import rxhttp.awaitResult
@@ -65,16 +67,20 @@ class Wenku8Repository @Inject constructor(
     ): Result<LoginResponse> {
         network.login("https://${getWenku8Node()}/login.php", username, password, checkcode, usecookie)
             .awaitResult { body ->
-                if (body.code() != 200) {
-                    //如果code不是200，就说明网络有错误
-                    return Result.failure(NetworkException(HttpCodeParser.parser(body.code())))
-                } else {
-                    val html = String(body.body()!!.bytes(), Charset.forName("GBK"))
-                    Log.d("w_8_r",html)
-                    val response = LoginResponse.empty()
-                    Wenku8Parser.isLoginInfoCorrect(html, response)
-                    Wenku8Parser.isLoginSuccessful(html, response)
-                    return Result.success(response)
+                try {
+                    if (body.code() != 200) {
+                        //如果code不是200，就说明网络有错误
+                        return Result.failure(NetworkException(HttpCodeParser.parser(body.code())))
+                    } else {
+                        val html = String(body.body()!!.bytes(), Charset.forName("GBK"))
+                        Log.d("w_8_r",html)
+                        val response = LoginResponse.empty()
+                        Wenku8Parser.isLoginInfoCorrect(html, response)
+                        Wenku8Parser.isLoginSuccessful(html, response)
+                        return Result.success(response)
+                    }
+                } catch (e: Exception) {
+                    return Result.failure(NetworkException(ResourceUtil.getString(R.string.network_error_msg)))
                 }
             }.onFailure {
                 return Result.failure(NetworkException(it.message))
@@ -98,10 +104,14 @@ class Wenku8Repository @Inject constructor(
         }
         network.get(requestUrl, cookie!!)
             .awaitResult { body ->
-                val html = String(body.body()!!.bytes(), Charset.forName(charset))
-                val list = Wenku8Parser.parseToList(html, getWenku8Node())
-                val maxNum = Wenku8Parser.getMaxNum(html)
-                return Result.success(NovelCoverResponse(maxNum, list))
+                try {
+                    val html = String(body.body()!!.bytes(), Charset.forName(charset))
+                    val list = Wenku8Parser.parseToList(html, getWenku8Node())
+                    val maxNum = Wenku8Parser.getMaxNum(html)
+                    return Result.success(NovelCoverResponse(maxNum, list))
+                } catch (e: Exception) {
+                    return Result.failure(NetworkException(ResourceUtil.getString(R.string.network_error_msg)))
+                }
             }.onFailure {
                 return Result.failure(NetworkException(it.message))
             }
@@ -128,10 +138,14 @@ class Wenku8Repository @Inject constructor(
         }
         network.get(requestUrl, cookie!!)
             .awaitResult { body ->
-                val html = String(body.body()!!.bytes(), Charset.forName(charset))
-                val list = Wenku8Parser.parseToList(html, getWenku8Node())
-                val maxNum = Wenku8Parser.getMaxNum(html)
-                return Result.success(NovelCoverResponse(maxNum, list))
+                try {
+                    val html = String(body.body()!!.bytes(), Charset.forName(charset))
+                    val list = Wenku8Parser.parseToList(html, getWenku8Node())
+                    val maxNum = Wenku8Parser.getMaxNum(html)
+                    return Result.success(NovelCoverResponse(maxNum, list))
+                } catch (e: Exception) {
+                    return Result.failure(NetworkException(ResourceUtil.getString(R.string.network_error_msg)))
+                }
             }.onFailure {
                 return Result.failure(NetworkException(it.message))
             }
@@ -154,10 +168,13 @@ class Wenku8Repository @Inject constructor(
         }
         network.get(requestUrl, cookie!!)
             .awaitResult { body ->
-                //val html = String(body.body()!!.bytes(), Charset.forName(charset))
-                val html = String(body.body()!!.bytes(), Charset.forName(charset))
-                val result = Wenku8Parser.getNovelInfo(html)
-                return Result.success(result)
+                try {
+                    val html = String(body.body()!!.bytes(), Charset.forName(charset))
+                    val result = Wenku8Parser.getNovelInfo(html)
+                    return Result.success(result)
+                } catch (e: Exception) {
+                    return Result.failure(NetworkException(ResourceUtil.getString(R.string.network_error_msg)))
+                }
             }.onFailure {
                 return Result.failure(NetworkException(it.message))
             }
@@ -180,9 +197,13 @@ class Wenku8Repository @Inject constructor(
         }
         network.get(requestUrl, cookie!!)
             .awaitResult { body ->
-                val html = String(body.body()!!.bytes(), Charset.forName(charset))
-                val result = Wenku8Parser.getChapter(html)
-                return Result.success(result)
+                try {
+                    val html = String(body.body()!!.bytes(), Charset.forName(charset))
+                    val result = Wenku8Parser.getChapter(html)
+                    return Result.success(result)
+                } catch (e: Exception) {
+                    return Result.failure(NetworkException(ResourceUtil.getString(R.string.network_error_msg)))
+                }
             }.onFailure {
                 return Result.failure(NetworkException(it.message))
             }
@@ -205,9 +226,13 @@ class Wenku8Repository @Inject constructor(
         }
         network.get(requestUrl, cookie!!)
             .awaitResult { body ->
-                val html = String(body.body()!!.bytes(), Charset.forName(charset))
-                val result = Wenku8Parser.addNovel(html)
-                return if (result) Result.success(true) else Result.success(false)
+                try {
+                    val html = String(body.body()!!.bytes(), Charset.forName(charset))
+                    val result = Wenku8Parser.addNovel(html)
+                    return if (result) Result.success(true) else Result.success(false)
+                } catch (e: Exception) {
+                    return Result.failure(NetworkException(ResourceUtil.getString(R.string.network_error_msg)))
+                }
             }.onFailure {
                 return Result.failure(NetworkException(it.message))
             }
@@ -277,9 +302,13 @@ class Wenku8Repository @Inject constructor(
         }
         network.get(requestUrl, cookie!!)
             .awaitResult { body ->
-                val html = String(body.body()!!.bytes(), Charset.forName(charset))
-                val res = Wenku8Parser.getBookshelf(html)
-                return Result.success(res)
+                try {
+                    val html = String(body.body()!!.bytes(), Charset.forName(charset))
+                    val res = Wenku8Parser.getBookshelf(html)
+                    return Result.success(res)
+                } catch (e: Exception) {
+                    return Result.failure(NetworkException(ResourceUtil.getString(R.string.network_error_msg)))
+                }
             }.onFailure {
                 return Result.failure(NetworkException(it.message))
             }
@@ -301,9 +330,13 @@ class Wenku8Repository @Inject constructor(
         }
         network.get(requestUrl, cookie!!)
             .awaitResult { body ->
-                val html = String(body.body()!!.bytes(), Charset.forName(charset))
-                val res = Wenku8Parser.parseOtherBookshelfToList(html)
-                return Result.success(res)
+                try {
+                    val html = String(body.body()!!.bytes(), Charset.forName(charset))
+                    val res = Wenku8Parser.parseOtherBookshelfToList(html)
+                    return Result.success(res)
+                } catch (e: Exception) {
+                    return Result.failure(NetworkException(ResourceUtil.getString(R.string.network_error_msg)))
+                }
             }.onFailure {
                 return Result.failure(NetworkException(it.message))
             }
@@ -326,9 +359,13 @@ class Wenku8Repository @Inject constructor(
         }
         network.get(requestUrl, cookie!!)
             .awaitResult { body ->
-                val html = String(body.body()!!.bytes(), Charset.forName(charset))
-                val result = Wenku8Parser.getComment(html)
-                return Result.success(result)
+                try {
+                    val html = String(body.body()!!.bytes(), Charset.forName(charset))
+                    val result = Wenku8Parser.getComment(html)
+                    return Result.success(result)
+                } catch (e: Exception) {
+                    return Result.failure(NetworkException(ResourceUtil.getString(R.string.network_error_msg)))
+                }
             }.onFailure {
                 return Result.failure(NetworkException(it.message))
             }
@@ -351,9 +388,13 @@ class Wenku8Repository @Inject constructor(
         }
         network.get(requestUrl, cookie!!)
             .awaitResult { body ->
-                val html = String(body.body()!!.bytes(), Charset.forName(charset))
-                val result = Wenku8Parser.getReply(html)
-                return Result.success(result)
+                try {
+                    val html = String(body.body()!!.bytes(), Charset.forName(charset))
+                    val result = Wenku8Parser.getReply(html)
+                    return Result.success(result)
+                } catch (e: Exception) {
+                    return Result.failure(NetworkException(ResourceUtil.getString(R.string.network_error_msg)))
+                }
             }.onFailure {
                 return Result.failure(NetworkException(it.message))
             }
@@ -375,9 +416,13 @@ class Wenku8Repository @Inject constructor(
         }
         network.get(requestUrl, cookie!!)
             .awaitResult { body ->
-                val html = String(body.body()!!.bytes(), Charset.forName(charset))
-                val result = Wenku8Parser.getRecommend(html)
-                return Result.success(result)
+                try {
+                    val html = String(body.body()!!.bytes(), Charset.forName(charset))
+                    val result = Wenku8Parser.getRecommend(html)
+                    return Result.success(result)
+                } catch (e: Exception) {
+                    return Result.failure(NetworkException(ResourceUtil.getString(R.string.network_error_msg)))
+                }
             }.onFailure {
                 return Result.failure(NetworkException(it.message))
             }
@@ -400,9 +445,13 @@ class Wenku8Repository @Inject constructor(
         }
         network.get(requestUrl, cookie!!)
             .awaitResult { body ->
-                val html = String(body.body()!!.bytes(), Charset.forName(charset))
-                val result = Wenku8Parser.novelVote(html)
-                return Result.success(result)
+                try {
+                    val html = String(body.body()!!.bytes(), Charset.forName(charset))
+                    val result = Wenku8Parser.novelVote(html)
+                    return Result.success(result)
+                } catch (e: Exception) {
+                    return Result.failure(NetworkException(ResourceUtil.getString(R.string.network_error_msg)))
+                }
             }.onFailure {
                 return Result.failure(NetworkException(it.message))
             }
@@ -425,16 +474,20 @@ class Wenku8Repository @Inject constructor(
         }
         network.get(requestUrl, cookie!!)
             .awaitResult { body ->
-                val html = String(body.body()!!.bytes(), Charset.forName(charset))
-                if (Wenku8Parser.isInFiveSecond(html)) {
-                    return Result.failure(InFiveSecondException())
+                try {
+                    val html = String(body.body()!!.bytes(), Charset.forName(charset))
+                    if (Wenku8Parser.isInFiveSecond(html)) {
+                        return Result.failure(InFiveSecondException())
+                    }
+                    val isOnlyOne = Wenku8Parser.isSearchResultOnlyOne(html, getWenku8Node())
+                    if (isOnlyOne != null) {
+                        return Result.success(NovelCoverResponse(1, listOf(isOnlyOne)))
+                    }
+                    val result = Wenku8Parser.parseToList(html, getWenku8Node())
+                    return Result.success(NovelCoverResponse(Wenku8Parser.getMaxNum(html), result))
+                } catch (e: Exception) {
+                    return Result.failure(NetworkException(ResourceUtil.getString(R.string.network_error_msg)))
                 }
-                val isOnlyOne = Wenku8Parser.isSearchResultOnlyOne(html, getWenku8Node())
-                if (isOnlyOne != null) {
-                    return Result.success(NovelCoverResponse(1, listOf(isOnlyOne)))
-                }
-                val result = Wenku8Parser.parseToList(html, getWenku8Node())
-                return Result.success(NovelCoverResponse(Wenku8Parser.getMaxNum(html), result))
             }.onFailure {
                 return Result.failure(NetworkException(it.message))
             }
@@ -457,21 +510,25 @@ class Wenku8Repository @Inject constructor(
         }
         network.get(requestUrl, cookie!!)
             .awaitResult { body ->
-                val html = String(body.body()!!.bytes(), Charset.forName(charset))
-                if (Wenku8Parser.isInFiveSecond(html)) {
-                    return Result.failure(InFiveSecondException())
-                }
-                val isOnlyOne = Wenku8Parser.isSearchResultOnlyOne(html, getWenku8Node())
-                if (isOnlyOne != null) {
-                    return Result.success(
-                        NovelCoverResponse(
-                            Wenku8Parser.getMaxNum(html),
-                            listOf(isOnlyOne)
+                try {
+                    val html = String(body.body()!!.bytes(), Charset.forName(charset))
+                    if (Wenku8Parser.isInFiveSecond(html)) {
+                        return Result.failure(InFiveSecondException())
+                    }
+                    val isOnlyOne = Wenku8Parser.isSearchResultOnlyOne(html, getWenku8Node())
+                    if (isOnlyOne != null) {
+                        return Result.success(
+                            NovelCoverResponse(
+                                Wenku8Parser.getMaxNum(html),
+                                listOf(isOnlyOne)
+                            )
                         )
-                    )
+                    }
+                    val result = Wenku8Parser.parseToList(html, getWenku8Node())
+                    return Result.success(NovelCoverResponse(Wenku8Parser.getMaxNum(html), result))
+                } catch (e: Exception) {
+                    return Result.failure(NetworkException(ResourceUtil.getString(R.string.network_error_msg)))
                 }
-                val result = Wenku8Parser.parseToList(html, getWenku8Node())
-                return Result.success(NovelCoverResponse(Wenku8Parser.getMaxNum(html), result))
             }.onFailure {
                 return Result.failure(NetworkException(it.message))
             }
@@ -494,9 +551,13 @@ class Wenku8Repository @Inject constructor(
         }
         network.get(requestUrl, cookie!!)
             .awaitResult { body ->
-                val html = String(body.body()!!.bytes(), Charset.forName(charset))
-                val result = Wenku8Parser.getUserInfo(html)
-                return Result.success(result)
+                try {
+                    val html = String(body.body()!!.bytes(), Charset.forName(charset))
+                    val result = Wenku8Parser.getUserInfo(html)
+                    return Result.success(result)
+                } catch (e: Exception) {
+                    return Result.failure(NetworkException(ResourceUtil.getString(R.string.network_error_msg)))
+                }
             }.onFailure {
                 return Result.failure(NetworkException(it.message))
             }
@@ -519,14 +580,18 @@ class Wenku8Repository @Inject constructor(
         }
         network.get(requestUrl, cookie!!)
             .awaitResult { body ->
-                val html = String(body.body()!!.bytes(), Charset.forName(charset))
-                val result = Wenku8Parser.parseToList(html, getWenku8Node())
-                return Result.success(
-                    NovelCoverResponse(
-                        Wenku8Parser.getMaxNum(html),
-                        result
+                try {
+                    val html = String(body.body()!!.bytes(), Charset.forName(charset))
+                    val result = Wenku8Parser.parseToList(html, getWenku8Node())
+                    return Result.success(
+                        NovelCoverResponse(
+                            Wenku8Parser.getMaxNum(html),
+                            result
+                        )
                     )
-                )
+                } catch (e: Exception) {
+                    return Result.failure(NetworkException(ResourceUtil.getString(R.string.network_error_msg)))
+                }
             }.onFailure {
                 return Result.failure(NetworkException(it.message))
             }
@@ -541,14 +606,18 @@ class Wenku8Repository @Inject constructor(
         }
         network.getFromAppWenku8Com(requestUrl)
             .awaitResult {
-                val image = Wenku8Parser.getImageFromContent(it)
-                var content = it
-                content = content.replace(
-                    Regex("<!--image-->.*?<!--image-->"),
-                    ""
-                ) //删除小说内容中的image标签
+                try {
+                    val image = Wenku8Parser.getImageFromContent(it)
+                    var content = it
+                    content = content.replace(
+                        Regex("<!--image-->.*?<!--image-->"),
+                        ""
+                    ) //删除小说内容中的image标签
 
-                return Result.success(ChapterContentResponse(content, image))
+                    return Result.success(ChapterContentResponse(content, image))
+                } catch (e: Exception) {
+                    return Result.failure(NetworkException(ResourceUtil.getString(R.string.network_error_msg)))
+                }
             }.onFailure {
                 return Result.failure(NetworkException(it.message))
             }
