@@ -22,6 +22,8 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fcv_f_visit_history"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

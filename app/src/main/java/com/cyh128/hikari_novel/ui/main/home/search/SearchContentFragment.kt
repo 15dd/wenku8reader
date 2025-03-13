@@ -30,7 +30,7 @@ class SearchContentFragment : BaseFragment<FragmentNovelListBinding>() {
             }
         }
         binding.rvFNovelList.apply {
-            if (viewModel.listViewType == ListViewType.Linear) LinearLayoutManager(context) else GridLayoutManager(context, 3)
+            layoutManager = if (viewModel.listViewType == ListViewType.Linear) LinearLayoutManager(context) else GridLayoutManager(context, 3)
             this.adapter = adapter
         }
 
