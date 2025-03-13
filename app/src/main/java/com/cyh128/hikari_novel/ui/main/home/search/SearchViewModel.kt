@@ -7,6 +7,7 @@ import com.cyh128.hikari_novel.data.model.InFiveSecondException
 import com.cyh128.hikari_novel.data.model.NetworkException
 import com.cyh128.hikari_novel.data.model.NovelCover
 import com.cyh128.hikari_novel.data.model.SearchMode
+import com.cyh128.hikari_novel.data.repository.AppRepository
 import com.cyh128.hikari_novel.data.repository.SearchHistoryRepository
 import com.cyh128.hikari_novel.data.repository.Wenku8Repository
 import com.cyh128.hikari_novel.data.source.local.database.search_history.SearchHistoryEntity
@@ -20,10 +21,13 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val wenku8Repository: Wenku8Repository,
+    private val appRepository: AppRepository,
     private val searchHistoryRepository: SearchHistoryRepository
 ) : ViewModel() {
     private var currentIndex: Int = 0
     private var maxNum: Int? = null //总页数
+
+    val listViewType get() = appRepository.getListViewType()
 
     val pager: MutableList<NovelCover> = mutableListOf() //指针，勿动
 

@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.base.BaseFragment
 import com.cyh128.hikari_novel.data.model.Event
+import com.cyh128.hikari_novel.data.model.ListViewType
 import com.cyh128.hikari_novel.databinding.FragmentRecommendBinding
 import com.cyh128.hikari_novel.ui.detail.NovelInfoActivity
 import com.cyh128.hikari_novel.ui.main.HomeBlockAdapter
@@ -56,52 +58,52 @@ class RecommendFragment: BaseFragment<FragmentRecommendBinding>() {
     private fun showContent() {
         binding.tvFRecommendTitle1.text = viewModel.homeBlockList!![0].title
         binding.rvFRecommendBlock1.apply {
-            adapter = HomeBlockAdapter(viewModel.homeBlockList!![0]) { aid ->
+            adapter = HomeBlockAdapter(viewModel.homeBlockList!![0], viewModel.listViewType) { aid ->
                 startActivity<NovelInfoActivity> {
                     putExtra("aid", aid)
                 }
             }
-            layoutManager = GridLayoutManager(requireContext(), 3)
+            layoutManager = if (viewModel.listViewType == ListViewType.Linear) LinearLayoutManager(context) else GridLayoutManager(context, 3)
         }
 
         binding.tvFRecommendTitle2.text = viewModel.homeBlockList!![1].title
         binding.rvFRecommendBlock2.apply {
-            adapter = HomeBlockAdapter(viewModel.homeBlockList!![1]) { aid ->
+            adapter = HomeBlockAdapter(viewModel.homeBlockList!![1], viewModel.listViewType) { aid ->
                 startActivity<NovelInfoActivity> {
                     putExtra("aid", aid)
                 }
             }
-            layoutManager = GridLayoutManager(requireContext(), 3)
+            layoutManager = if (viewModel.listViewType == ListViewType.Linear) LinearLayoutManager(context) else GridLayoutManager(context, 3)
         }
 
         binding.tvFRecommendTitle3.text = viewModel.homeBlockList!![2].title
         binding.rvFRecommendBlock3.apply {
-            adapter = HomeBlockAdapter(viewModel.homeBlockList!![2]) { aid ->
+            adapter = HomeBlockAdapter(viewModel.homeBlockList!![2], viewModel.listViewType) { aid ->
                 startActivity<NovelInfoActivity> {
                     putExtra("aid", aid)
                 }
             }
-            layoutManager = GridLayoutManager(requireContext(), 3)
+            layoutManager = if (viewModel.listViewType == ListViewType.Linear) LinearLayoutManager(context) else GridLayoutManager(context, 3)
         }
 
         binding.tvFRecommendTitle4.text = viewModel.homeBlockList!![3].title
         binding.rvFRecommendBlock4.apply {
-            adapter = HomeBlockAdapter(viewModel.homeBlockList!![3]) { aid ->
+            adapter = HomeBlockAdapter(viewModel.homeBlockList!![3], viewModel.listViewType) { aid ->
                 startActivity<NovelInfoActivity> {
                     putExtra("aid", aid)
                 }
             }
-            layoutManager = GridLayoutManager(requireContext(), 3)
+            layoutManager = if (viewModel.listViewType == ListViewType.Linear) LinearLayoutManager(context) else GridLayoutManager(context, 3)
         }
 
         binding.tvFRecommendTitle5.text = viewModel.homeBlockList!![4].title
         binding.rvFRecommendBlock5.apply {
-            adapter = HomeBlockAdapter(viewModel.homeBlockList!![4]) { aid ->
+            adapter = HomeBlockAdapter(viewModel.homeBlockList!![4], viewModel.listViewType) { aid ->
                 startActivity<NovelInfoActivity> {
                     putExtra("aid", aid)
                 }
             }
-            layoutManager = GridLayoutManager(requireContext(), 3)
+            layoutManager = if (viewModel.listViewType == ListViewType.Linear) LinearLayoutManager(context) else GridLayoutManager(context, 3)
         }
     }
 }

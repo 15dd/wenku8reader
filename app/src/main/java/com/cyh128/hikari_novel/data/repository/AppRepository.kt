@@ -7,6 +7,7 @@ import com.cyh128.hikari_novel.data.model.AppTheme
 import com.cyh128.hikari_novel.data.model.DarkMode
 import com.cyh128.hikari_novel.data.model.DefaultTab
 import com.cyh128.hikari_novel.data.model.Language
+import com.cyh128.hikari_novel.data.model.ListViewType
 import com.cyh128.hikari_novel.data.model.ReaderOrientation
 import com.cyh128.hikari_novel.data.source.local.mmkv.AppConfig
 import com.cyh128.hikari_novel.data.source.remote.Network
@@ -74,6 +75,12 @@ class AppRepository @Inject constructor(
 
     fun setDarkMode(darkMode: DarkMode) {
         appConfig.darkMode = darkMode.ordinal
+    }
+
+    fun getListViewType() = enumValues<ListViewType>()[appConfig.listViewType]
+
+    fun setListViewType(listViewType: ListViewType) {
+        appConfig.listViewType = listViewType.ordinal
     }
 
     //检查更新

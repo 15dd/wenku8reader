@@ -4,6 +4,7 @@ import com.cyh128.hikari_novel.data.model.AppTheme
 import com.cyh128.hikari_novel.data.model.DarkMode
 import com.cyh128.hikari_novel.data.model.DefaultTab
 import com.cyh128.hikari_novel.data.model.Language
+import com.cyh128.hikari_novel.data.model.ListViewType
 import com.cyh128.hikari_novel.data.model.ReaderOrientation
 import com.tencent.mmkv.MMKV
 import javax.inject.Inject
@@ -66,5 +67,11 @@ class AppConfig @Inject constructor() {
         get() = cursor.decodeInt("dark_mode", DarkMode.System.ordinal)
         set(value) {
             cursor.encode("dark_mode", value)
+        }
+
+    var listViewType: Int
+        get() = cursor.decodeInt("list_view_type", ListViewType.Grid.ordinal)
+        set(value) {
+            cursor.encode("list_view_type", value)
         }
 }

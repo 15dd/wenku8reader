@@ -10,6 +10,7 @@ import com.cyh128.hikari_novel.data.model.AppTheme
 import com.cyh128.hikari_novel.data.model.DarkMode
 import com.cyh128.hikari_novel.data.model.DefaultTab
 import com.cyh128.hikari_novel.data.model.Language
+import com.cyh128.hikari_novel.data.model.ListViewType
 import com.cyh128.hikari_novel.data.model.ReaderOrientation
 import com.cyh128.hikari_novel.databinding.ActivitySettingBinding
 import com.cyh128.hikari_novel.util.LanguageHelper
@@ -43,6 +44,9 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>() {
         if (viewModel.getWenku8Node() == "www.wenku8.cc") binding.tvASettingNode.text =
             "www.wenku8.cc"
         else binding.tvASettingNode.text = "www.wenku8.net"
+
+        if (viewModel.getListViewType() == ListViewType.Linear) binding.tvASettingListViewType.setText(R.string.single_column)
+        else binding.tvASettingListViewType.setText(R.string.grid)
 
         binding.tvASettingDefaultTab.text = when (viewModel.getDefaultTab()) {
             DefaultTab.Home -> getString(R.string.home)
@@ -167,6 +171,37 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>() {
                         1 -> {
                             viewModel.setReaderOrientation(ReaderOrientation.Horizontal)
                             binding.tvASettingReadMode.text = getString(R.string.horizontal)
+                        }
+                    }
+                    dialog.dismiss()
+                }
+                .show()
+        }
+
+        binding.llASettingListViewType.setOnClickListener {
+            MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.list_view_type)
+                .setIcon(R.drawable.ic_view_list)
+                .setNegativeButton(R.string.cancel, null)
+                .setSingleChoiceItems(
+                    arrayOf(
+                        getString(R.string.single_column),
+                        getString(R.string.grid)
+                    ),
+                    run {
+                        if (viewModel.getListViewType() == ListViewType.Linear) return@run 0
+                        else return@run 1
+                    }
+                ) { dialog: DialogInterface, which: Int ->
+                    when (which) {
+                        0 -> {
+                            viewModel.setListViewType(ListViewType.Linear)
+                            binding.tvASettingListViewType.setText(R.string.single_column)
+                        }
+
+                        1 -> {
+                            viewModel.setListViewType(ListViewType.Grid)
+                            binding.tvASettingListViewType.setText(R.string.grid)
                         }
                     }
                     dialog.dismiss()

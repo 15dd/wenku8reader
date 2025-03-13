@@ -7,10 +7,12 @@ import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.base.BaseFragment
 import com.cyh128.hikari_novel.data.model.BookshelfNovelInfo
 import com.cyh128.hikari_novel.data.model.Event
+import com.cyh128.hikari_novel.data.model.ListViewType
 import com.cyh128.hikari_novel.databinding.FragmentBookshelfListBinding
 import com.cyh128.hikari_novel.ui.detail.NovelInfoActivity
 import com.cyh128.hikari_novel.ui.main.BookshelfListAdapter
@@ -34,7 +36,8 @@ class BookshelfListFragment : BaseFragment<FragmentBookshelfListBinding>() {
         displayList = (requireParentFragment() as BookshelfContentFragment).displayList
 
         adapter = BookshelfListAdapter(
-            displayList,
+            list = displayList,
+            listViewType = viewModel.listViewType,
             onItemClick = { aid ->
                 startActivity<NovelInfoActivity> {
                     putExtra("aid", aid)
@@ -50,7 +53,7 @@ class BookshelfListFragment : BaseFragment<FragmentBookshelfListBinding>() {
         )
 
         binding.rvFBookshelfList.apply {
-            layoutManager = GridLayoutManager(context, 3)
+            layoutManager = if (viewModel.listViewType == ListViewType.Linear) LinearLayoutManager(context) else GridLayoutManager(context, 3)
             this.adapter = this@BookshelfListFragment.adapter
         }
 

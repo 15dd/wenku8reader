@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.cyh128.hikari_novel.base.BaseFragment
+import com.cyh128.hikari_novel.data.model.ListViewType
 import com.cyh128.hikari_novel.databinding.FragmentNovelListBinding
 import com.cyh128.hikari_novel.ui.detail.NovelInfoActivity
 import com.cyh128.hikari_novel.ui.main.NovelCoverListAdapter
@@ -18,13 +20,13 @@ class BookshelfSearchContentFragment: BaseFragment<FragmentNovelListBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = NovelCoverListAdapter(viewModel.searchList) { aid ->
+        val adapter = NovelCoverListAdapter(viewModel.searchList, viewModel.listViewType) { aid ->
             startActivity<NovelInfoActivity> {
                 putExtra("aid", aid)
             }
         }
         binding.rvFNovelList.apply {
-            layoutManager = GridLayoutManager(requireContext(), 3)
+            layoutManager = if (viewModel.listViewType == ListViewType.Linear) LinearLayoutManager(context) else GridLayoutManager(context, 3)
             this.adapter = adapter
         }
     }

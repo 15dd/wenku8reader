@@ -598,6 +598,33 @@ class Wenku8Repository @Inject constructor(
         throw RuntimeException()
     }
 
+    suspend fun isOnline(): Result<Boolean> {
+        val requestUrl: String?
+        val charset: String?
+        when(Locale.getDefault()) {
+            Locale.TRADITIONAL_CHINESE -> {
+                requestUrl = "https://${getWenku8Node()}/index.php?&charset=big5"
+                charset = "BIG5-HKSCS"
+            }
+            else -> {
+                requestUrl = "https://${getWenku8Node()}/index.php?&charset=gbk"
+                charset = "GBK"
+            }
+        }
+        network.get(requestUrl, cookie!!)
+            .awaitResult { body ->
+                try {
+                    val html = String(body.body()!!.bytes(), Charset.forName(charset))
+                    return Result.success(Wenku8Parser.isIndexPage(html))
+                } catch (e: Exception) {
+                    return Result.failure(NetworkException(ResourceUtil.getString(R.string.network_error_msg)))
+                }
+            }.onFailure {
+                return Result.failure(NetworkException(it.message))
+            }
+        throw RuntimeException()
+    }
+
     //获取小说内容
     suspend fun getNovelContent(aid: String, cid: String): Result<ChapterContentResponse> {
         val requestUrl = when(Locale.getDefault()) {

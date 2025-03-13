@@ -8,6 +8,8 @@
         android:id="@+id/rv_f_bookshelf_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_novel_cover" />
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        tools:listitem="@layout/item_novel_cover_grid" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

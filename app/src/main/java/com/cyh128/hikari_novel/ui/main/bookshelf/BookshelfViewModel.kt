@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cyh128.hikari_novel.data.model.BookshelfNovelInfo
 import com.cyh128.hikari_novel.data.model.Event
+import com.cyh128.hikari_novel.data.repository.AppRepository
 import com.cyh128.hikari_novel.data.repository.BookshelfRepository
 import com.cyh128.hikari_novel.data.repository.Wenku8Repository
 import com.cyh128.hikari_novel.data.source.local.database.bookshelf.BookshelfEntity
@@ -22,6 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BookshelfViewModel @Inject constructor(
     private val wenku8Repository: Wenku8Repository,
+    private val appRepository: AppRepository,
     private val bookshelfRepository: BookshelfRepository
 ) : ViewModel() {
     var getAllFlow = bookshelfRepository.getAll()
@@ -29,6 +31,8 @@ class BookshelfViewModel @Inject constructor(
     fun getByClassIdFlow(classId: Int) = bookshelfRepository.getByClassId(classId)
 
     val maxCollection get() = bookshelfRepository.getMaxCollection()
+
+    val listViewType get() = appRepository.getListViewType()
 
     //批量移除小说
     fun removeNovelFromList(list: List<BookshelfNovelInfo>, classId: Int) {

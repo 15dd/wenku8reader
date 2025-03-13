@@ -511,4 +511,11 @@ object Wenku8Parser {
         }
         return images
     }
+
+    //判断当前页面是否为首页界面，以判断网络连接是否正常
+    fun isIndexPage(html: String): Boolean {
+        val document = Jsoup.parse(html)
+        val a = document.getElementsByClass("f1").eq(0).text()
+        return a.contains("退出登录") || a.contains("退出登錄")
+    }
 }

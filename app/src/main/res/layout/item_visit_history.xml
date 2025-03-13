@@ -11,15 +11,13 @@
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="4dp"
+            app:cardCornerRadius="6dp"
             app:cardElevation="0dp"
             app:strokeWidth="0dp">
 
@@ -43,8 +41,7 @@
                 android:id="@+id/tv_i_visit_history_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                style="@style/TextAppearance.Material3.TitleMedium"
                 android:layout_marginBottom="10dp"
                 tools:text="title"/>
 

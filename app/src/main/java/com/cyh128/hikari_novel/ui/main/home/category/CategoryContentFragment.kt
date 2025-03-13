@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.base.BaseFragment
 import com.cyh128.hikari_novel.data.model.Event
+import com.cyh128.hikari_novel.data.model.ListViewType
 import com.cyh128.hikari_novel.data.model.LoadMode
 import com.cyh128.hikari_novel.databinding.FragmentNovelListBinding
 import com.cyh128.hikari_novel.ui.detail.NovelInfoActivity
@@ -30,13 +32,13 @@ class CategoryContentFragment: BaseFragment<FragmentNovelListBinding>() {
         val category = requireArguments().getString("category")!!
         val sort = requireArguments().getString("sort")!!
 
-        val adapter = NovelCoverListAdapter(viewModel.pager) { aid ->
+        val adapter = NovelCoverListAdapter(viewModel.pager, viewModel.listViewType) { aid ->
             startActivity<NovelInfoActivity> {
                 putExtra("aid", aid)
             }
         }
         binding.rvFNovelList.apply {
-            layoutManager = GridLayoutManager(requireContext(), 3)
+            layoutManager = if (viewModel.listViewType == ListViewType.Linear) LinearLayoutManager(context) else GridLayoutManager(context, 3)
             this.adapter = adapter
         }
 

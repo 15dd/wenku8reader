@@ -4,9 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.data.repository.AppRepository
 import com.cyh128.hikari_novel.data.repository.Wenku8Repository
+import com.drake.channel.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,6 +36,17 @@ class SplashViewModel @Inject constructor(
                 it <= System.currentTimeMillis()
             }
         }
+
+    fun isOnline() {
+        viewModelScope.launch(Dispatchers.IO) {
+            wenku8Repository.isOnline()
+                .onSuccess {
+                    sendEvent(Event.LogInSuccessEvent, "event_splash_activity")
+                }.onFailure {
+                    sendEvent(Event.LogInFailureEvent, "event_splash_activity")
+                }
+        }
+    }
 
     fun setLoggingInText(text: String) {
         viewModelScope.launch {

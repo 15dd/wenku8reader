@@ -48,6 +48,16 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
         receiveEvent<Event>("event_splash_activity") { event ->
             when (event) {
+                Event.LogInSuccessEvent -> {
+                    Log.d("s_a", "${viewModel.getCookie()}")
+
+                    startActivity<MainActivity> {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    }
+                    overridePendingTransition(0,0)
+                }
+
                 Event.AuthFailedEvent -> {
                     startActivity<LoginActivity> {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -89,13 +99,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             }
             overridePendingTransition(0,0)
         } else {
-            Log.d("s_a", "${viewModel.getCookie()}")
-
-            startActivity<MainActivity> {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            }
-            overridePendingTransition(0,0)
+            viewModel.isOnline()
         }
     }
 

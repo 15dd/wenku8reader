@@ -19,6 +19,7 @@ class LoginErrorFragment : BaseFragment<FragmentLoginErrorBinding>() {
         binding.bFLoginError.setOnClickListener {
             viewModel.setLoggingInText(getString(R.string.logging))
             (requireActivity() as SplashActivity).startFragment<LoggingInFragment>()
+            viewModel.isOnline()
         }
         binding.tvFLoginError.text = requireArguments().getString("msg")
 

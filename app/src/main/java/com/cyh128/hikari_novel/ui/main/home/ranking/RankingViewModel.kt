@@ -7,6 +7,7 @@ import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.data.model.LoadMode
 import com.cyh128.hikari_novel.data.model.NovelCover
+import com.cyh128.hikari_novel.data.repository.AppRepository
 import com.cyh128.hikari_novel.data.repository.Wenku8Repository
 import com.drake.channel.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,10 +17,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RankingViewModel @Inject constructor(
-    private val wenku8Repository: Wenku8Repository
+    private val wenku8Repository: Wenku8Repository,
+    private val appRepository: AppRepository
 ) : ViewModel() {
     private var currentIndex: Int = 0
     private var maxNum: Int? = null //总页数
+
+    val listViewType get() = appRepository.getListViewType()
 
     val pager: MutableList<NovelCover> = mutableListOf()
 

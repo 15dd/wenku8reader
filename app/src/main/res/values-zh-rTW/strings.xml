@@ -272,7 +272,7 @@
     <string name="dark_mode">暗色模式</string>
     <string name="enable">啟用</string>
     <string name="disable">禁用</string>
-    <string name="login_failed_tip_2">登入失敗，請檢查網絡ip屬地</string>
+    <string name="login_failed_tip_2">登入失敗，請檢查網路設定，並檢查代理設定</string>
     <string name="login_failure">登入失敗</string>
     <string name="valid_period">有效期</string>
     <string name="check_code">驗證碼</string>
@@ -303,5 +303,8 @@
     <string name="edit_bookshelf">編輯書架</string>
     <string name="user_bookshelf_no_content">TA沒有收藏任何小說哦</string>
     <string name="network_error_msg">"加載失敗，請檢查網絡環境，並確認wenku8是否能正常訪問 "</string>
+    <string name="list_view_type">列表顯示模式</string>
+    <string name="single_column">單列</string>
+    <string name="grid">網格</string>
 
 </resources>
