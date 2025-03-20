@@ -316,4 +316,8 @@
     <string name="list_view_type">列表显示模式</string>
     <string name="single_column">单列</string>
     <string name="grid">网格</string>
+    <string name="loading_tip">正在加载数据中，请勿退出</string>
+    <string name="select_color_night">选择颜色(深色主题)</string>
+    <string name="select_color_day">选择颜色(浅色主题)</string>
+    <string name="format_mismatch">格式不匹配</string>
 </resources>

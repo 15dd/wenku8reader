@@ -2,7 +2,6 @@ package com.cyh128.hikari_novel.ui.read.horizontal
 
 import android.animation.Animator
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.KeyEvent
@@ -12,6 +11,7 @@ import android.view.View
 import android.view.WindowManager
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.graphics.toColorInt
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.withStarted
@@ -23,6 +23,7 @@ import com.cyh128.hikari_novel.data.model.ReadParcel
 import com.cyh128.hikari_novel.databinding.ActivityHorizontalReadBinding
 import com.cyh128.hikari_novel.databinding.ViewHorizontalReadConfigBinding
 import com.cyh128.hikari_novel.ui.read.SelectColorActivity
+import com.cyh128.hikari_novel.util.ThemeHelper
 import com.cyh128.hikari_novel.util.getIsInDarkMode
 import com.cyh128.hikari_novel.util.startActivity
 import com.drake.channel.receiveEvent
@@ -63,6 +64,7 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
             when (event) {
                 Event.LoadSuccessEvent -> {
                     lifecycle.withStarted {
+
                         binding.pvAHRead.content = HorizontalRead(
                             viewModel.chapterTitle,
                             viewModel.curNovelContent,
@@ -136,6 +138,7 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
         initView()
         initListener()
 
+        binding.pvAHRead.showLoadingTip()
         viewModel.getNovelContent()
     }
 
@@ -168,6 +171,14 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
     }
 
     private fun initView() {
+        //初始化阅读器的背景颜色和字体颜色
+        binding.pvAHRead.backgroundcolor =
+            if (ThemeHelper.isDarkMode()) ("#" + viewModel.getBgColorNight()).toColorInt()
+            else ("#" + viewModel.getBgColorDay()).toColorInt()
+        binding.pvAHRead.textColor =
+            if (ThemeHelper.isDarkMode()) ("#" + viewModel.getTextColorNight()).toColorInt()
+            else ("#" + viewModel.getTextColorDay()).toColorInt()
+
         setBottomBarIsEnable(false)
 
         if (viewModel.isHorizontalReadFirstLaunch) {
@@ -217,11 +228,11 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
 
     private fun setColor() {
         if (getIsInDarkMode()) { //夜间模式
-            binding.pvAHRead.textColor = Color.parseColor("#" + viewModel.getTextColorNight())
-            binding.pvAHRead.backgroundcolor = Color.parseColor("#" + viewModel.getBgColorNight())
+            binding.pvAHRead.textColor = ("#" + viewModel.getTextColorNight()).toColorInt()
+            binding.pvAHRead.backgroundcolor = ("#" + viewModel.getBgColorNight()).toColorInt()
         } else {
-            binding.pvAHRead.textColor = Color.parseColor("#" + viewModel.getTextColorDay())
-            binding.pvAHRead.backgroundcolor = Color.parseColor("#" + viewModel.getBgColorDay())
+            binding.pvAHRead.textColor = ("#" + viewModel.getTextColorDay()).toColorInt()
+            binding.pvAHRead.backgroundcolor = ("#" + viewModel.getBgColorDay()).toColorInt()
         }
     }
 
@@ -386,6 +397,7 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
                 viewModel.curVolumePos--
                 viewModel.curChapterPos = viewModel.curVolume.chapters.size - 1
                 binding.pvAHRead.showLoadingTip()
+
                 viewModel.getNovelContent()
                 setBottomBarIsEnable(false)
                 return@launch

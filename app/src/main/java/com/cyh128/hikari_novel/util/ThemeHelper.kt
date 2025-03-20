@@ -37,6 +37,11 @@ object ThemeHelper {
         sendEvent(Event.ThemeChangedEvent, "event_theme_changed")
     }
 
+    fun isDarkMode(): Boolean {
+        val nightModeFlags = AppCompatDelegate.getDefaultNightMode()
+        return nightModeFlags == AppCompatDelegate.MODE_NIGHT_YES
+    }
+
     fun initActivityThemeAndDarkMode(activity: Activity) {
         when (currentDarkMode) {
             DarkMode.System -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)

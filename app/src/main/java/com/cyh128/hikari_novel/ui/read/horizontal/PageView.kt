@@ -35,7 +35,7 @@ import kotlin.reflect.KProperty
  * Modified by 15dd on 2024 - 增加了图片支持，删除了用不到的函数以及变量，优化了手势检测，优化了分页算法
  */
 
-class PageView : ViewFlipper, IPageView {
+class PageView: ViewFlipper, IPageView {
     override var pageNum: Int by InvalidateAfterSet(1)                  //页数
     override var backgroundcolor: Int by InvalidateAfterSet(Color.WHITE)    //背景颜色
     override var textColor: Int by InvalidateAfterSet(Color.BLACK)             //字体颜色

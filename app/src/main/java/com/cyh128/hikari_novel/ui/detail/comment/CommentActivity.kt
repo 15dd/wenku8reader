@@ -1,7 +1,6 @@
 package com.cyh128.hikari_novel.ui.detail.comment
 
 import android.os.Bundle
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cyh128.hikari_novel.base.BaseActivity

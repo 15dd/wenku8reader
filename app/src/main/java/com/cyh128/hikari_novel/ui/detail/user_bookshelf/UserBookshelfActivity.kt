@@ -1,7 +1,6 @@
 package com.cyh128.hikari_novel.ui.detail.user_bookshelf
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModelProvider

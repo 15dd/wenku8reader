@@ -2,9 +2,7 @@ package com.cyh128.hikari_novel.ui.main.bookshelf
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager

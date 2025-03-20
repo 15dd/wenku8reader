@@ -11,14 +11,11 @@ import com.cyh128.hikari_novel.data.model.BookshelfNovelInfo
 import com.cyh128.hikari_novel.databinding.FragmentBookshelfContentBinding
 import com.cyh128.hikari_novel.ui.other.EmptyView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint

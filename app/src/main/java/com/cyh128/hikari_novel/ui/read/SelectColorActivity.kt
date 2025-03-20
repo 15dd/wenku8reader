@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
+import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.base.BaseActivity
 import com.cyh128.hikari_novel.databinding.ActivitySelectColorBinding
 import com.cyh128.hikari_novel.util.getIsInDarkMode
@@ -27,12 +28,12 @@ class SelectColorActivity : BaseActivity<ActivitySelectColorBinding>() {
 
         //初始化界面
         if (getIsInDarkMode()) {
-            binding.tbASelectColor.title = "选择颜色(深色主题)"
+            binding.tbASelectColor.title = getString(R.string.select_color_night)
             binding.cvASelectColorRecommendDay.visibility = View.GONE
             binding.tietASelectColorText.setText(viewModel.getTextColorNight())
             binding.tietASelectColorBg.setText(viewModel.getBgColorNight())
         } else {
-            binding.tbASelectColor.title = "选择颜色(浅色主题)"
+            binding.tbASelectColor.title = getString(R.string.select_color_day)
             binding.cvASelectColorRecommendNight.visibility = View.GONE
             binding.tietASelectColorText.setText(viewModel.getTextColorDay())
             binding.tietASelectColorBg.setText(viewModel.getBgColorDay())
@@ -48,7 +49,7 @@ class SelectColorActivity : BaseActivity<ActivitySelectColorBinding>() {
                 binding.tietASelectColorText.text.toString()
             ).also {
                 if (!it) {
-                    binding.tlASelectColorText.error = "格式不匹配"
+                    binding.tlASelectColorText.error = getString(R.string.format_mismatch)
                     return@setOnClickListener
                 }
             }
@@ -57,7 +58,7 @@ class SelectColorActivity : BaseActivity<ActivitySelectColorBinding>() {
                 binding.tietASelectColorBg.text.toString()
             ).also {
                 if (!it) {
-                    binding.tlASelectColorBg.error = "格式不匹配"
+                    binding.tlASelectColorBg.error = getString(R.string.format_mismatch)
                     return@setOnClickListener
                 }
             }

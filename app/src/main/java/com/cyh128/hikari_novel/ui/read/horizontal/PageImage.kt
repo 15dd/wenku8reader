@@ -131,6 +131,12 @@ class PageImage : AppCompatImageView {
                         }
                         isTouching = false
                         return true
+                    } else if (!isTouching && imageBitmap == null) { //当图片未加载出来时
+                        mImageurl?.let {
+                            mImageClick(it)
+                        }
+                        isTouching = false
+                        return true
                     } else if (!isTouching) {
                         //处理点击在bitmap范围外的事件
                         mOnCenterClick?.onCenterClick()
@@ -141,6 +147,12 @@ class PageImage : AppCompatImageView {
 
                 moveStart[0] > width * 2 / 5 && moveStart[0] < height * 3 / 5 -> {
                     if (!isTouching && imageRect?.contains(x, y) == true) {
+                        mImageurl?.let {
+                            mImageClick(it)
+                        }
+                        isTouching = false
+                        return true
+                    } else if (!isTouching && imageBitmap == null) { //当图片未加载出来时
                         mImageurl?.let {
                             mImageClick(it)
                         }
