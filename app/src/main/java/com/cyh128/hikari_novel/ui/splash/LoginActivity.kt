@@ -60,9 +60,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                         binding.tietALoginPassword.text.toString(),
                     )
 
-//                    viewModel.refreshBookshelfList() //等待书架信息获取完成
-                    viewModel.getAllBookshelf()
-
                     Toast.makeText(
                         this@LoginActivity,
                         R.string.login_successful,

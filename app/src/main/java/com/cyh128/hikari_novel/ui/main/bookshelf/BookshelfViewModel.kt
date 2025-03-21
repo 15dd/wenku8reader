@@ -11,6 +11,9 @@ import com.cyh128.hikari_novel.data.source.local.database.bookshelf.BookshelfEnt
 import com.drake.channel.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -52,132 +55,39 @@ class BookshelfViewModel @Inject constructor(
         }
     }
 
-    suspend fun getAllBookshelf() {
-        bookshelfRepository.deleteAll()
+    fun getAllBookshelf() {
+        viewModelScope.launch {
+            bookshelfRepository.deleteAll()
 
-        wenku8Repository.getBookshelf(0)
-            .onSuccess { it0 ->
-                bookshelfRepository.upsertAll(
-                    it0.list.map { info ->
-                        BookshelfEntity(
-                            aid = info.aid,
-                            bid = info.bid,
-                            detailUrl = info.detailUrl,
-                            title = info.title,
-                            img = info.img,
-                            classId = 0
-                        )
-                    }
-                )
-                wenku8Repository.getBookshelf(1)
-                    .onSuccess { it1 ->
-                        bookshelfRepository.upsertAll(
-                            it1.list.map { info ->
-                                BookshelfEntity(
-                                    aid = info.aid,
-                                    bid = info.bid,
-                                    detailUrl = info.detailUrl,
-                                    title = info.title,
-                                    img = info.img,
-                                    classId = 1
-                                )
+            val list = (0..5).map { classId ->
+                async {
+                    wenku8Repository.getBookshelf(classId)
+                        .onSuccess { success ->
+                            bookshelfRepository.upsertAll(
+                                success.list.map { info ->
+                                    BookshelfEntity(
+                                        aid = info.aid,
+                                        bid = info.bid,
+                                        detailUrl = info.detailUrl,
+                                        title = info.title,
+                                        img = info.img,
+                                        classId = classId
+                                    )
+                                }
+                            )
+                            if (classId == 5) {
+                                bookshelfRepository.setMaxCollection(success.maxNum)
                             }
-                        )
-                        wenku8Repository.getBookshelf(2)
-                            .onSuccess { it2 ->
-                                bookshelfRepository.upsertAll(
-                                    it2.list.map { info ->
-                                        BookshelfEntity(
-                                            aid = info.aid,
-                                            bid = info.bid,
-                                            detailUrl = info.detailUrl,
-                                            title = info.title,
-                                            img = info.img,
-                                            classId = 2
-                                        )
-                                    }
-                                )
-                                wenku8Repository.getBookshelf(3)
-                                    .onSuccess { it3 ->
-                                        bookshelfRepository.upsertAll(
-                                            it3.list.map { info ->
-                                                BookshelfEntity(
-                                                    aid = info.aid,
-                                                    bid = info.bid,
-                                                    detailUrl = info.detailUrl,
-                                                    title = info.title,
-                                                    img = info.img,
-                                                    classId = 3
-                                                )
-                                            }
-                                        )
-                                        wenku8Repository.getBookshelf(4)
-                                            .onSuccess { it4 ->
-                                                bookshelfRepository.upsertAll(
-                                                    it4.list.map { info ->
-                                                        BookshelfEntity(
-                                                            aid = info.aid,
-                                                            bid = info.bid,
-                                                            detailUrl = info.detailUrl,
-                                                            title = info.title,
-                                                            img = info.img,
-                                                            classId = 4
-                                                        )
-                                                    }
-                                                )
-                                                wenku8Repository.getBookshelf(5)
-                                                    .onSuccess { it5 ->
-                                                        bookshelfRepository.upsertAll(
-                                                            it5.list.map { info ->
-                                                                BookshelfEntity(
-                                                                    aid = info.aid,
-                                                                    bid = info.bid,
-                                                                    detailUrl = info.detailUrl,
-                                                                    title = info.title,
-                                                                    img = info.img,
-                                                                    classId = 5
-                                                                )
-                                                            }
-                                                        )
-
-                                                        bookshelfRepository.setMaxCollection(it5.maxNum)
-
-                                                        sendEvent(Event.LoadSuccessEvent, "event_bookshelf_content_fragment")
-                                                    }.onFailure { failure ->
-                                                        sendEvent(
-                                                            Event.NetworkErrorEvent(failure.message),
-                                                            "event_bookshelf_content_fragment"
-                                                        )
-                                                    }
-                                            }.onFailure { failure ->
-                                                sendEvent(
-                                                    Event.NetworkErrorEvent(failure.message),
-                                                    "event_bookshelf_content_fragment"
-                                                )
-                                            }
-                                    }.onFailure { failure ->
-                                        sendEvent(
-                                            Event.NetworkErrorEvent(failure.message),
-                                            "event_bookshelf_content_fragment"
-                                        )
-                                    }
-                            }.onFailure { failure ->
-                                sendEvent(
-                                    Event.NetworkErrorEvent(failure.message),
-                                    "event_bookshelf_content_fragment"
-                                )
-                            }
-                    }.onFailure { failure ->
-                        sendEvent(
-                            Event.NetworkErrorEvent(failure.message),
-                            "event_bookshelf_content_fragment"
-                        )
-                    }
-            }.onFailure { failure ->
-                sendEvent(
-                    Event.NetworkErrorEvent(failure.message),
-                    "event_bookshelf_content_fragment"
-                )
+                            return@async true
+                        }.onFailure { failure ->
+                            sendEvent(Event.NetworkErrorEvent(failure.message), "event_bookshelf_fragment")
+                            cancel()
+                        }
+                }
             }
+
+            val result = list.awaitAll().all { it as Boolean }
+            if (result) sendEvent(Event.LoadSuccessEvent, "event_bookshelf_fragment")
+        }
     }
 }

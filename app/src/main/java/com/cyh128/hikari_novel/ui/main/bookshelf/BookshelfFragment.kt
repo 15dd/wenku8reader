@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.base.BaseFragment
@@ -15,13 +14,11 @@ import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.databinding.FragmentBookshelfBinding
 import com.cyh128.hikari_novel.ui.main.bookshelf.search.BookshelfSearchActivity
 import com.cyh128.hikari_novel.util.startActivity
+import com.drake.channel.receiveEvent
 import com.drake.channel.sendEvent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class BookshelfFragment : BaseFragment<FragmentBookshelfBinding>() {
@@ -40,6 +37,26 @@ class BookshelfFragment : BaseFragment<FragmentBookshelfBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        receiveEvent<Event>("event_bookshelf_fragment") { event ->
+            when (event) {
+                Event.LoadSuccessEvent -> {
+                    Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show()
+                    syncingDialog.dismiss()
+                }
+
+                is Event.NetworkErrorEvent -> {
+                    MaterialAlertDialogBuilder(requireActivity())
+                        .setTitle(R.string.network_error)
+                        .setIcon(R.drawable.ic_error)
+                        .setMessage(event.msg)
+                        .setPositiveButton(R.string.ok, null)
+                        .show()
+                }
+
+                else -> {}
+            }
+        }
 
         initView()
         initListener()
@@ -80,16 +97,9 @@ class BookshelfFragment : BaseFragment<FragmentBookshelfBinding>() {
                         .setCancelable(false)
                         .show()
 
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        viewModel.getAllBookshelf()
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show()
-                            syncingDialog.dismiss()
-                        }
-                    }
+                    viewModel.getAllBookshelf()
                     true
                 }
-
                 else -> throw IllegalArgumentException()
             }
         }
