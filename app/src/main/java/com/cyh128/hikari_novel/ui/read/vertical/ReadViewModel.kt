@@ -52,37 +52,38 @@ class ReadViewModel @Inject constructor(
                 .onSuccess { success ->
                     curNovelContent = success.content
                     curImages = success.image
-                    sendEvent(Event.LoadSuccessEvent,"event_vertical_read_activity")
+                    sendEvent(Event.LoadSuccessEvent, "event_vertical_read_activity")
                 }.onFailure { failure ->
-                    sendEvent(Event.NetworkErrorEvent(failure.message),"event_vertical_read_activity")
+                    sendEvent(
+                        Event.NetworkErrorEvent(failure.message),
+                        "event_vertical_read_activity"
+                    )
                 }
         }
     }
 
     //保存阅读记录
-    @OptIn(DelicateCoroutinesApi::class)
-    fun saveReadHistory() =
-        GlobalScope.launch(Dispatchers.IO) {
-            if (curNovelContent.isNotBlank()) {
-                verticalReadRepository.addOrReplace(
+    suspend fun saveReadHistory() {
+        if (curNovelContent.isNotBlank()) {
+            verticalReadRepository.addOrReplace(
+                aid,
+                VerticalReadHistoryEntity(
+                    cid,
                     aid,
-                    VerticalReadHistoryEntity(
-                        cid,
-                        aid,
-                        curVolumePos,
-                        curChapterPos,
-                        curReadPos,
-                        progressText.value?.substringBefore("%")?.toInt() ?: 0,
-                        true
-                    )
+                    curVolumePos,
+                    curChapterPos,
+                    curReadPos,
+                    progressText.value?.substringBefore("%")?.toInt() ?: 0,
+                    true
                 )
-            }
+            )
         }
+    }
 
     fun setFontSize(size: Float) {
         viewModelScope.launch {
             verticalReadRepository.setFontSize(size)
-            sendEvent(Event.ChangeFontSizeEvent(size),"event_vertical_read_fragment")
+            sendEvent(Event.ChangeFontSizeEvent(size), "event_vertical_read_fragment")
         }
     }
 
@@ -91,7 +92,7 @@ class ReadViewModel @Inject constructor(
     fun setLineSpacing(lineSpacing: Float) {
         viewModelScope.launch {
             verticalReadRepository.setLineSpacing(lineSpacing)
-            sendEvent(Event.ChangeLineSpacingEvent(lineSpacing),"event_vertical_read_fragment")
+            sendEvent(Event.ChangeLineSpacingEvent(lineSpacing), "event_vertical_read_fragment")
         }
     }
 
@@ -117,7 +118,8 @@ class ReadViewModel @Inject constructor(
         verticalReadRepository.setIsShowChapterReadHistory(value)
     }
 
-    fun getIsShowChapterReadHistoryWithoutConfirm() = verticalReadRepository.getIsShowChapterReadHistoryWithoutConfirm()
+    fun getIsShowChapterReadHistoryWithoutConfirm() =
+        verticalReadRepository.getIsShowChapterReadHistoryWithoutConfirm()
 
     fun setIsShowChapterReadHistoryWithoutConfirm(value: Boolean) {
         verticalReadRepository.setIsShowChapterReadHistoryWithoutConfirm(value)

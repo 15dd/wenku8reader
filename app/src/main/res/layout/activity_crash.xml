@@ -22,13 +22,26 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/app_crashed"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"/>
 
+    <TextView
+        android:id="@+id/tv_a_crash_tip"
+        app:layout_constraintTop_toBottomOf="@id/tv_a_crash_text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/crash_tip"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorPrimary"/>
+
     <androidx.core.widget.NestedScrollView
-        app:layout_constraintTop_toBottomOf="@+id/tv_a_crash_text1"
+        app:layout_constraintTop_toBottomOf="@+id/tv_a_crash_tip"
         app:layout_constraintBottom_toTopOf="@id/l_a_crash"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="30dp"
         android:layout_marginLeft="30dp"
         android:layout_width="match_parent"

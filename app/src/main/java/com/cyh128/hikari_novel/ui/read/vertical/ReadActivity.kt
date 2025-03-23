@@ -28,7 +28,13 @@ import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.Snackbar
 import com.gyf.immersionbar.ImmersionBar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
@@ -37,6 +43,7 @@ class ReadActivity : BaseActivity<ActivityVerticalReadBinding>() {
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private val viewModel by lazy { ViewModelProvider(this)[ReadViewModel::class.java] }
     private var showBarColor by Delegates.notNull<Int>()
+    private var saveReadHistoryJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,11 +97,6 @@ class ReadActivity : BaseActivity<ActivityVerticalReadBinding>() {
         return true
     }
 
-    override fun onDestroy() {
-        viewModel.saveReadHistory() //保存阅读记录
-        super.onDestroy()
-    }
-
     private fun initView() {
         TypedValue().also {  //上下栏颜色初始化
             theme.resolveAttribute(
@@ -142,15 +144,18 @@ class ReadActivity : BaseActivity<ActivityVerticalReadBinding>() {
 
         viewModel.progressText.observe(this) {
             binding.tvAVReadProgress.text = it
+
+            saveReadHistoryJob?.cancel()
+            saveReadHistoryJob = lifecycleScope.launch { viewModel.saveReadHistory() }
         }
 
         //设置底栏菜单按钮监听
         binding.bAVReadPreviousChapter.setOnClickListener {
-            skipToPreviousChapter()
+            toPreviousChapter()
         }
 
         binding.bAVReadNextChapter.setOnClickListener {
-            skipToNextChapter()
+            toNextChapter()
         }
 
         binding.bAVReadConfig.setOnClickListener {
@@ -212,9 +217,8 @@ class ReadActivity : BaseActivity<ActivityVerticalReadBinding>() {
         }
     }
 
-    fun skipToPreviousChapter() { //切换至上一章
+    fun toPreviousChapter() { //切换至上一章
         lifecycleScope.launch {
-            viewModel.saveReadHistory().join()
             if (viewModel.curChapterPos == 0) { //判断是不是该卷的第一章
                 if (viewModel.curVolumePos == 0) {
                     Snackbar.make(
@@ -242,9 +246,8 @@ class ReadActivity : BaseActivity<ActivityVerticalReadBinding>() {
         }
     }
 
-    fun skipToNextChapter() { //切换至下一章
+    fun toNextChapter() { //切换至下一章
         lifecycleScope.launch {
-            viewModel.saveReadHistory().join()
             if (viewModel.curChapterPos == viewModel.curVolume.chapters.size - 1) { //判断是不是该卷的最后一章
                 if (viewModel.curVolumePos == viewModel.novel.volume.size - 1) {
                     Snackbar.make(binding.root, R.string.no_next_chapter, Snackbar.LENGTH_INDEFINITE)

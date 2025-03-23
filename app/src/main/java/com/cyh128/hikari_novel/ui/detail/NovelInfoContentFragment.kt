@@ -2,6 +2,7 @@ package com.cyh128.hikari_novel.ui.detail
 
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.ViewModelProvider
@@ -69,14 +70,18 @@ class NovelInfoContentFragment : BaseFragment<FragmentNovelInfoContentBinding>()
             }
         }
 
-        viewModel.isInBookshelf()
-        initView()
-        initListener()
+        if (viewModel.novelInfo == null) { //防止activity重建后数据丢失
+            viewModel.loadNovelAndChapter()
+        } else {
+            viewModel.isInBookshelf()
+            initView()
+            initListener()
+        }
     }
 
     private fun initView() {
         binding.apply {
-            viewModel.novelInfo.also { nv ->
+            viewModel.novelInfo!!.also { nv ->
                 tvFNovelInfoContentTitle.text = nv.title
                 tvFNovelInfoContentAuthor.apply {
                     text = nv.author
@@ -241,7 +246,7 @@ class NovelInfoContentFragment : BaseFragment<FragmentNovelInfoContentBinding>()
 
         binding.ivFNovelInfoContent.setOnClickListener {
             startActivity<PhotoViewActivity> {
-                putExtra("url", viewModel.novelInfo.imgUrl)
+                putExtra("url", viewModel.novelInfo!!.imgUrl)
             }
         }
     }

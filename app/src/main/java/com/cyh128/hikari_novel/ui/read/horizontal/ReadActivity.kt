@@ -33,9 +33,16 @@ import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.Snackbar
 import com.gyf.immersionbar.ImmersionBar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
@@ -44,6 +51,7 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
     private lateinit var bottomViewBinding: ViewHorizontalReadConfigBinding
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private var showBarColor by Delegates.notNull<Int>()
+    private var saveReadHistoryJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -145,11 +153,6 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_act_v_h_read, menu)
         return true
-    }
-
-    override fun onDestroy() {
-        viewModel.saveReadHistory(binding.pvAHRead.pageNum, binding.pvAHRead.maxPageNum)
-        super.onDestroy()
     }
 
     //音量上下键拦截
@@ -275,15 +278,18 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
         }
 
         binding.pvAHRead.onNextChapter = object : IPageView.OnNextChapter {
-            override fun onNextChapter() = skipToNextChapter()
+            override fun onNextChapter() = toNextChapter()
         }
 
         binding.pvAHRead.onPreviousChapter = object : IPageView.OnPreviousChapter {
-            override fun onPreviousChapter() = skipToPreviousChapter()
+            override fun onPreviousChapter() = toPreviousChapter()
         }
 
         binding.pvAHRead.onPageChange = object : IPageView.OnPageChange {
             override fun onPageChange(index: Int) {
+                saveReadHistoryJob?.cancel()
+                saveReadHistoryJob = lifecycleScope.launch { viewModel.saveReadHistory(binding.pvAHRead.pageNum, binding.pvAHRead.maxPageNum) }
+
                 if (binding.pvAHRead.maxPageNum == 1) {
                     binding.sAHReadProgress.visibility = View.INVISIBLE
                     return
@@ -349,9 +355,9 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
 
         binding.bAHReadConfig.setOnClickListener { bottomSheetDialog.show() }
 
-        binding.bAHReadNextChapter.setOnClickListener { skipToNextChapter() }
+        binding.bAHReadNextChapter.setOnClickListener { toNextChapter() }
 
-        binding.bAHReadPreviousChapter.setOnClickListener { skipToPreviousChapter() }
+        binding.bAHReadPreviousChapter.setOnClickListener { toPreviousChapter() }
 
         bottomViewBinding.sVHReadConfigKeyDownSwitchChapter.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setKeyDownSwitchChapter(isChecked)
@@ -378,9 +384,8 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
         }
     }
 
-    private fun skipToPreviousChapter() {
+    private fun toPreviousChapter() {
         lifecycleScope.launch {
-            viewModel.saveReadHistory(binding.pvAHRead.pageNum, binding.pvAHRead.maxPageNum).join()
             if (viewModel.curChapterPos == 0) { //判断是不是该卷的第一章
                 if (viewModel.curVolumePos == 0) {
                     Snackbar.make(
@@ -409,9 +414,8 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
         }
     }
 
-    private fun skipToNextChapter() {
+    private fun toNextChapter() {
         lifecycleScope.launch {
-            viewModel.saveReadHistory(binding.pvAHRead.pageNum, binding.pvAHRead.maxPageNum).join()
             if (viewModel.curChapterPos == viewModel.curVolume.chapters.size - 1) { //判断是不是该卷的最后一章
                 if (viewModel.curVolumePos == viewModel.novel.volume.size - 1) {
                     Snackbar.make(binding.root, R.string.no_next_chapter, Snackbar.LENGTH_INDEFINITE)

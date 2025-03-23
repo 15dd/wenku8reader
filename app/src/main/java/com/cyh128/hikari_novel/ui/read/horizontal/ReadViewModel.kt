@@ -56,32 +56,33 @@ class ReadViewModel @Inject constructor(
                 .onSuccess { success ->
                     curNovelContent = success.content
                     curImages = success.image
-                    sendEvent(Event.LoadSuccessEvent,"event_horizontal_read_activity")
+                    sendEvent(Event.LoadSuccessEvent, "event_horizontal_read_activity")
                 }.onFailure { failure ->
-                    sendEvent(Event.NetworkErrorEvent(failure.message),"event_horizontal_read_activity")
+                    sendEvent(
+                        Event.NetworkErrorEvent(failure.message),
+                        "event_horizontal_read_activity"
+                    )
                 }
         }
     }
 
     //保存阅读记录
-    @OptIn(DelicateCoroutinesApi::class)
-    fun saveReadHistory(readPos: Int, maxNum: Int) =
-        GlobalScope.launch(Dispatchers.IO) {
-            if (curNovelContent.isNotBlank()) {
-                horizontalReadRepository.addOrReplace(
+    suspend fun saveReadHistory(readPos: Int, maxNum: Int) {
+        if (curNovelContent.isNotBlank()) {
+            horizontalReadRepository.addOrReplace(
+                aid,
+                HorizontalReadHistoryEntity(
+                    cid,
                     aid,
-                    HorizontalReadHistoryEntity(
-                        cid,
-                        aid,
-                        curVolumePos,
-                        curChapterPos,
-                        readPos,
-                        (readPos.toFloat() / maxNum.toFloat() * 100).toInt(),
-                        true
-                    )
+                    curVolumePos,
+                    curChapterPos,
+                    readPos,
+                    (readPos.toFloat() / maxNum.toFloat() * 100).toInt(),
+                    true
                 )
-            }
+            )
         }
+    }
 
     fun setFontSize(size: Float) {
         horizontalReadRepository.setFontSize(size)
@@ -133,7 +134,8 @@ class ReadViewModel @Inject constructor(
         horizontalReadRepository.setIsShowChapterReadHistory(value)
     }
 
-    fun getIsShowChapterReadHistoryWithoutConfirm() = horizontalReadRepository.getIsShowChapterReadHistoryWithoutConfirm()
+    fun getIsShowChapterReadHistoryWithoutConfirm() =
+        horizontalReadRepository.getIsShowChapterReadHistoryWithoutConfirm()
 
     fun setIsShowChapterReadHistoryWithoutConfirm(value: Boolean) {
         horizontalReadRepository.setIsShowChapterReadHistoryWithoutConfirm(value)

@@ -320,4 +320,5 @@
     <string name="select_color_night">选择颜色(深色主题)</string>
     <string name="select_color_day">选择颜色(浅色主题)</string>
     <string name="format_mismatch">格式不匹配</string>
+    <string name="crash_tip">请注意：向开发者报告错误时，不要截图，长按全选下面的内容并复制，然后发给开发者，这样可以帮助开发者更好地解决问题</string>
 </resources>

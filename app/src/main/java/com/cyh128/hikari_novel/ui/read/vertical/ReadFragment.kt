@@ -140,11 +140,11 @@ class ReadFragment : BaseFragment<FragmentVerticalReadBinding>() {
         }
 
         binding.bFVReadPreviousChapter.setOnClickListener {
-            (requireActivity() as ReadActivity).skipToPreviousChapter()
+            (requireActivity() as ReadActivity).toPreviousChapter()
         }
 
         binding.bFVReadNextChapter.setOnClickListener {
-            (requireActivity() as ReadActivity).skipToNextChapter()
+            (requireActivity() as ReadActivity).toNextChapter()
         }
     }
 

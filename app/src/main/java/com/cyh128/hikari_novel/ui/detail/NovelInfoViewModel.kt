@@ -30,7 +30,7 @@ class NovelInfoViewModel @Inject constructor(
     private val horizontalReadRepository: HorizontalReadRepository,
     private val bookshelfRepository: BookshelfRepository
 ) : ViewModel() {
-    lateinit var novelInfo: NovelInfo
+    var novelInfo: NovelInfo? = null
     lateinit var novel: Novel private set
     lateinit var aid: String
     private var bid: String? = null
@@ -120,8 +120,8 @@ class NovelInfoViewModel @Inject constructor(
         visitHistoryRepository.add(
             VisitHistoryEntity(
                 aid = this.aid,
-                title = novelInfo.title,
-                img = novelInfo.imgUrl,
+                title = novelInfo!!.title,
+                img = novelInfo!!.imgUrl,
                 time = TimeUtil.getTimeToken()
             )
         )
