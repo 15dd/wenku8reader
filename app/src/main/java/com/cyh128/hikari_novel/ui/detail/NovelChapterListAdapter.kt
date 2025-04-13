@@ -12,7 +12,7 @@ import pokercc.android.expandablerecyclerview.ExpandableAdapter
 class NovelChapterListAdapter(
     private val novel: Novel,
     private val onItemClick: (volume: Int, chapter: Int) -> Unit,
-    private val onLongClick: (cid: String) -> Unit,
+    private val onButtonClick: (cid: String) -> Unit,
     private val onGroupItemChangeListener: (group: Int, binding: ItemChapterVcssBinding) -> Unit,
     private val onChildItemChangeListener: (group: Int, child: Int, binding: ItemChapterCcssBinding) -> Unit
 ) : ExpandableAdapter<ExpandableAdapter.ViewHolder>() {
@@ -94,8 +94,8 @@ class NovelChapterListAdapter(
         holder.binding.root.setOnClickListener {
             onItemClick(groupPosition, childPosition)
         }
-        holder.binding.root.setOnLongClickListener {
-            onLongClick(
+        holder.binding.bIChapterCcss.setOnClickListener {
+            onButtonClick(
                 novel.volume[groupPosition].chapters[childPosition].cid
             )
             true

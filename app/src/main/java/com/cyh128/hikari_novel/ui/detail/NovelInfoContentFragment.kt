@@ -2,7 +2,6 @@ package com.cyh128.hikari_novel.ui.detail
 
 import android.os.Bundle
 import android.text.Html
-import android.util.Log
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.ViewModelProvider
@@ -158,7 +157,7 @@ class NovelInfoContentFragment : BaseFragment<FragmentNovelInfoContentBinding>()
                         }
                     }
                 },
-                onLongClick = { cid ->
+                onButtonClick = { cid ->
                     //长按事件
                     MaterialAlertDialogBuilder(requireActivity())
                         .setTitle(R.string.delete)
@@ -198,6 +197,8 @@ class NovelInfoContentFragment : BaseFragment<FragmentNovelInfoContentBinding>()
                 onChildItemChangeListener = { group, child, binding ->
                     viewModel.getReadHistoryByCidFlow(viewModel.novel.volume[group].chapters[child].cid).onEach {
                         if (it == null) {
+                            binding.bIChapterCcss.visibility = View.INVISIBLE
+
                             binding.tvIChapterCcssCompleted.text = getString(R.string.unread)
                             binding.tvIChapterCcss.isEnabled = true
                             binding.tvIChapterCcssCompleted.isEnabled = true
@@ -205,10 +206,14 @@ class NovelInfoContentFragment : BaseFragment<FragmentNovelInfoContentBinding>()
                             binding.tvIChapterCcssLatest.text = null
                             return@onEach
                         } else if (it.progressPercent == 100) {
+                            binding.bIChapterCcss.visibility = View.VISIBLE
+
                             binding.tvIChapterCcssCompleted.text = getString(R.string.completed_reading)
                             binding.tvIChapterCcss.isEnabled = false
                             binding.tvIChapterCcssCompleted.isEnabled = false
                         } else {
+                            binding.bIChapterCcss.visibility = View.VISIBLE
+
                             binding.tvIChapterCcssCompleted.text = "${it.progressPercent}%"
                             binding.tvIChapterCcss.isEnabled = true
                             binding.tvIChapterCcssCompleted.isEnabled = true

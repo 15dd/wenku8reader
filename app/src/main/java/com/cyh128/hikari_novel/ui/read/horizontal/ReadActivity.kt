@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.graphics.toColorInt
 import androidx.lifecycle.ViewModelProvider
@@ -290,15 +291,25 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
                 saveReadHistoryJob?.cancel()
                 saveReadHistoryJob = lifecycleScope.launch { viewModel.saveReadHistory(binding.pvAHRead.pageNum, binding.pvAHRead.maxPageNum) }
 
-                if (binding.pvAHRead.maxPageNum == 1) {
-                    binding.sAHReadProgress.visibility = View.INVISIBLE
-                    return
-                } else {
-                    binding.sAHReadProgress.visibility = View.VISIBLE
-                }
+                try {
+                    if (binding.pvAHRead.maxPageNum == 1) {
+                        binding.sAHReadProgress.visibility = View.INVISIBLE
+                        return
+                    } else {
+                        binding.sAHReadProgress.visibility = View.VISIBLE
+                    }
 
-                binding.sAHReadProgress.valueTo = binding.pvAHRead.maxPageNum.toFloat()
-                binding.sAHReadProgress.value = index.toFloat()
+                    binding.sAHReadProgress.valueTo = binding.pvAHRead.maxPageNum.toFloat()
+                    binding.sAHReadProgress.value = index.toFloat()
+                } catch (e: IllegalArgumentException) { //防止历史记录的页数大于当前章节的最大页数
+                    binding.sAHReadProgress.value = 1f
+                    binding.pvAHRead.pageNum = 1
+
+                    saveReadHistoryJob?.cancel()
+                    saveReadHistoryJob = lifecycleScope.launch { viewModel.saveReadHistory(binding.pvAHRead.pageNum, binding.pvAHRead.maxPageNum) }
+
+                    Toast.makeText(this@ReadActivity,R.string.chapter_current_page_error, Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
