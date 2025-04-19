@@ -14,8 +14,8 @@ android {
         applicationId = "com.cyh128.hikari_novel"
         minSdk = 24
         targetSdk = 34 //暂时不要升到35，不然之前的edgeToEdge效果会消失
-        versionCode = 250413
-        versionName = "3.9.2"
+        versionCode = 250419
+        versionName = "3.9.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -84,7 +84,7 @@ android {
 
 dependencies {
     //android相关
-    implementation("androidx.core:core-ktx:1.15.0")
+    implementation("androidx.core:core-ktx:1.16.0")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.13.0-alpha12")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
@@ -94,9 +94,9 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.8.9")
 
     //数据库
-    implementation("androidx.room:room-ktx:2.6.1")
-    implementation("androidx.room:room-runtime:2.6.1")
-    ksp("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.7.0")
+    implementation("androidx.room:room-runtime:2.7.0")
+    ksp("androidx.room:room-compiler:2.7.0")
 
     //图片查看
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
@@ -148,8 +148,8 @@ dependencies {
     implementation("com.geyifeng.immersionbar:immersionbar:3.2.2")
 
     //hilt依赖注入
-    implementation("com.google.dagger:hilt-android:2.55")
-    ksp("com.google.dagger:hilt-android-compiler:2.55")
+    implementation("com.google.dagger:hilt-android:2.56")
+    ksp("com.google.dagger:hilt-android-compiler:2.56")
 
     //json解析
     implementation("com.google.code.gson:gson:2.11.0")

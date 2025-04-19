@@ -312,4 +312,5 @@
     <string name="format_mismatch">格式不相符</string>
     <string name="crash_tip">請注意：向開發者回報錯誤時，不要截圖，長按全選下面的內容並複製，然後發給開發者，這樣可以幫助開發者更好地解決問題。</string>
     <string name="chapter_current_page_error">偵測到衝突，已清除本章節的閱讀記錄</string>
+    <string name="warning">警告</string>
 </resources>

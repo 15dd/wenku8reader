@@ -158,11 +158,10 @@ class NovelInfoContentFragment : BaseFragment<FragmentNovelInfoContentBinding>()
                     }
                 },
                 onButtonClick = { cid ->
-                    //长按事件
                     MaterialAlertDialogBuilder(requireActivity())
                         .setTitle(R.string.delete)
                         .setMessage(R.string.delete_reading_history_tip)
-                        .setIcon(R.drawable.ic_delete)
+                        .setIcon(R.drawable.ic_delete_history)
                         .setNegativeButton(R.string.no, null)
                         .setPositiveButton(R.string.yes) { _, _ ->
                             viewModel.deleteReadHistory(cid)

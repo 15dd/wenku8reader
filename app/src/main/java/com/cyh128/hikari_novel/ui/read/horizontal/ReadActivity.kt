@@ -21,6 +21,7 @@ import com.cyh128.hikari_novel.base.BaseActivity
 import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.data.model.HorizontalRead
 import com.cyh128.hikari_novel.data.model.ReadParcel
+import com.cyh128.hikari_novel.data.source.local.database.read_history.horizontal_read_history.HorizontalReadHistoryEntity
 import com.cyh128.hikari_novel.databinding.ActivityHorizontalReadBinding
 import com.cyh128.hikari_novel.databinding.ViewHorizontalReadConfigBinding
 import com.cyh128.hikari_novel.ui.read.SelectColorActivity
@@ -34,16 +35,10 @@ import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.Snackbar
 import com.gyf.immersionbar.ImmersionBar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
@@ -84,11 +79,11 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
                         lifecycleScope.launch {
                             viewModel.getByCid.take(1).last()?.let {
                                 if (viewModel.goToLatest) {
-                                    binding.pvAHRead.pageNum = it.location
+                                    validatePageNum(it)
                                 } else {
                                     if (viewModel.getIsShowChapterReadHistory()) {
                                         if (viewModel.getIsShowChapterReadHistoryWithoutConfirm()) {
-                                            binding.pvAHRead.pageNum = it.location
+                                            validatePageNum(it)
                                         } else {
                                             MaterialAlertDialogBuilder(this@ReadActivity)
                                                 .setTitle(R.string.history)
@@ -103,7 +98,7 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
                                                 }
                                                 .setNegativeButton(R.string.not_restore) { _, _ -> }
                                                 .setPositiveButton(R.string.restore_chapter_read_history_with_confirm) { _, _ ->
-                                                    binding.pvAHRead.pageNum = it.location
+                                                    validatePageNum(it)
                                                 }
                                                 .show()
                                         }
@@ -506,5 +501,20 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
         binding.bAHReadNextChapter.isEnabled = value
         binding.bAHReadPreviousChapter.isEnabled = value
         binding.sAHReadProgress.isEnabled = value
+    }
+
+    private fun validatePageNum(data: HorizontalReadHistoryEntity) {
+        if (data.location > binding.pvAHRead.maxPageNum) {
+            binding.pvAHRead.pageNum = 1
+            MaterialAlertDialogBuilder(this@ReadActivity)
+                .setTitle(R.string.warning)
+                .setIcon(R.drawable.ic_warning)
+                .setMessage(R.string.chapter_current_page_error)
+                .setCancelable(false)
+                .setPositiveButton(R.string.ok) { _, _ -> }
+                .show()
+        } else {
+            binding.pvAHRead.pageNum = data.location
+        }
     }
 }
