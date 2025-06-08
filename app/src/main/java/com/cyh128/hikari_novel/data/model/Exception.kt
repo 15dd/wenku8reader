@@ -11,3 +11,6 @@ class SignedInException: Exception()
 
 //临时登录签到异常
 class TempSignInException: Exception()
+
+//空内容异常
+class EmptyException: Exception()

@@ -17,11 +17,10 @@ object ThemeHelper {
 
     fun setCurrentTheme(appTheme: AppTheme) {
         currentTheme = when (appTheme) {
-            AppTheme.Dynamic -> null
+            AppTheme.Dynamic, AppTheme.Nord -> null
             AppTheme.GreenApple -> R.style.Theme_HikariNovel_GreenApple
             AppTheme.Lavender -> R.style.Theme_HikariNovel_Lavender
             AppTheme.MidnightDusk -> R.style.Theme_HikariNovel_MidnightDusk
-            AppTheme.Nord -> R.style.Theme_HikariNovel_Nord
             AppTheme.StrawberryDaiquiri -> R.style.Theme_HikariNovel_StrawberryDaiquiri
             AppTheme.Tako -> R.style.Theme_HikariNovel_Tako
             AppTheme.TealTurquoise -> R.style.Theme_HikariNovel_TealTurquoise

@@ -5,7 +5,7 @@ enum class AppTheme {
     GreenApple,
     Lavender,
     MidnightDusk,
-    Nord,
+    Nord, //已废弃
     StrawberryDaiquiri,
     Tako,
     TealTurquoise,

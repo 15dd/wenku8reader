@@ -24,6 +24,7 @@ import com.cyh128.hikari_novel.ui.read.SelectColorActivity
 import com.cyh128.hikari_novel.util.getIsInDarkMode
 import com.drake.channel.receiveEvent
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.Snackbar
 import com.gyf.immersionbar.ImmersionBar
@@ -80,6 +81,16 @@ class ReadActivity : BaseActivity<ActivityVerticalReadBinding>() {
                         setBottomBarIsEnable(true)
                         hideBar()
                     }
+                }
+
+                Event.EmptyContentEvent -> {
+                    MaterialAlertDialogBuilder(this@ReadActivity)
+                        .setTitle(R.string.empty_content)
+                        .setIcon(R.drawable.ic_warning)
+                        .setMessage(R.string.server_empty_content)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok) { _, _ -> finish() }
+                        .show()
                 }
 
                 else -> {}

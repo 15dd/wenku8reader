@@ -278,7 +278,6 @@
     <string name="tidal_wave">浪潮</string>
     <string name="yin_yang">阴阳</string>
     <string name="yotsuba">四叶草</string>
-    <string name="nord" translatable="false">nord</string>
     <string name="dark_mode">暗色模式</string>
     <string name="enable">启用</string>
     <string name="disable">禁用</string>
@@ -323,4 +322,5 @@
     <string name="crash_tip">请注意：向开发者报告错误时，不要截图，长按全选下面的内容并复制，然后发给开发者，这样可以帮助开发者更好地解决问题</string>
     <string name="chapter_current_page_error">发生冲突，已将当前章节的历史阅读记录清空</string>
     <string name="warning">警告</string>
+    <string name="server_empty_content">服务器返回了空数据，请查看其它章节</string>
 </resources>

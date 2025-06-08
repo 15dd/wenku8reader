@@ -14,8 +14,8 @@ android {
         applicationId = "com.cyh128.hikari_novel"
         minSdk = 24
         targetSdk = 34 //暂时不要升到35，不然之前的edgeToEdge效果会消失
-        versionCode = 250419
-        versionName = "3.9.3"
+        versionCode = 250608
+        versionName = "3.9.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -85,18 +85,18 @@ android {
 dependencies {
     //android相关
     implementation("androidx.core:core-ktx:1.16.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.13.0-alpha12")
+    implementation("androidx.appcompat:appcompat:1.7.1")
+    implementation("com.google.android.material:material:1.13.0-alpha14")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     implementation("androidx.recyclerview:recyclerview:1.4.0")
     implementation("androidx.viewpager2:viewpager2:1.1.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.8.9")
-    implementation("androidx.navigation:navigation-ui-ktx:2.8.9")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.9.0")
+    implementation("androidx.navigation:navigation-ui-ktx:2.9.0")
 
     //数据库
-    implementation("androidx.room:room-ktx:2.7.0")
-    implementation("androidx.room:room-runtime:2.7.0")
-    ksp("androidx.room:room-compiler:2.7.0")
+    implementation("androidx.room:room-ktx:2.7.1")
+    implementation("androidx.room:room-runtime:2.7.1")
+    ksp("androidx.room:room-compiler:2.7.1")
 
     //图片查看
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
@@ -108,7 +108,7 @@ dependencies {
 
     //lifecycle
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.9.1")
 
     //协程
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
@@ -126,7 +126,7 @@ dependencies {
     //持久化存储
     //请勿修改此版本，否则app会不支持32位设备
     //noinspection GradleDependency
-    implementation("com.tencent:mmkv:1.3.11")
+    implementation("com.tencent:mmkv:1.3.14")
 
     //图片加载
     implementation("com.github.bumptech.glide:glide:4.16.0")

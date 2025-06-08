@@ -50,16 +50,6 @@
             app:chipBackgroundColor="@color/midnightdusk_primary" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/c_v_theme_list_nord"
-            style="@style/Widget.Material3.Chip.Filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/nord"
-            android:textColor="?colorOnPrimary"
-            app:checkedIconTint="?colorOnPrimary"
-            app:chipBackgroundColor="@color/nord_primary" />
-
-        <com.google.android.material.chip.Chip
             android:id="@+id/c_v_theme_list_strawberry"
             style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"

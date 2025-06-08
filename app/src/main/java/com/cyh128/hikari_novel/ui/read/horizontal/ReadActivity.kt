@@ -134,6 +134,16 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
                     setBottomBarIsEnable(true)
                 }
 
+                Event.EmptyContentEvent -> {
+                    MaterialAlertDialogBuilder(this@ReadActivity)
+                        .setTitle(R.string.empty_content)
+                        .setIcon(R.drawable.ic_warning)
+                        .setMessage(R.string.server_empty_content)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok) { _, _ -> finish() }
+                        .show()
+                }
+
                 else -> {}
             }
 

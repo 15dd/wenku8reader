@@ -3,6 +3,7 @@ package com.cyh128.hikari_novel.ui.read.vertical
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cyh128.hikari_novel.data.model.EmptyException
 import com.cyh128.hikari_novel.data.model.Event
 import com.cyh128.hikari_novel.data.model.Novel
 import com.cyh128.hikari_novel.data.repository.ReadColorRepository
@@ -54,10 +55,8 @@ class ReadViewModel @Inject constructor(
                     curImages = success.image
                     sendEvent(Event.LoadSuccessEvent, "event_vertical_read_activity")
                 }.onFailure { failure ->
-                    sendEvent(
-                        Event.NetworkErrorEvent(failure.message),
-                        "event_vertical_read_activity"
-                    )
+                    if (failure is EmptyException) sendEvent(Event.EmptyContentEvent, "event_vertical_read_activity")
+                    else sendEvent(Event.NetworkErrorEvent(failure.message), "event_vertical_read_activity")
                 }
         }
     }

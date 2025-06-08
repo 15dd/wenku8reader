@@ -62,7 +62,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>() {
         }
 
         when (viewModel.getAppTheme()) {
-            AppTheme.Dynamic -> {
+            AppTheme.Dynamic, AppTheme.Nord -> {
                 binding.tvASettingAppTheme.text = getString(R.string.dynamic_color)
             }
 
@@ -76,10 +76,6 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>() {
 
             AppTheme.MidnightDusk -> {
                 binding.tvASettingAppTheme.text = getString(R.string.midnight_dusk)
-            }
-
-            AppTheme.Nord -> {
-                binding.tvASettingAppTheme.text = getString(R.string.nord)
             }
 
             AppTheme.StrawberryDaiquiri -> {

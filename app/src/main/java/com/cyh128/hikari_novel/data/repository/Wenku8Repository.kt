@@ -5,6 +5,7 @@ import com.cyh128.hikari_novel.R
 import com.cyh128.hikari_novel.data.model.Bookshelf
 import com.cyh128.hikari_novel.data.model.ChapterContentResponse
 import com.cyh128.hikari_novel.data.model.CommentResponse
+import com.cyh128.hikari_novel.data.model.EmptyException
 import com.cyh128.hikari_novel.data.model.HomeBlock
 import com.cyh128.hikari_novel.data.model.InFiveSecondException
 import com.cyh128.hikari_novel.data.model.LoginResponse
@@ -634,6 +635,8 @@ class Wenku8Repository @Inject constructor(
         network.getFromAppWenku8Com(requestUrl)
             .awaitResult {
                 try {
+                    if (it.trim().isEmpty()) return Result.failure(EmptyException())
+
                     val image = Wenku8Parser.getImageFromContent(it)
                     var content = it
                     content = content.replace(

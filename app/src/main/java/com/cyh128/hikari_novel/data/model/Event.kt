@@ -18,6 +18,7 @@ sealed class Event {
     data object SignInFailureEvent: Event() //签到失败
     data object TempSignInUnableEvent: Event() //临时签到不可用事件
     data object RefreshSearchHistoryEvent: Event() //刷新搜索记录事件
+    data object EmptyContentEvent: Event() //空内容事件
 
     data object RemoveNovelFromListEvent: Event() //从书架批量删除小说事件
     data object MoveNovelFromListEvent: Event() //从书架批量移动小说事件

@@ -18,7 +18,7 @@ class ThemeListDialogFragment: DialogFragment() {
         val view = layoutInflater.inflate(R.layout.view_theme_list, null)
 
         when (viewModel.getAppTheme()) {
-            AppTheme.Dynamic -> {
+            AppTheme.Dynamic, AppTheme.Nord -> {
                 view.findViewById<Chip>(R.id.c_v_theme_list_dynamic_color).isChecked = true
             }
 
@@ -32,10 +32,6 @@ class ThemeListDialogFragment: DialogFragment() {
 
             AppTheme.MidnightDusk -> {
                 view.findViewById<Chip>(R.id.c_v_theme_list_midnightdusk).isChecked = true
-            }
-
-            AppTheme.Nord -> {
-                view.findViewById<Chip>(R.id.c_v_theme_list_nord).isChecked = true
             }
 
             AppTheme.StrawberryDaiquiri -> {
@@ -94,42 +90,36 @@ class ThemeListDialogFragment: DialogFragment() {
                     }
 
                     4 -> {
-                        viewModel.setAppTheme(AppTheme.Nord)
-                        ThemeHelper.setCurrentTheme(AppTheme.Nord)
-                        (requireActivity() as SettingActivity).binding.tvASettingAppTheme.text = getString(R.string.nord)
-                    }
-
-                    5 -> {
                         viewModel.setAppTheme(AppTheme.StrawberryDaiquiri)
                         ThemeHelper.setCurrentTheme(AppTheme.StrawberryDaiquiri)
                         (requireActivity() as SettingActivity).binding.tvASettingAppTheme.text = getString(R.string.strawberry_daiquiri)
                     }
 
-                    6 -> {
+                    5 -> {
                         viewModel.setAppTheme(AppTheme.Tako)
                         ThemeHelper.setCurrentTheme(AppTheme.Tako)
                         (requireActivity() as SettingActivity).binding.tvASettingAppTheme.text = getString(R.string.tako)
                     }
 
-                    7 -> {
+                    6 -> {
                         viewModel.setAppTheme(AppTheme.TealTurquoise)
                         ThemeHelper.setCurrentTheme(AppTheme.TealTurquoise)
                         (requireActivity() as SettingActivity).binding.tvASettingAppTheme.text = getString(R.string.teal_turquoise)
                     }
 
-                    8 -> {
+                    7 -> {
                         viewModel.setAppTheme(AppTheme.TidalWave)
                         ThemeHelper.setCurrentTheme(AppTheme.TidalWave)
                         (requireActivity() as SettingActivity).binding.tvASettingAppTheme.text = getString(R.string.tidal_wave)
                     }
 
-                    9 -> {
+                    8 -> {
                         viewModel.setAppTheme(AppTheme.YinYang)
                         ThemeHelper.setCurrentTheme(AppTheme.YinYang)
                         (requireActivity() as SettingActivity).binding.tvASettingAppTheme.text = getString(R.string.yin_yang)
                     }
 
-                    10 -> {
+                    9 -> {
                         viewModel.setAppTheme(AppTheme.Yotsuba)
                         ThemeHelper.setCurrentTheme(AppTheme.Yotsuba)
                         (requireActivity() as SettingActivity).binding.tvASettingAppTheme.text = getString(R.string.yotsuba)
