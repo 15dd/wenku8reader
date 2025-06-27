@@ -48,6 +48,7 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private var showBarColor by Delegates.notNull<Int>()
     private var saveReadHistoryJob: Job? = null
+    private var currentSnackBar: Snackbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,15 +109,7 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
                         }
 
                         if (viewModel.curImages.isNotEmpty()) {
-                            Snackbar.make(
-                                binding.root,
-                                R.string.have_image_tip,
-                                Snackbar.LENGTH_INDEFINITE
-                            ).apply {
-                                setAnchorView(binding.llAHReadBottomBar) //使它出现在bottomAppBar的上面，避免遮挡内容
-                                setAction(R.string.ok) {}
-                                show()
-                            }
+                            showSnackBar(R.string.have_image_tip)
                         }
                         setBottomBarIsEnable(true)
                         hideBar()
@@ -293,6 +286,7 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
 
         binding.pvAHRead.onPageChange = object : IPageView.OnPageChange {
             override fun onPageChange(index: Int) {
+                hideSnackBar()
                 saveReadHistoryJob?.cancel()
                 saveReadHistoryJob = lifecycleScope.launch { viewModel.saveReadHistory(binding.pvAHRead.pageNum, binding.pvAHRead.maxPageNum) }
 
@@ -404,15 +398,7 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
         lifecycleScope.launch {
             if (viewModel.curChapterPos == 0) { //判断是不是该卷的第一章
                 if (viewModel.curVolumePos == 0) {
-                    Snackbar.make(
-                        binding.root,
-                        R.string.no_previous_chapter,
-                        Snackbar.LENGTH_INDEFINITE
-                    ).apply {
-                        setAnchorView(binding.llAHReadBottomBar) //使它出现在bottomAppBar的上面，避免遮挡内容
-                        setAction(R.string.ok) {}
-                        show()
-                    }
+                    showSnackBar(R.string.no_previous_chapter)
                     return@launch
                 }
                 viewModel.curVolumePos--
@@ -434,12 +420,7 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
         lifecycleScope.launch {
             if (viewModel.curChapterPos == viewModel.curVolume.chapters.size - 1) { //判断是不是该卷的最后一章
                 if (viewModel.curVolumePos == viewModel.novel.volume.size - 1) {
-                    Snackbar.make(binding.root, R.string.no_next_chapter, Snackbar.LENGTH_INDEFINITE)
-                        .apply {
-                            setAnchorView(binding.llAHReadBottomBar) //使它出现在bottomAppBar的上面，避免遮挡内容
-                            setAction(R.string.ok) {}
-                            show()
-                        }
+                    showSnackBar(R.string.no_next_chapter)
                     return@launch
                 }
                 viewModel.curVolumePos++
@@ -526,5 +507,18 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
         } else {
             binding.pvAHRead.pageNum = data.location
         }
+    }
+
+    private fun showSnackBar(msgid: Int) {
+        currentSnackBar = Snackbar.make(binding.root, msgid, Snackbar.LENGTH_INDEFINITE).apply {
+            setAnchorView(binding.llAHReadBottomBar) //使它出现在bottomAppBar的上面，避免遮挡内容
+            setAction(R.string.ok) {}
+            show()
+        }
+    }
+
+    private fun hideSnackBar() {
+        currentSnackBar?.dismiss()
+        currentSnackBar = null
     }
 }
