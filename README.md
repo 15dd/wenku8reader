@@ -1,4 +1,5 @@
-# 软件重构中
+# 正在使用Flutter重构中，暂时不要提交pr
+<hr>
 
 <div align="center">
 
