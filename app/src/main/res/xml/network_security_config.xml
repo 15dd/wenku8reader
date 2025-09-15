@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <base-config>
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user"
+                tools:ignore="AcceptsUserCertificates" /> <!-- 允许用户证书 -->
+        </trust-anchors>
+    </base-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="TODO">app.wenku8.com</domain>
+    </domain-config>
+</network-security-config>

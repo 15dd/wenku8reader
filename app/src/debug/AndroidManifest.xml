@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:name=".HikariApp"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/soft_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="false"
+        android:theme="@style/Theme.HikariNovel"
+        tools:targetApi="31"
+        android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config"
+        tools:replace="android:supportsRtl">
+
+        <activity
+            android:name=".ui.splash.SplashActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".ui.splash.LoginActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.main.more.more.account.AccountActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.main.more.more.about.AboutActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.detail.NovelInfoActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.other.CrashActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.detail.comment.CommentActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.main.more.more.setting.SettingActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.other.PhotoViewActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.main.home.search.SearchActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.read.vertical.ReadActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.read.horizontal.ReadActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.read.SelectColorActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.main.bookshelf.search.BookshelfSearchActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.detail.user_bookshelf.UserBookshelfActivity"/>
+
+    </application>
+
+</manifest>

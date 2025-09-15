@@ -32,7 +32,7 @@ class Network @Inject constructor() {
 
     fun post(url: String, cookie: String, pairs: List<KeyValuePair>): CallAwait<OkResponse<ResponseBody?>> {
         val rxHttpFormParam = RxHttp.postForm(url)
-            .addHeader("cookie", cookie)
+            .addHeader("Cookie", cookie)
             .addHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.70 Safari/537.36")
         pairs.forEach { rxHttpFormParam.add(it.key, it.value) }
         return rxHttpFormParam.toAwait<ResponseBody>().toAwaitOkResponse()
@@ -40,7 +40,7 @@ class Network @Inject constructor() {
 
     fun get(url: String, cookie: String): CallAwait<OkResponse<ResponseBody?>> =
         RxHttp.get(url)
-            .addHeader("cookie", cookie)
+            .addHeader("Cookie", cookie)
             .addHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.70 Safari/537.36")
             .toAwait<ResponseBody>()
             .toAwaitOkResponse()
@@ -55,7 +55,8 @@ class Network @Inject constructor() {
         //val request = "action=book&do=text&aid=2906&cid=117212&t=0"
         return RxHttp
             .postForm("http://app.wenku8.com/android.php")
-            .add("appver", "1.18")
+            .addHeader("User-Agent","Mozilla/5.0 (Linux; U; Android 9; zh-cn; Redmi Note 5 Build/PKQ1.180904.001) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/71.0.3578.141 Mobile Safari/537.36 XiaoMi/MiuiBrowser/11.10.8")
+            .add("appver", "1.21")
             .add("request", Base64Helper.encodeBase64(request))
             .add("timetoken", "${System.currentTimeMillis()}")
             .toAwait<String>()
