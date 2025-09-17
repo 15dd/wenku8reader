@@ -131,7 +131,7 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
                         .setCancelable(false)
                         .setPositiveButton(R.string.ok) { _, _ -> }
                         .show()
-                    setBottomBarIsEnable(true)
+                    setBottomBarIsEnable(false)
                 }
 
                 Event.EmptyContentEvent -> {
