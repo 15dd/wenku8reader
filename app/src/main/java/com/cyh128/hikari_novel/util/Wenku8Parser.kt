@@ -506,10 +506,18 @@ object Wenku8Parser {
         val regex = "<!--image-->(.*?)<!--image-->".toRegex()
         val images = mutableListOf<String>()
         regex.findAll(content).forEach { matchResult ->
-            val url = matchResult.groupValues[1].trim()
+            var url = matchResult.groupValues[1].trim()
+            url = replaceDomain(url)
             images.add(url)
         }
         return images
+    }
+
+    private fun replaceDomain(url: String, newDomain: String = "pic.777743.xyz"): String {
+        val regex = Regex("""https?://([^/]+)""")
+        return url.replace(regex) { matchResult ->
+            matchResult.value.replace(matchResult.groupValues[1], newDomain)
+        }
     }
 
     //判断当前页面是否为首页界面，以判断网络连接是否正常
