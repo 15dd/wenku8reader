@@ -29,13 +29,8 @@ import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.Snackbar
 import com.gyf.immersionbar.ImmersionBar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
@@ -49,11 +44,13 @@ class ReadActivity : BaseActivity<ActivityVerticalReadBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        intent.getParcelableExtra<ReadParcel>("data")!!.also {
-            viewModel.novel = it.novel
-            viewModel.curVolumePos = it.curVolumePos
-            viewModel.curChapterPos = it.curChapterPos
-            viewModel.goToLatest = it.goToLatest
+        if (viewModel.novel == null) {
+            intent.getParcelableExtra<ReadParcel>("data")!!.also {
+                viewModel.novel = it.novel
+                viewModel.curVolumePos = it.curVolumePos
+                viewModel.curChapterPos = it.curChapterPos
+                viewModel.goToLatest = it.goToLatest
+            }
         }
 
         setSupportActionBar(binding.tbAVRead)
@@ -260,7 +257,7 @@ class ReadActivity : BaseActivity<ActivityVerticalReadBinding>() {
     fun toNextChapter() { //切换至下一章
         lifecycleScope.launch {
             if (viewModel.curChapterPos == viewModel.curVolume.chapters.size - 1) { //判断是不是该卷的最后一章
-                if (viewModel.curVolumePos == viewModel.novel.volume.size - 1) {
+                if (viewModel.curVolumePos == viewModel.novel!!.volume.size - 1) {
                     Snackbar.make(binding.root, R.string.no_next_chapter, Snackbar.LENGTH_INDEFINITE)
                         .apply {
                             setAnchorView(binding.llAVReadBottomBar) //使它出现在bottomAppBar的上面，避免遮挡内容

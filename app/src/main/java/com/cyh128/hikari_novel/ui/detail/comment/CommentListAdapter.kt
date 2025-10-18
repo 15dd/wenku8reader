@@ -32,7 +32,7 @@ class CommentListAdapter(
             tvICommentReplyCount.text = item.replyCount
             tvICommentComment.text = item.content
             tvICommentTime.text = item.time
-            cvICommentUsername.setOnClickListener {
+            tvICommentUsername.setOnClickListener {
                 onUsernameClick(item.uid)
             }
             root.setOnClickListener {

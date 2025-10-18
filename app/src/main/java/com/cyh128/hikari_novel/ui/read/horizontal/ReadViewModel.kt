@@ -29,12 +29,12 @@ class ReadViewModel @Inject constructor(
     var curChapterPos by Delegates.notNull<Int>()
     var curVolumePos by Delegates.notNull<Int>()
 
-    private val aid get() = novel.aid
-    private val cid get() = novel.volume[curVolumePos].chapters[curChapterPos].cid
-    val chapterTitle get() = novel.volume[curVolumePos].chapters[curChapterPos].chapterTitle
-    val curVolume get() = novel.volume[curVolumePos]
+    private val aid get() = novel!!.aid
+    private val cid get() = novel!!.volume[curVolumePos].chapters[curChapterPos].cid
+    val chapterTitle get() = novel!!.volume[curVolumePos].chapters[curChapterPos].chapterTitle
+    val curVolume get() = novel!!.volume[curVolumePos]
 
-    lateinit var novel: Novel
+    var novel: Novel? = null
     lateinit var curNovelContent: String //当前章节的小说内容
     lateinit var curImages: List<String> //当前小说的插图的链接列表
 

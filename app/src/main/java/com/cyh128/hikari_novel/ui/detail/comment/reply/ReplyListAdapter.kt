@@ -36,7 +36,7 @@ class ReplyListAdapter(
                 if (it == 1) return@let ResourceUtil.getString(R.string.content)
                 else return@let "${it}${ResourceUtil.getString(R.string.floors)}"
             }
-            cvIReplyUsername.setOnClickListener {
+            tvIReplyUsername.setOnClickListener {
                 onUsernameClick(item.uid)
             }
         }

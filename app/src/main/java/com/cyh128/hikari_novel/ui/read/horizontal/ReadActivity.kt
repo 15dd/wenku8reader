@@ -3,6 +3,7 @@ package com.cyh128.hikari_novel.ui.read.horizontal
 import android.animation.Animator
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -57,11 +58,13 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
         binding.tbAHRead.setNavigationOnClickListener { finish() }
         supportActionBar?.setTitle(R.string.loading)
 
-        intent.getParcelableExtra<ReadParcel>("data")!!.also {
-            viewModel.novel = it.novel
-            viewModel.curVolumePos = it.curVolumePos
-            viewModel.curChapterPos = it.curChapterPos
-            viewModel.goToLatest = it.goToLatest
+        if (viewModel.novel == null) {
+            intent.getParcelableExtra<ReadParcel>("data")!!.also { data ->
+                viewModel.novel = data.novel
+                viewModel.curVolumePos = data.curVolumePos
+                viewModel.curChapterPos = data.curChapterPos
+                viewModel.goToLatest = data.goToLatest
+            }
         }
 
         receiveEvent<Event>("event_horizontal_read_activity") { event ->
@@ -80,6 +83,7 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
                             viewModel.getByCid.take(1).last()?.let {
                                 if (viewModel.goToLatest) {
                                     validatePageNum(it)
+                                    viewModel.goToLatest = false
                                 } else {
                                     if (viewModel.getIsShowChapterReadHistory()) {
                                         if (viewModel.getIsShowChapterReadHistoryWithoutConfirm()) {
@@ -154,6 +158,11 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
 
         binding.pvAHRead.showLoadingTip()
         viewModel.getNovelContent()
+    }
+
+    override fun onDestroy() {
+        viewModel.goToLatest = true
+        super.onDestroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -433,7 +442,7 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
     private fun toNextChapter() {
         lifecycleScope.launch {
             if (viewModel.curChapterPos == viewModel.curVolume.chapters.size - 1) { //判断是不是该卷的最后一章
-                if (viewModel.curVolumePos == viewModel.novel.volume.size - 1) {
+                if (viewModel.curVolumePos == viewModel.novel!!.volume.size - 1) {
                     Snackbar.make(binding.root, R.string.no_next_chapter, Snackbar.LENGTH_INDEFINITE)
                         .apply {
                             setAnchorView(binding.llAHReadBottomBar) //使它出现在bottomAppBar的上面，避免遮挡内容

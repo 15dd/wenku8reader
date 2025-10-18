@@ -20,29 +20,18 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_marginLeft="8dp"
-                style="@style/Widget.Material3.CardView.Filled"
-                android:id="@+id/cv_i_reply_username"
+            <TextView
+                android:id="@+id/tv_i_reply_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardCornerRadius="6dp">
-
-                <TextView
-                    android:id="@+id/tv_i_reply_username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    tools:text="username" />
-
-            </com.google.android.material.card.MaterialCardView>
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="?attr/colorPrimary"
+                tools:text="username" />
 
             <View
                 android:layout_width="0dp"

@@ -31,12 +31,13 @@ class ReadViewModel @Inject constructor(
 
     lateinit var curNovelContent: String //当前章节的小说内容
     lateinit var curImages: List<String> //当前小说的插图的链接列表
-    lateinit var novel: Novel
 
-    private val aid get() = novel.aid
-    private val cid get() = novel.volume[curVolumePos].chapters[curChapterPos].cid
-    val chapterTitle get() = novel.volume[curVolumePos].chapters[curChapterPos].chapterTitle
-    val curVolume get() = novel.volume[curVolumePos]
+    var novel: Novel? = null
+
+    private val aid get() = novel!!.aid
+    private val cid get() = novel!!.volume[curVolumePos].chapters[curChapterPos].cid
+    val chapterTitle get() = novel!!.volume[curVolumePos].chapters[curChapterPos].chapterTitle
+    val curVolume get() = novel!!.volume[curVolumePos]
 
     var isBarShown = false //上下栏是否显示
 
