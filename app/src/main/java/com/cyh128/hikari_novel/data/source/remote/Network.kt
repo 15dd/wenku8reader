@@ -54,9 +54,9 @@ class Network @Inject constructor() {
     fun getFromAppWenku8Com(request: String): CallAwait<String> {
         //val request = "action=book&do=text&aid=2906&cid=117212&t=0"
         return RxHttp
-            .postForm("http://app.wenku8.com/android.php")
+            .postForm("https://wenku8-relay.mewx.org")
             .addHeader("User-Agent","Dalvik/2.1.0 (Linux; U; Android 15; 23114RD76B Build/AQ3A.240912.001)")
-            .add("appver", "1.21")
+            .add("appver", "1.23-nano-mewx")
             .add("request", Base64Helper.encodeBase64(request))
             .add("timetoken", "${System.currentTimeMillis()}")
             .toAwait<String>()

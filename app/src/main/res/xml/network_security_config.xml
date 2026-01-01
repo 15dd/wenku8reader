@@ -8,7 +8,7 @@
                 tools:ignore="AcceptsUserCertificates" /> <!-- 允许用户证书 -->
         </trust-anchors>
     </base-config>
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="TODO">app.wenku8.com</domain>
-    </domain-config>
+<!--    <domain-config cleartextTrafficPermitted="true">-->
+<!--        <domain includeSubdomains="TODO">app.wenku8.com</domain>-->
+<!--    </domain-config>-->
 </network-security-config>
