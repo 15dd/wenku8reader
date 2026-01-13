@@ -90,6 +90,17 @@ class ReadActivity : BaseActivity<ActivityVerticalReadBinding>() {
                         .show()
                 }
 
+                is Event.NetworkErrorEvent -> {
+                    MaterialAlertDialogBuilder(this@ReadActivity)
+                        .setTitle(R.string.network_error)
+                        .setIcon(R.drawable.ic_error)
+                        .setMessage(event.msg)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok) { _, _ -> finish() }
+                        .show()
+                    setBottomBarIsEnable(false)
+                }
+
                 else -> {}
             }
         }

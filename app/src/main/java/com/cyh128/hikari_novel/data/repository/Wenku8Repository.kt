@@ -74,7 +74,7 @@ class Wenku8Repository @Inject constructor(
                         return Result.failure(NetworkException(HttpCodeParser.parser(body.code())))
                     } else {
                         val html = String(body.body()!!.bytes(), Charset.forName("GBK"))
-                        Log.d("w_8_r",html)
+                        Log.d("w_8_r", html)
                         val response = LoginResponse.empty()
                         Wenku8Parser.isLoginInfoCorrect(html, response)
                         Wenku8Parser.isLoginSuccessful(html, response)
@@ -93,11 +93,12 @@ class Wenku8Repository @Inject constructor(
     suspend fun getNovelByRanking(ranking: String, index: Int): Result<NovelCoverResponse> {
         val requestUrl: String?
         val charset: String?
-        when(Locale.getDefault()) {
+        when (Locale.getDefault()) {
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/toplist.php?sort=$ranking&page=$index&charset=big5"
                 charset = "BIG5-HKSCS"
             }
+
             else -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/toplist.php?sort=$ranking&page=$index&charset=gbk"
                 charset = "GBK"
@@ -127,11 +128,12 @@ class Wenku8Repository @Inject constructor(
     ): Result<NovelCoverResponse> {
         val requestUrl: String?
         val charset: String?
-        when(Locale.getDefault()) {
+        when (Locale.getDefault()) {
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/tags.php?t=$category&v=$sort&page=$index&charset=big5"
                 charset = "BIG5-HKSCS"
             }
+
             else -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/tags.php?t=$category&v=$sort&page=$index&charset=gbk"
                 charset = "GBK"
@@ -157,11 +159,12 @@ class Wenku8Repository @Inject constructor(
     suspend fun getNovelInfo(url: String): Result<NovelInfo> {
         val requestUrl: String?
         val charset: String?
-        when(Locale.getDefault()) {
+        when (Locale.getDefault()) {
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "$url&charset=big5"
                 charset = "BIG5-HKSCS" //不能使用普通的big5编码，不然无法显示日文
             }
+
             else -> {
                 requestUrl = "$url&charset=gbk"
                 charset = "GBK"
@@ -186,11 +189,12 @@ class Wenku8Repository @Inject constructor(
     suspend fun getChapter(url: String): Result<List<Volume>> {
         val requestUrl: String?
         val charset: String?
-        when(Locale.getDefault()) {
+        when (Locale.getDefault()) {
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "${url}?charset=big5"
                 charset = "BIG5-HKSCS"
             }
+
             else -> {
                 requestUrl = "${url}?charset=gbk"
                 charset = "GBK"
@@ -215,11 +219,12 @@ class Wenku8Repository @Inject constructor(
     suspend fun addNovel(aid: String): Result<Boolean> {
         val requestUrl: String?
         val charset: String?
-        when(Locale.getDefault()) {
+        when (Locale.getDefault()) {
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/addbookcase.php?bid=$aid&charset=big5"
                 charset = "BIG5-HKSCS"
             }
+
             else -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/addbookcase.php?bid=$aid&charset=gbk"
                 charset = "GBK"
@@ -256,7 +261,7 @@ class Wenku8Repository @Inject constructor(
         val pairs = mutableListOf<KeyValuePair>()
         list.forEach { pairs.add(KeyValuePair("checkid[]", it, false)) }
         pairs.add(KeyValuePair("classlist", classId, false))
-        pairs.add(KeyValuePair("checkall","checkall", false))
+        pairs.add(KeyValuePair("checkall", "checkall", false))
         pairs.add(KeyValuePair("newclassid", -1, false))
         pairs.add(KeyValuePair("classid", classId, false))
 
@@ -274,7 +279,7 @@ class Wenku8Repository @Inject constructor(
         val pairs = mutableListOf<KeyValuePair>()
         list.forEach { pairs.add(KeyValuePair("checkid[]", it, false)) }
         pairs.add(KeyValuePair("classlist", classId, false))
-        pairs.add(KeyValuePair("checkall","checkall", false))
+        pairs.add(KeyValuePair("checkall", "checkall", false))
         pairs.add(KeyValuePair("newclassid", newClassId, false))
         pairs.add(KeyValuePair("classid", classId, false))
 
@@ -291,11 +296,12 @@ class Wenku8Repository @Inject constructor(
     suspend fun getBookshelf(classId: Int = 0): Result<Bookshelf> {
         val requestUrl: String?
         val charset: String?
-        when(Locale.getDefault()) {
+        when (Locale.getDefault()) {
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/bookcase.php?classid=$classId&charset=big5"
                 charset = "BIG5-HKSCS"
             }
+
             else -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/bookcase.php?classid=$classId&charset=gbk"
                 charset = "GBK"
@@ -319,11 +325,12 @@ class Wenku8Repository @Inject constructor(
     suspend fun getBookshelfFromUser(uid: String): Result<List<SimpleNovelCover>> {
         val requestUrl: String?
         val charset: String?
-        when(Locale.getDefault()) {
+        when (Locale.getDefault()) {
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/userpage.php?uid=$uid&charset=big5"
                 charset = "BIG5-HKSCS"
             }
+
             else -> {
                 requestUrl = "https://${getWenku8Node()}/userpage.php?uid=$uid&charset=gbk"
                 charset = "GBK"
@@ -348,11 +355,12 @@ class Wenku8Repository @Inject constructor(
     suspend fun getComment(aid: String, index: Int): Result<CommentResponse> {
         val requestUrl: String?
         val charset: String?
-        when(Locale.getDefault()) {
+        when (Locale.getDefault()) {
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/reviews.php?aid=$aid&page=$index&charset=big5"
                 charset = "BIG5-HKSCS"
             }
+
             else -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/reviews.php?aid=$aid&page=$index&charset=gbk"
                 charset = "GBK"
@@ -377,11 +385,12 @@ class Wenku8Repository @Inject constructor(
     suspend fun getReply(url: String, index: Int): Result<ReplyResponse> {
         val requestUrl: String?
         val charset: String?
-        when(Locale.getDefault()) {
+        when (Locale.getDefault()) {
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "$url&page=$index&charset=big5"
                 charset = "BIG5-HKSCS"
             }
+
             else -> {
                 requestUrl = "$url&page=$index&charset=gbk"
                 charset = "GBK"
@@ -405,11 +414,12 @@ class Wenku8Repository @Inject constructor(
     suspend fun getRecommend(): Result<List<HomeBlock>> {
         val requestUrl: String?
         val charset: String?
-        when(Locale.getDefault()) {
+        when (Locale.getDefault()) {
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/index.php?charset=big5"
                 charset = "BIG5-HKSCS"
             }
+
             else -> {
                 requestUrl = "https://${getWenku8Node()}/index.php?charset=gbk"
                 charset = "GBK"
@@ -434,11 +444,12 @@ class Wenku8Repository @Inject constructor(
     suspend fun novelVote(aid: String): Result<String> {
         val requestUrl: String?
         val charset: String?
-        when(Locale.getDefault()) {
+        when (Locale.getDefault()) {
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/uservote.php?id=$aid&charset=big5"
                 charset = "BIG5-HKSCS"
             }
+
             else -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/uservote.php?id=$aid&charset=gbk"
                 charset = "GBK"
@@ -463,11 +474,12 @@ class Wenku8Repository @Inject constructor(
     suspend fun searchNovelByTitle(title: String, index: Int): Result<NovelCoverResponse> {
         val requestUrl: String?
         val charset: String?
-        when(Locale.getDefault()) {
+        when (Locale.getDefault()) {
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/search.php?searchtype=articlename&searchkey=$title&page=$index&charset=big5"
                 charset = "BIG5-HKSCS"
             }
+
             else -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/search.php?searchtype=articlename&searchkey=$title&page=$index&charset=gbk"
                 charset = "GBK"
@@ -499,11 +511,12 @@ class Wenku8Repository @Inject constructor(
     suspend fun searchNovelByAuthor(author: String, index: Int): Result<NovelCoverResponse> {
         val requestUrl: String?
         val charset: String?
-        when(Locale.getDefault()) {
+        when (Locale.getDefault()) {
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/search.php?searchtype=author&searchkey=$author&page=$index&charset=big5"
                 charset = "BIG5-HKSCS"
             }
+
             else -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/search.php?searchtype=author&searchkey=$author&page=$index&charset=gbk"
                 charset = "GBK"
@@ -540,11 +553,12 @@ class Wenku8Repository @Inject constructor(
     suspend fun getUserInfo(): Result<UserInfo> {
         val requestUrl: String?
         val charset: String?
-        when(Locale.getDefault()) {
+        when (Locale.getDefault()) {
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/userdetail.php?charset=big5"
                 charset = "BIG5-HKSCS"
             }
+
             else -> {
                 requestUrl = "https://${getWenku8Node()}/userdetail.php?charset=gbk"
                 charset = "GBK"
@@ -569,11 +583,12 @@ class Wenku8Repository @Inject constructor(
     suspend fun getCompletionNovel(index: Int): Result<NovelCoverResponse> {
         val requestUrl: String?
         val charset: String?
-        when(Locale.getDefault()) {
+        when (Locale.getDefault()) {
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/articlelist.php?fullflag=1&page=$index&charset=big5"
                 charset = "BIG5-HKSCS"
             }
+
             else -> {
                 requestUrl = "https://${getWenku8Node()}/modules/article/articlelist.php?fullflag=1&page=$index&charset=gbk"
                 charset = "GBK"
@@ -602,11 +617,12 @@ class Wenku8Repository @Inject constructor(
     suspend fun isOnline(): Result<Boolean> {
         val requestUrl: String?
         val charset: String?
-        when(Locale.getDefault()) {
+        when (Locale.getDefault()) {
             Locale.TRADITIONAL_CHINESE -> {
                 requestUrl = "https://${getWenku8Node()}/index.php?&charset=big5"
                 charset = "BIG5-HKSCS"
             }
+
             else -> {
                 requestUrl = "https://${getWenku8Node()}/index.php?&charset=gbk"
                 charset = "GBK"
@@ -628,7 +644,7 @@ class Wenku8Repository @Inject constructor(
 
     //获取小说内容
     suspend fun getNovelContent(aid: String, cid: String): Result<ChapterContentResponse> {
-        val requestUrl = when(Locale.getDefault()) {
+        val requestUrl = when (Locale.getDefault()) {
             Locale.TRADITIONAL_CHINESE -> "action=book&do=text&aid=$aid&cid=$cid&t=1"
             else -> "action=book&do=text&aid=$aid&cid=$cid&t=0"
         }
@@ -649,7 +665,8 @@ class Wenku8Repository @Inject constructor(
                     return Result.failure(NetworkException(ResourceUtil.getString(R.string.network_error_msg)))
                 }
             }.onFailure {
-                return Result.failure(NetworkException(it.message))
+                return if (it.stackTraceToString().contains("429")) Result.failure(NetworkException(ResourceUtil.getString(R.string.http_code_429)))
+                else Result.failure(NetworkException(it.message))
             }
         throw RuntimeException()
     }
@@ -671,7 +688,8 @@ class Wenku8Repository @Inject constructor(
                     else -> Result.success(null)
                 }
             }.onFailure {
-                return Result.failure(NetworkException(it.message))
+                return if (it.stackTraceToString().contains("429")) Result.failure(NetworkException(ResourceUtil.getString(R.string.http_code_429)))
+                else Result.failure(NetworkException(it.message))
             }
         throw RuntimeException()
     }
@@ -685,7 +703,8 @@ class Wenku8Repository @Inject constructor(
             .awaitResult {
                 return Result.success(null)
             }.onFailure {
-                return Result.failure(NetworkException(it.message))
+                return if (it.stackTraceToString().contains("429")) Result.failure(NetworkException(ResourceUtil.getString(R.string.http_code_429)))
+                else Result.failure(NetworkException(it.message))
             }
         throw RuntimeException()
     }

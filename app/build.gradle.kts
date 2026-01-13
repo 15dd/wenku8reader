@@ -14,8 +14,8 @@ android {
         applicationId = "com.cyh128.hikari_novel"
         minSdk = 24
         targetSdk = 34 //暂时不要升到35，不然之前的edgeToEdge效果会消失
-        versionCode = 260102
-        versionName = "3.9.9"
+        versionCode = 260114
+        versionName = "3.9.10"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -314,4 +314,5 @@
     <string name="chapter_current_page_error">偵測到衝突，已清除本章節的閱讀記錄</string>
     <string name="warning">警告</string>
     <string name="server_empty_content">伺服器返回了空數據，請查看其他章節</string>
+    <string name="http_code_429">請求次數過多，請稍後重試</string>
 </resources>

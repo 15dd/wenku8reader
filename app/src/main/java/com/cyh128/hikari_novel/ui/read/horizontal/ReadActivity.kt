@@ -133,7 +133,7 @@ class ReadActivity : BaseActivity<ActivityHorizontalReadBinding>() {
                         .setIcon(R.drawable.ic_error)
                         .setMessage(event.msg)
                         .setCancelable(false)
-                        .setPositiveButton(R.string.ok) { _, _ -> }
+                        .setPositiveButton(R.string.ok) { _, _ -> finish() }
                         .show()
                     setBottomBarIsEnable(false)
                 }
