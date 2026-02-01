@@ -1,4 +1,5 @@
-## ⚠️该项目已进入维护阶段，不再开发新功能，仅修复bug！⚠️
+#### 🚧本项目已停止更新🚧
+#### 📣有能力编译Flutter项目的，可以看看我用Flutter重构的项目（[hikari_novel_flutter](https://github.com/15dd/hikari_novel_flutter)）。小白就别看了，没有安装包，要自己编译的📣
 <hr>
 
 <div align="center">
