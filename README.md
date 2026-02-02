@@ -1,5 +1,6 @@
-### 🚧本项目已停止更新🚧
+## 🚧本项目已停止更新，不再维护🚧
 ### 📣有能力编译Flutter项目的，可以看看我用Flutter重构的项目（[hikari_novel_flutter](https://github.com/15dd/hikari_novel_flutter)）。小白就别看了，没有安装包，要自己编译的📣
+### 📢如果你不会编译的话，可以看这位的项目（[light-novel-library_Wenku8_Android](https://github.com/MewX/light-novel-library_Wenku8_Android)）📢
 <hr>
 
 <div align="center">
@@ -14,7 +15,6 @@
     <img alt="GitHub Release" src="https://img.shields.io/github/v/release/15dd/wenku8reader?style=for-the-badge&color=%23408A23">
     <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/15dd/wenku8reader/total?style=for-the-badge&color=%23478da7">
     <img alt="License" src="https://img.shields.io/badge/License-MIT-Green?style=for-the-badge&color=rgb(164%2C25%2C49)">
-    <a href="https://t.me/+JH2H3VpET7ozMTU9"><img alt="Static Badge" src="https://img.shields.io/badge/Telegram-Join%20Group-blue?style=for-the-badge&logo=telegram"></a>
   </div>
 
   <p align="center"><font>第三方轻小说文库客户端，使用MD3风格，更简洁，更清爽</font></p>
@@ -30,7 +30,6 @@
 
 > [!NOTE]\
 > 觉得好用别忘了star哦，你的star是对我最大的激励\
-> 欢迎加入[Telegram交流群](https://t.me/+JH2H3VpET7ozMTU9)，一起讨论本软件的功能，使用体验等
 
 ## 软件截图
 - 浅色模式
