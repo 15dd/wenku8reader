@@ -1,4 +1,5 @@
-## 🚧本项目已停止更新，不再维护🚧
+## 🚧本项目已永久停止更新，不再维护🚧
+### 🚨本项目已无法正常使用，请使用其他软件🚨
 ### 📣有能力编译Flutter项目的，可以看看我用Flutter重构的项目（[hikari_novel_flutter](https://github.com/15dd/hikari_novel_flutter)）。小白就别看了，没有安装包，要自己编译的📣
 ### 📢如果你不会编译的话，可以看这位的项目（[light-novel-library_Wenku8_Android](https://github.com/MewX/light-novel-library_Wenku8_Android)）📢
 <hr>
@@ -29,7 +30,7 @@
 > 支持的安卓版本：Android 7+ (API 24+)
 
 > [!NOTE]\
-> 觉得好用别忘了star哦，你的star是对我最大的激励\
+> 觉得好用别忘了star哦，你的star是对我最大的激励
 
 ## 软件截图
 - 浅色模式
